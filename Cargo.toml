@@ -7,3 +7,5 @@ edition = "2021"
 
 [dependencies]
 html-builder = "0.3.0"
+native-windows-gui = "1.0.12"
+native-windows-derive = "1.0.4"

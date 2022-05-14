@@ -1,7 +1,10 @@
 use html_builder::*; // Contents added to buf by each statement
 use std::fmt::Write;
-use std::fs::File;
-use std::io::Write as WriteIo;
+
+use std::env;
+use std::process;
+
+use personal_website::Config;
 
 fn add_carousel(node: &mut Node, default_image_id: usize, fullscreen: bool) {
     let mut carousel = node.div().attr(&format!(
@@ -92,12 +95,18 @@ fn step_print_and_execute(buf: &mut Buffer, item_name: &str, func: fn(&mut Buffe
     println!("{} created!", item_name);
 }
 
+
 fn main() {
-    println!("Tool to create personal website started!");
-    let mut buf = Buffer::new();
+    let args: Vec<String> = env::args().collect();
 
-    step_print_and_execute(&mut buf, "front page", create_front_page);
+    let config = Config::new(&args).unwrap_or_else(|err| {
+        eprintln!("Problem parsing arguments: {}", err);
+        process::exit(1);
+    });
 
-    let mut file = File::create("index.html").unwrap();
-    file.write_all(buf.finish().as_bytes()).unwrap();
+    if let Err(e) = personal_website::run(config) {
+        eprintln!("Application error: {}", e);
+
+        process::exit(1);
+    }
 }
