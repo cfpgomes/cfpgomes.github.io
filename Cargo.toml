@@ -7,5 +7,17 @@ edition = "2021"
 
 [dependencies]
 html-builder = "0.3.0"
-native-windows-gui = "1.0.12"
-native-windows-derive = "1.0.4"
+
+[dependencies.windows]
+version = "0.36.1"
+features = [
+    "alloc",
+    "implement",
+    "ApplicationModel_Activation",
+    "UI_Xaml_Controls",
+    "UI_Xaml",
+    "Win32_Foundation",
+    "Win32_Storage_Packaging_Appx",
+    "Win32_System_Com",
+    "Win32_UI_WindowsAndMessaging",
+]
