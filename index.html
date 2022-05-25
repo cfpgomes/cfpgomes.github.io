@@ -1,67 +1,50 @@
-<html lang='en'>
- <head>
-  <meta charset='utf-8'>
-  <title>
-Title!
-  </title>
-  <link rel='stylesheet' href='css/spectre.min.css'>
-  <link rel='stylesheet' href='css/spectre-exp.min.css'>
-  <link rel='stylesheet' href='css/spectre-icons.min.css'>
- </head>
- <body>
-  <div class='carousel' style='position:absolute; top:0px; left:0px; height:100%; z-index:-10'>
-   <input class='carousel-locator' id='slide-1' type='radio' name='carousel-radio' hidden='' checked=''>
-   <input class='carousel-locator' id='slide-2' type='radio' name='carousel-radio' hidden='' >
-   <input class='carousel-locator' id='slide-3' type='radio' name='carousel-radio' hidden='' >
-   <input class='carousel-locator' id='slide-4' type='radio' name='carousel-radio' hidden='' >
-   <input class='carousel-locator' id='slide-5' type='radio' name='carousel-radio' hidden='' >
-   <input class='carousel-locator' id='slide-6' type='radio' name='carousel-radio' hidden='' >
-   <input class='carousel-locator' id='slide-7' type='radio' name='carousel-radio' hidden='' >
-   <input class='carousel-locator' id='slide-8' type='radio' name='carousel-radio' hidden='' >
-   <div class='carousel-container'>
-    <figure class='carousel-item'>
-     <img class='img-responsive rounded' src='img/carousel1.jpg'>
-    </figure>
-    <figure class='carousel-item'>
-     <img class='img-responsive rounded' src='img/carousel2.jpg'>
-    </figure>
-    <figure class='carousel-item'>
-     <img class='img-responsive rounded' src='img/carousel3.jpg'>
-    </figure>
-    <figure class='carousel-item'>
-     <img class='img-responsive rounded' src='img/carousel4.jpg'>
-    </figure>
-    <figure class='carousel-item'>
-     <img class='img-responsive rounded' src='img/carousel5.jpg'>
-    </figure>
-    <figure class='carousel-item'>
-     <img class='img-responsive rounded' src='img/carousel6.jpg'>
-    </figure>
-    <figure class='carousel-item'>
-     <img class='img-responsive rounded' src='img/carousel7.jpg'>
-    </figure>
-    <figure class='carousel-item'>
-     <img class='img-responsive rounded' src='img/carousel8.jpg'>
-    </figure>
-   </div>
-  </div>
-  <div class='off-canvas off-canvas-sidebar-show'>
-   <a class='off-canvas-toggle btn btn-primary btn-action' href='#sidebar-id'>
-    <i class='icon icon-menu'>
-    </i>
-   </a>
-   <div id='sidebar-id' class='off-canvas-sidebar'>
-    <h1>
-Sidebar!
-    </h1>
-   </div>
-   <a class='off-canvas-overlay' href='#close'>
-   </a>
-   <div class='off-canvas-content'>
-    <span class='label label-warning'>
-Warning!
-    </span>
-   </div>
-  </div>
- </body>
-</html>
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- The following 2 meta tags always come first -->
+	<!-- Notify browsers this page is in Unicode -->
+	<meta charset="utf-8">
+	<!-- This site is responsive. Use full screen width. -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Spectre.css starter template -->
+	<!-- Create title for browser tabs & Favorites -->
+	<title>Spectre.css starter template</title>
+	<meta name="description" content="Spectre.css starter template">
+	<meta name="keywords" content="spectre.css, free template">	
+	<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+	<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+	<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">	
+	<style>
+		/* Make the navbar taller, and high contrast. */
+		.navbar { height: 6rem; background-color: #222222; padding: .5em 0 1em; }
+		.navbar-primary .navbar-brand { 
+			color: #fff; 
+			font-size: 3rem; 
+			font-weight: bold; 
+			padding-left: 2rem;
+		}
+		.btn.btn-link { color: lightgray; background-color: #222222; font-size: 1.5em;}
+		/* Make the button link color lighter on the nav bar */		
+		.btn.btn-link.selected { color: white; background-color: #222222; font-size: 1.5em;}
+		
+		/* Add padding to the right side of navbar. */
+		.navbar-section { padding-right: 2rem;}
+
+	</style>
+</head>
+<body>
+	<header class="navbar">
+		<!-- Logo on the left -->
+		<div class="navbar-primary">	
+			<a href="#" class="navbar-brand mr-10">Project name</a>
+			<a href="#" class="btn btn-link selected">Home</a>
+			<a href="#" class="btn btn-link">About</a> 
+			<a href="#" class="btn btn-link">Contact</a> 
+		</div>
+	</header><!-- .navbar -->
+	
+	<div class="container text-center">
+		<h1>Spectre.css starter template</h1>
+		<h2>Tiny, responsive, fast.</h2>
+	</div>
+</body>

@@ -1,22 +1,90 @@
 use std::error::Error;
+use std::fmt::Write;
 use std::fs::File;
 use std::io::Read;
 
 use chrono::NaiveDate;
 
+use comrak::{markdown_to_html, ComrakOptions};
+
+use html_builder::*;
+
+enum Condition {
+    In,
+    NotIn,
+}
+
+struct Rule {
+    condition: Condition,
+    tag: String,
+}
+
+impl Rule {
+    fn new(condition: Condition, tag: String) -> Self {
+        Self { condition, tag }
+    }
+
+    fn check(&self, publication: &Publication) -> bool {
+        match self.condition {
+            Condition::In => publication.tags.iter().any(|t| t == &self.tag),
+            Condition::NotIn => publication.tags.iter().all(|t| t != &self.tag),
+        }
+    }
+}
+
+struct Page {
+    title: String,
+    rules: Vec<Rule>,
+    publications: Vec<Publication>,
+}
+
+impl Page {
+    fn new(title: String) -> Self {
+        Self {
+            title: title,
+            rules: vec![],
+            publications: vec![],
+        }
+    }
+
+    fn add_rule(&mut self, rule: Rule) {
+        self.rules.push(rule);
+    }
+
+    fn add_publication(&mut self, publication: Publication) {
+        self.publications.push(publication);
+    }
+
+    fn to_html(&self) -> String {
+        let mut buf = Buffer::new();
+        writeln!(buf, "<!-- My website -->")?;
+
+        // The Html5 trait provides various helper methods.  For instance, doctype()
+        // simply writes the <!DOCTYPE> header
+        buf.doctype();
+
+        
+        // Most helper methods create child nodes.  You can set a node's attributes
+        // like so
+        let mut html = buf.html().attr("lang='en'");
+
+        let mut head = html.head();
+    }
+}
+
 /// Struct that represents a publication, which contains info such
 /// as title, date, markdown, and tags.
 #[derive(Debug)]
-pub struct Publication {
-    pub title: String,
-    pub date: NaiveDate,
-    pub markdown: String,
-    pub tags: Vec<String>,
+struct Publication {
+    title: String,
+    date: NaiveDate,
+    markdown: String,
+    tags: Vec<String>,
 }
 
 impl Publication {
-    pub fn new(title: String, date: NaiveDate, markdown: String, tags: Vec<String>) -> Publication {
-        Publication {
+    fn new(title: String, date: NaiveDate, markdown: String, tags: Vec<String>) -> Self {
+        Self {
             title,
             date,
             markdown,
@@ -24,7 +92,7 @@ impl Publication {
         }
     }
 
-    pub fn from_gobbet(gobbet_path: &str) -> Result<Publication, &'static str> {
+    fn from_gobbet(gobbet_path: &str) -> Result<Self, &'static str> {
         // Read contents of gobbet.
         let mut gobbet_file = match File::open(gobbet_path) {
             Ok(f) => f,
@@ -50,9 +118,9 @@ impl Publication {
                 if let Some((markdown, tags)) = gobbet_contents.split_once("🍖TAGS🍖") {
                     let markdown = &markdown.replace("🍖MARKDOWN🍖", "");
                     let markdown = markdown.trim();
-                    return Ok(Publication {
+                    return Ok(Self {
                         title: title.to_string(),
-                        date: match NaiveDate::parse_from_str(&date, "%Y-%m-%d") {
+                        date: match NaiveDate::parse_from_str(&date, "%Y/%m/%d") {
                             Ok(d) => d,
                             _ => return Err("Couldn't parse date from str."),
                         },
@@ -69,13 +137,17 @@ impl Publication {
             return Err("Couldn't split at title.");
         };
     }
+
+    fn to_html(&self) -> String {
+        markdown_to_html(&self.markdown, &ComrakOptions::default()).to_string()
+    }
 }
 
 /// Enum to enumerate the three types of possible queries:
 /// `Publish` represents a query to publish a new `Publication`;
 /// `Modify` represents a query to edit an existing `Publication`;
 /// `Build` represents a query to build the website.
-pub enum Query {
+enum Query {
     Publish,
     Modify,
     Build,
@@ -83,7 +155,7 @@ pub enum Query {
 
 /// Simple struct that stores query.
 pub struct Config {
-    pub query: Query,
+    query: Query,
 }
 
 impl Config {

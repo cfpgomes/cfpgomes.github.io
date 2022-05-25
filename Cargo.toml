@@ -8,3 +8,5 @@ edition = "2021"
 [dependencies]
 html-builder = "0.3.0"
 chrono = "0.4.19"
+comrak = "0.12.1"
+html-builder = "0.3.0"
