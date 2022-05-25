@@ -2,6 +2,7 @@ use std::error::Error;
 use std::fmt::Write;
 use std::fs::File;
 use std::io::Read;
+use std::io::Write as OtherWrite;
 
 use chrono::NaiveDate;
 
@@ -57,18 +58,85 @@ impl Page {
 
     fn to_html(&self) -> String {
         let mut buf = Buffer::new();
-        writeln!(buf, "<!-- My website -->")?;
+        writeln!(buf, "<!-- My website -->").unwrap();
 
         // The Html5 trait provides various helper methods.  For instance, doctype()
         // simply writes the <!DOCTYPE> header
         buf.doctype();
 
-        
         // Most helper methods create child nodes.  You can set a node's attributes
         // like so
         let mut html = buf.html().attr("lang='en'");
 
         let mut head = html.head();
+
+        // Meta is a "void element", meaning it doesn't need a closing tag.  This is
+        // handled correctly.
+        head.meta().attr("charset='utf-8'");
+
+        // For site responsiveness
+        head.meta()
+            .attr("name='utf-8' content='width=device-width,initial-scale=1.0'");
+
+        // Just like Buffer, nodes are also writable.  Set their contents by
+        // writing into them.
+        // Title
+        writeln!(head.title(), "Cláudio Gomes | {}", self.title).unwrap();
+
+        // Description is the same as title.
+        head.meta()
+            .attr(format!("name='description' content='{}'", self.title).as_str());
+        // Keywords are tags used in rules.
+        head.meta().attr(
+            format!(
+                "name='keywords', content='{}'",
+                self.rules
+                    .iter()
+                    .map(|r| match r.condition {
+                        Condition::In => "".to_string() + &r.tag + ",",
+                        Condition::NotIn => "not ".to_string() + &r.tag + ",",
+                    })
+                    .collect::<String>()
+                    .trim_end_matches(",")
+            )
+            .as_str(),
+        );
+
+        // Necessary stylesheets.
+        head.link()
+            .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'");
+        head.link()
+            .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'");
+        head.link()
+            .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'");
+
+        // Body
+        let mut body = html.body();
+
+        // Navbar TODO: link between pages
+        let mut header = body.header().attr("class='navbar'");
+
+        let mut div = header.div().attr("class='navbar-primary'");
+        writeln!(
+            div.a().attr("href='#' class='navbar-brand mr-10'"),
+            "Cláudio Gomes | {}",
+            self.title
+        )
+        .unwrap();
+        writeln!(
+            div.a().attr("href='#' class='btn btn-link selected'"),
+            "Home"
+        )
+        .unwrap();
+        writeln!(div.a().attr("href='#' class='btn btn-link'"), "About").unwrap();
+        writeln!(div.a().attr("href='#' class='btn btn-link'"), "Contact").unwrap();
+
+        let mut div = body.div().attr("class='container text-center'");
+        writeln!(div.h1(), "Spectre.css starter template").unwrap();
+        writeln!(div.h2(), "Tiny, responsive, fast.").unwrap();
+
+        // Finish
+        buf.finish()
     }
 }
 
@@ -161,14 +229,14 @@ pub struct Config {
 impl Config {
     /// Creates a `Config` according to the argument passed via terminal.
     pub fn new(args: &[String]) -> Result<Config, &'static str> {
-        if args.len() == 2 {
+        if args.len() == 3 {
             return Err("Invalid number of arguments");
         }
 
         let query = match args[1].as_str() {
             "p" | "pub" | "publ" | "publish" => Query::Publish,
-            "m" | "mod" | "modi" | "modify" => Query::Publish,
-            "b" | "bui" | "buil" | "build" => Query::Publish,
+            "m" | "mod" | "modi" | "modify" => Query::Modify,
+            "b" | "bui" | "buil" | "build" => Query::Build,
             _ => return Err("Invalid query"),
         };
 
@@ -193,7 +261,21 @@ fn modify() -> Result<(), Box<dyn Error>> {
 }
 
 fn build() -> Result<(), Box<dyn Error>> {
-    unimplemented!()
+    let publication = Publication::from_gobbet("posts\\test.gobbet").unwrap();
+    let mut page = Page::new("Página de Teste".to_string());
+
+    page.add_publication(publication);
+
+    page.add_rule(Rule {
+        condition: Condition::In,
+        tag: "nature".to_string(),
+    });
+
+    let mut index_file = File::create("index.html")?;
+
+    write!(index_file, "{}", page.to_html())?;
+
+    Ok(())
 }
 
 #[cfg(test)]
