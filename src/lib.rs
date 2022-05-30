@@ -1,6 +1,6 @@
 use std::error::Error;
 use std::fmt::Write;
-use std::fs::File;
+use std::fs::{File, ReadDir};
 use std::io::Read;
 use std::io::Write as OtherWrite;
 
@@ -9,6 +9,8 @@ use chrono::NaiveDate;
 use comrak::{markdown_to_html, ComrakOptions};
 
 use html_builder::*;
+
+const FOLDER_PUBLICATIONS: &str = "publications";
 
 enum Condition {
     In,
@@ -26,6 +28,7 @@ impl Rule {
     }
 
     fn check(&self, publication: &Publication) -> bool {
+        println!("{:?}", publication.tags);
         match self.condition {
             Condition::In => publication.tags.iter().any(|t| t == &self.tag),
             Condition::NotIn => publication.tags.iter().all(|t| t != &self.tag),
@@ -52,8 +55,13 @@ impl Page {
         self.rules.push(rule);
     }
 
-    fn add_publication(&mut self, publication: Publication) {
-        self.publications.push(publication);
+    fn add_publication(&mut self, publication: Publication) -> bool {
+        match self.rules.iter().all(|r| r.check(&publication)) {
+            true => self.publications.push(publication),
+            false => return false,
+        };
+
+        true
     }
 
     fn to_html(&self) -> String {
@@ -135,6 +143,9 @@ impl Page {
         writeln!(div.h1(), "Spectre.css starter template").unwrap();
         writeln!(div.h2(), "Tiny, responsive, fast.").unwrap();
 
+        for publication in &self.publications {
+            writeln!(div.div(), "{}", publication.to_html()).unwrap();
+        }
         // Finish
         buf.finish()
     }
@@ -161,6 +172,7 @@ impl Publication {
     }
 
     fn from_gobbet(gobbet_path: &str) -> Result<Self, &'static str> {
+        println!("Reading gobbet file {:?}", gobbet_path);
         // Read contents of gobbet.
         let mut gobbet_file = match File::open(gobbet_path) {
             Ok(f) => f,
@@ -193,7 +205,7 @@ impl Publication {
                             _ => return Err("Couldn't parse date from str."),
                         },
                         markdown: markdown.to_string(),
-                        tags: tags.split(",").map(|s| s.to_string()).collect(),
+                        tags: tags.split(",").map(|s| s.to_string().trim().to_string()).collect(),
                     });
                 } else {
                     return Err("Couldn't split at markdown.");
@@ -261,15 +273,36 @@ fn modify() -> Result<(), Box<dyn Error>> {
 }
 
 fn build() -> Result<(), Box<dyn Error>> {
-    let publication = Publication::from_gobbet("posts\\test.gobbet").unwrap();
-    let mut page = Page::new("Página de Teste".to_string());
+    // Get all publications
+    let mut publications: Vec<Publication> = vec![];
 
-    page.add_publication(publication);
+    for entry in std::fs::read_dir(FOLDER_PUBLICATIONS)? {
+        publications.push(
+            Publication::from_gobbet(
+                format!("{:?}", entry.unwrap().path())
+                    .as_str()
+                    .strip_prefix("\"")
+                    .unwrap()
+                    .strip_suffix("\"")
+                    .unwrap(),
+            )
+            .unwrap(),
+        )
+    }
+
+    let mut page = Page::new("Página de Teste".to_string());
 
     page.add_rule(Rule {
         condition: Condition::In,
-        tag: "nature".to_string(),
+        tag: "example".to_string(),
     });
+
+    for publication in publications {
+        let title = publication.title.clone();
+        if page.add_publication(publication) {
+            println!("Publication {} added to Page {}.", title, page.title);
+        }
+    }
 
     let mut index_file = File::create("index.html")?;
 
