@@ -1,0 +1,14 @@
+* {
+    font-family: 'Klee One', cursive;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.card-title,
+.card-subtitle {
+    font-family: 'Fredericka the Great', cursive;
+}

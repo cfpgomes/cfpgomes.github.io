@@ -36,18 +36,25 @@ impl Rule {
     }
 }
 
+enum CSS {
+    Homemade,
+    Science,
+}
+
 struct Page {
     title: String,
     rules: Vec<Rule>,
     publications: Vec<Publication>,
+    css: CSS,
 }
 
 impl Page {
-    fn new(title: String) -> Self {
+    fn new(title: String, css: CSS) -> Self {
         Self {
             title: title,
             rules: vec![],
             publications: vec![],
+            css: css,
         }
     }
 
@@ -64,90 +71,29 @@ impl Page {
         true
     }
 
-    fn to_html(&self) -> String {
-        let mut buf = Buffer::new();
-        writeln!(buf, "<!-- My website -->").unwrap();
-
-        // The Html5 trait provides various helper methods.  For instance, doctype()
-        // simply writes the <!DOCTYPE> header
-        buf.doctype();
-
-        // Most helper methods create child nodes.  You can set a node's attributes
-        // like so
-        let mut html = buf.html().attr("lang='en'");
-
-        let mut head = html.head();
-
-        // Meta is a "void element", meaning it doesn't need a closing tag.  This is
-        // handled correctly.
-        head.meta().attr("charset='utf-8'");
-
-        // For site responsiveness
-        head.meta()
-            .attr("name='utf-8' content='width=device-width,initial-scale=1.0'");
-
-        // Just like Buffer, nodes are also writable.  Set their contents by
-        // writing into them.
-        // Title
-        writeln!(head.title(), "Cláudio Gomes | {}", self.title).unwrap();
-
-        // Description is the same as title.
-        head.meta()
-            .attr(format!("name='description' content='{}'", self.title).as_str());
-        // Keywords are tags used in rules.
-        head.meta().attr(
-            format!(
-                "name='keywords', content='{}'",
-                self.rules
-                    .iter()
-                    .map(|r| match r.condition {
-                        Condition::In => "".to_string() + &r.tag + ",",
-                        Condition::NotIn => "not ".to_string() + &r.tag + ",",
-                    })
-                    .collect::<String>()
-                    .trim_end_matches(",")
-            )
-            .as_str(),
-        );
-
-        // Necessary stylesheets.
-        head.link()
-            .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'");
-        head.link()
-            .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'");
-        head.link()
-            .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'");
-
-        // Body
-        let mut body = html.body();
-
-        // Navbar TODO: link between pages
-        let mut header = body.header().attr("class='navbar'");
-
-        let mut div = header.div().attr("class='navbar-primary'");
-        writeln!(
-            div.a().attr("href='#' class='navbar-brand mr-10'"),
-            "Cláudio Gomes | {}",
-            self.title
-        )
-        .unwrap();
-        writeln!(
-            div.a().attr("href='#' class='btn btn-link selected'"),
-            "Home"
-        )
-        .unwrap();
-        writeln!(div.a().attr("href='#' class='btn btn-link'"), "About").unwrap();
-        writeln!(div.a().attr("href='#' class='btn btn-link'"), "Contact").unwrap();
-
-        let mut div = body.div().attr("class='container text-center'");
-        writeln!(div.h1(), "Spectre.css starter template").unwrap();
-        writeln!(div.h2(), "Tiny, responsive, fast.").unwrap();
-
+    fn add_to_node(&self, mut root: html_builder::Node) {
         for publication in &self.publications {
-            writeln!(div.div(), "{}", publication.to_html()).unwrap();
+            let mut card = root
+                .div()
+                .attr("class='card col-lg-auto col-6 col-mx-auto '");
+            let mut card_header = card.div().attr("class='card-header'");
+            writeln!(
+                card_header.div().attr("class='card-title h2 strong'"),
+                "{}",
+                publication.title
+            );
+            writeln!(
+                card_header.div().attr("class='card-subtitle h4 text-gray'"),
+                "{}",
+                publication.date
+            );
+            writeln!(
+                card.div().attr("class='card-body'"),
+                "{}",
+                publication.to_html()
+            )
+            .unwrap();
         }
-        // Finish
-        buf.finish()
     }
 }
 
@@ -205,7 +151,10 @@ impl Publication {
                             _ => return Err("Couldn't parse date from str."),
                         },
                         markdown: markdown.to_string(),
-                        tags: tags.split(",").map(|s| s.to_string().trim().to_string()).collect(),
+                        tags: tags
+                            .split(",")
+                            .map(|s| s.to_string().trim().to_string())
+                            .collect(),
                     });
                 } else {
                     return Err("Couldn't split at markdown.");
@@ -290,7 +239,7 @@ fn build() -> Result<(), Box<dyn Error>> {
         )
     }
 
-    let mut page = Page::new("Página de Teste".to_string());
+    let mut page = Page::new("Página de Teste".to_string(), CSS::Homemade);
 
     page.add_rule(Rule {
         condition: Condition::In,
@@ -306,7 +255,97 @@ fn build() -> Result<(), Box<dyn Error>> {
 
     let mut index_file = File::create("index.html")?;
 
-    write!(index_file, "{}", page.to_html())?;
+    let mut buf = Buffer::new();
+    writeln!(buf, "<!-- My website -->").unwrap();
+
+    // The Html5 trait provides various helper methods.  For instance, doctype()
+    // simply writes the <!DOCTYPE> header
+    buf.doctype();
+
+    // Most helper methods create child nodes.  You can set a node's attributes
+    // like so
+    let mut html = buf.html().attr("lang='en'");
+
+    let mut head = html.head();
+
+    // Meta is a "void element", meaning it doesn't need a closing tag.  This is
+    // handled correctly.
+    head.meta().attr("charset='utf-8'");
+
+    // For site responsiveness
+    head.meta()
+        .attr("name='utf-8' content='width=device-width,initial-scale=1.0'");
+
+    // Just like Buffer, nodes are also writable.  Set their contents by
+    // writing into them.
+    // Title
+    writeln!(head.title(), "Cláudio Gomes | {}", "TODO").unwrap();
+
+    // Description is the same as title.
+    head.meta()
+        .attr(format!("name='description' content='{}'", "TODO").as_str());
+    // Keywords are tags used in rules.
+    // TODO
+    // head.meta().attr(
+    //     format!(
+    //         "name='keywords', content='{}'",
+    //         self.rules
+    //             .iter()
+    //             .map(|r| match r.condition {
+    //                 Condition::In => "".to_string() + &r.tag + ",",
+    //                 Condition::NotIn => "not ".to_string() + &r.tag + ",",
+    //             })
+    //             .collect::<String>()
+    //             .trim_end_matches(",")
+    //     )
+    //     .as_str(),
+    // );
+
+    // Necessary stylesheets.
+    head.link()
+        .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'");
+    head.link()
+        .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'");
+    head.link()
+        .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'");
+    head.link()
+        .attr("rel='preconnect' href='https://fonts.googleapis.com'");
+    head.link()
+        .attr("rel='preconnect' href='https://fonts.gstatic.com' crossorigin");
+    head.link()
+        .attr("rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&family=Fredericka+the+Great&family=Klee+One&display=swap'");
+
+    head.link().attr(match page.css {
+        CSS::Homemade => "rel='stylesheet' href='css\\homemade.css'",
+        CSS::Science => "rel='stylesheet' href='css\\science.css'",
+    });
+
+    // Body
+    let mut body = html.body().attr("class='bg-gray'");
+
+    // Navbar TODO: link between pages
+    let mut header = body.header().attr("class='navbar'");
+
+    let mut div = header.div().attr("class='navbar-primary'");
+    writeln!(
+        div.a().attr("href='#' class='navbar-brand mr-10'"),
+        "Cláudio Gomes | {}",
+        "TODO"
+    )
+    .unwrap();
+    writeln!(
+        div.a().attr("href='#' class='btn btn-link selected'"),
+        "Home"
+    )
+    .unwrap();
+    writeln!(div.a().attr("href='#' class='btn btn-link'"), "About").unwrap();
+    writeln!(div.a().attr("href='#' class='btn btn-link'"), "Contact").unwrap();
+
+    let div = body.div().attr("class='container'");
+
+    page.add_to_node(div);
+
+    write!(index_file, "{}", buf.finish())?;
 
     Ok(())
 }
