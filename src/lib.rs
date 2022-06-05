@@ -10,7 +10,33 @@ use comrak::{markdown_to_html, ComrakOptions};
 
 use html_builder::*;
 
+use rand::seq::SliceRandom;
+use rand::thread_rng;
+
 const FOLDER_PUBLICATIONS: &str = "publications";
+
+const NUMBERS: [&str; 2] = [
+    // "zero",
+    "one",
+    "two",
+    // "three",
+    // "four",
+    // "five",
+    // "six",
+    // "seven",
+    // "eight",
+    // "nine",
+    // "ten",
+    // "eleven",
+    // "twelve",
+    // "thirteen",
+    // "fourteen",
+    // "fifteen",
+    // "sixteen",
+    // "seventeen",
+    // "eighteen",
+    // "nineteen",
+];
 
 enum Condition {
     In,
@@ -72,10 +98,14 @@ impl Page {
     }
 
     fn add_to_node(&self, mut root: html_builder::Node) {
+        let mut rng = thread_rng();
+        let mut container = root.div().attr("class='container grid-lg'");
         for publication in &self.publications {
-            let mut card = root
+            let mut column = container.div().attr("class='columns'");
+            let mut card_col = column.div().attr("class='column'");
+            let mut card = card_col
                 .div()
-                .attr("class='card col-lg-auto col-6 col-mx-auto '");
+                .attr(format!("class='card s-rounded' id='{}'", NUMBERS.choose(&mut rng).unwrap()).as_str());
             let mut card_header = card.div().attr("class='card-header'");
             writeln!(
                 card_header.div().attr("class='card-title h2 strong'"),

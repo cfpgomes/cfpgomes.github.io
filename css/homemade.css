@@ -12,3 +12,23 @@ h6,
 .card-subtitle {
     font-family: 'Fredericka the Great', cursive;
 }
+
+.column {
+    padding: 2rem;
+}
+
+#one {
+    border-top-left-radius: 255px 25px;
+    border-top-right-radius: 15px 225px;
+    border-bottom-right-radius: 225px 15px;
+    border-bottom-left-radius: 25px 355px;
+    border: solid 2px #555452;
+}
+
+#two {
+    border-top-left-radius: 25px 225px;
+    border-top-right-radius: 15px 225px;
+    border-bottom-right-radius: 15px 255px;
+    border-bottom-left-radius: 155px 10px;
+    border: solid 2px #555452;
+}
