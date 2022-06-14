@@ -1,7 +1,47 @@
-.card {
-    font-family: 'Fredericka the Great';
+* {
+    font-family: 'Atkinson Hyperlegible', sans-serif;
 }
 
-.card-body {
-    font-family: 'Atkinson Hyperlegible', sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.card-title,
+.card-subtitle {
+    font-family: 'Kdam Thmor Pro', sans-serif;
+}
+
+.text-gray {
+    color: gray !important;
+}
+
+.column {
+    padding: 2rem;
+}
+
+.card {
+    border-style: solid;
+    border-width: 0px;
+    border-radius: 8px;
+    border-color: gray;
+    backdrop-filter: blur(32px);
+    background-color: rgba(208, 232, 255, 0.8);
+    box-shadow: 0 15px 25px rgba(129, 124, 124, 0.2);
+}
+
+img {
+    border-style: solid;
+    border-width: 0px;
+    border-radius: 8px;
+    border-color: gray;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.gallery-background {
+    background-image: url("../img/carousel1.jpg");
+    background-position: center;
+    background-attachment: fixed;
 }

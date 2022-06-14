@@ -269,7 +269,7 @@ fn build() -> Result<(), Box<dyn Error>> {
         )
     }
 
-    let mut page = Page::new("Página de Teste".to_string(), CSS::Homemade);
+    let mut page = Page::new("Página de Teste".to_string(), CSS::Science);
 
     page.add_rule(Rule {
         condition: Condition::In,
@@ -343,7 +343,7 @@ fn build() -> Result<(), Box<dyn Error>> {
     head.link()
         .attr("rel='preconnect' href='https://fonts.gstatic.com' crossorigin");
     head.link()
-        .attr("rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&family=Fredericka+the+Great&family=Klee+One&display=swap'");
+        .attr("rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&family=Fredericka+the+Great&family=Kdam+Thmor+Pro&family=Klee+One&display=swap'");
 
     head.link().attr(match page.css {
         CSS::Homemade => "rel='stylesheet' href='css\\homemade.css'",
@@ -351,7 +351,7 @@ fn build() -> Result<(), Box<dyn Error>> {
     });
 
     // Body
-    let mut body = html.body().attr("class='bg-gray'");
+    let mut body = html.body().attr("class='gallery-background'");
 
     // Navbar TODO: link between pages
     let mut header = body.header().attr("class='navbar'");
