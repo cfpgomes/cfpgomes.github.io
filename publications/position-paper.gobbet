@@ -1,0 +1,10 @@
+🍖TITLE🍖
+Off-the-shelf Components for Quantum Programming and Testing
+🍖DATE🍖
+2020/10/13
+🍖MARKDOWN🍖
+In this position paper, we argue that readily available components are much needed as central contributions towards not only enlarging the community of quantum computer programmers, but also in order to increase their efficiency and effectiveness. We describe the work we intend to do towards providing such components, namely by developing and making available libraries of quantum algorithms and data structures, and libraries for testing quantum programs. We finally argue that Quantum Computer Programming is such an effervescent area that synchronization efforts and combined strategies within the community are demanded to shorten the time frame until quantum advantage is observed and can be explored in practice.
+
+[PDF](http://ceur-ws.org/Vol-2705/short2.pdf)
+🍖TAGS🍖
+paper,quantum

@@ -1,0 +1,10 @@
+🍖TITLE🍖
+An Empirical Study on the Use of Quantum Computing for Financial Portfolio Optimization
+🍖DATE🍖
+2022/06/14
+🍖MARKDOWN🍖
+Quantum Computing (QC) is regarded with a mix of amazement, excitement, and skepticism. While quantum computers have been shown to outperform classical ones in particular computational tasks, their effective applicability to general-purpose problems remains under-studied. We shed light on the practical use of QC to tackle a combinatorial optimization problem in Finance, the Portfolio Optimization Problem (POP). We present an in-depth empirical study on the influence that configurable parameters of both a state-of-the-art adiabatic quantum computer and POP itself can have on the overall quality of the solutions we obtain. Our results show that some of these parameters, such as chain strength and number of reads, have a significant statistical effect, while others, such as anneal schedule and embedding, do not. Our results also show that the quality of the solutions returned by a quantum computer, given a quadratic unconstrained binary optimization formulation of POP from the literature, is still far from the quality of the solutions produced by a classical computer using an exact algorithm. We believe the conclusions drawn from our study are valuable contributions to the utilization of adiabatic quantum computers in practice, not only in the context of POP but also for other application domains.
+
+[DOI](http://doi.org/10.1007/s42979-022-01215-9)
+🍖TAGS🍖
+paper,quantum

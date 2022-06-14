@@ -14,7 +14,7 @@ h6,
 }
 
 .text-gray {
-    color: gray !important;
+    color: #314070 !important;
 }
 
 .column {
@@ -22,12 +22,14 @@ h6,
 }
 
 .card {
+    color:#112050;
+    font-size: large;
     border-style: solid;
     border-width: 0px;
     border-radius: 8px;
     border-color: gray;
-    backdrop-filter: blur(32px);
-    background-color: rgba(208, 232, 255, 0.8);
+    backdrop-filter: blur(12px);
+    background-color: rgba(208, 232, 255, 0.58);
     box-shadow: 0 15px 25px rgba(129, 124, 124, 0.2);
 }
 
@@ -41,7 +43,23 @@ img {
 }
 
 .gallery-background {
-    background-image: url("../img/carousel1.jpg");
+    background-image: url("../img/carousel2.jpg");
     background-position: center;
     background-attachment: fixed;
+    background-size: cover;
+    -webkit-transition: background-image 0.8s ease-in-out;
+    transition: background-image 0.8s ease-in-out;
+
+}
+
+a {
+    color: #ff3366
+}
+
+a:hover {
+    color: #ffaaee
+}
+
+a:visited {
+    color: #ff6666
 }

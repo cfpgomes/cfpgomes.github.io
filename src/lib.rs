@@ -103,9 +103,13 @@ impl Page {
         for publication in &self.publications {
             let mut column = container.div().attr("class='columns'");
             let mut card_col = column.div().attr("class='column'");
-            let mut card = card_col
-                .div()
-                .attr(format!("class='card s-rounded' id='{}'", NUMBERS.choose(&mut rng).unwrap()).as_str());
+            let mut card = card_col.div().attr(
+                format!(
+                    "class='card s-rounded' id='{}'",
+                    NUMBERS.choose(&mut rng).unwrap()
+                )
+                .as_str(),
+            );
             let mut card_header = card.div().attr("class='card-header'");
             writeln!(
                 card_header.div().attr("class='card-title h2 strong'"),
@@ -273,8 +277,10 @@ fn build() -> Result<(), Box<dyn Error>> {
 
     page.add_rule(Rule {
         condition: Condition::In,
-        tag: "example".to_string(),
+        tag: "paper".to_string(),
     });
+
+    publications.sort_by_key(|p| p.date);
 
     for publication in publications {
         let title = publication.title.clone();
@@ -350,8 +356,22 @@ fn build() -> Result<(), Box<dyn Error>> {
         CSS::Science => "rel='stylesheet' href='css\\science.css'",
     });
 
+    let mut script = html.script();
+    write!(script, "\
+    var imagesArray = ['carousel1.jpg', 'carousel2.jpg', 'carousel3.jpg', 'carousel4.jpg', 'carousel5.jpg', 'carousel6.jpg', 'carousel7.jpg', 'carousel8.jpg'];
+
+    setInterval(changeBackground, 10000);
+
+    function changeBackground()
+    {{
+    document.getElementById('background-image-id').style.backgroundImage = 'url(\"./img/' + imagesArray[Math.floor(Math.random() * 8)] + '\")';
+    }}
+    ").unwrap();
+
     // Body
-    let mut body = html.body().attr("class='gallery-background'");
+    let mut body = html
+        .body()
+        .attr("class='gallery-background' id='background-image-id'");
 
     // Navbar TODO: link between pages
     let mut header = body.header().attr("class='navbar'");

@@ -1,0 +1,16 @@
+🍖TITLE🍖
+Portfolio Optimization in Financial Markets using Quantum Computing: An Experimental Study
+🍖DATE🍖
+2021/07/15
+🍖MARKDOWN🍖
+Quantum computing is bound to change the world as we know it. By exploring the properties of quantum theory for computational purposes, it is expected to substantially reduce the amount of problems that are nowadays considered computationally intractable. This means that quantum computers have the power of providing solutions for some of the problems of practical interest for which a classical computer cannot, at least in a timely manner. This is even more revolutionary and remarkable given the fact these problems range from multidisciplinary domains such as Chemistry, Medicine, and, most relevant in the context of this dissertation, Finance.
+
+In this work, we will focus on leveraging quantum computing to addressing a relevant and timely problem within the financial domain. We will target a combinatorial optimization problem, the portfolio optimization problem, which consists of selecting the best portfolio (combination of assets) among all possible portfolios, according to some objective function, whether to maximize return or minimize risk. Due to the high number of parameters, such as the expected return per asset and market conditions, this problem attains an exponential complexity and is an NP-hard problem, intractable in the context of classical computing.
+
+We designed and conducted an empirical study on the effect of parameters on solutions to the portfolio optimization problem given by a quantum computer. In particular, we use a quantum computer from D-Wave Systems, Inc. and vary the parameters related to not only the quantum computer, but also to the portfolio optimization problem itself. We believe that our findings are useful not only for those using adiabatic quantum computers in the context of portfolio optimization problem, and also in other application domains.
+
+Our findings suggest that the parameters do have an effect on the results, whether they are related to the portfolio optimization problem or to the quantum computer. Moreover, we found that some of the parameters have a great impact, such as the chain strength, which defines the strength associated to the couplings between qubits that represent a variable, and that other parameters have no statistically significant effect, such as the anneal schedule or embedding used.
+
+[URI](http://hdl.handle.net/10316/96124)
+🍖TAGS🍖
+paper,quantum
