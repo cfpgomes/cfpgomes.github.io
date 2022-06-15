@@ -102,7 +102,7 @@ impl Page {
         let mut container = root.div().attr("class='container grid-lg'");
         for publication in &self.publications {
             let mut column = container.div().attr("class='columns'");
-            let mut card_col = column.div().attr("class='column'");
+            let mut card_col = column.div().attr("class='column col-11'");
             let mut card = card_col.div().attr(
                 format!(
                     "class='card s-rounded' id='{}'",
@@ -125,8 +125,16 @@ impl Page {
                 card.div().attr("class='card-body'"),
                 "{}",
                 publication.to_html()
-            )
-            .unwrap();
+            );
+            let mut share_col = column.div().attr("class='column col-1'");
+            
+            let mut share_button = share_col.button().attr(format!("class='btn btn-action' data-sharer='twitter' data-title='I read \"{}\" and you should too!' data-hashtags='{}' data-url='https://cfpgomes.github.io/'",publication.title, publication.tags.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(",")).as_str());
+
+            share_button.i().attr("class='gg-twitter'");
+
+            let mut share_button = share_col.button().attr(format!("class='btn btn-action' data-sharer='reddit' data-title='I read \"{}\" and you should too!' data-url='https://cfpgomes.github.io/'",publication.title).as_str());
+
+            share_button.i().attr("class='gg-reddit'");
         }
     }
 }
@@ -350,11 +358,16 @@ fn build() -> Result<(), Box<dyn Error>> {
         .attr("rel='preconnect' href='https://fonts.gstatic.com' crossorigin");
     head.link()
         .attr("rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&family=Fredericka+the+Great&family=Kdam+Thmor+Pro&family=Klee+One&display=swap'");
+    head.link()
+        .attr("rel='stylesheet' href='https://css.gg/css?=twitter|reddit'");
 
     head.link().attr(match page.css {
         CSS::Homemade => "rel='stylesheet' href='css\\homemade.css'",
         CSS::Science => "rel='stylesheet' href='css\\science.css'",
     });
+
+    html.script()
+        .attr("src='https://cdn.jsdelivr.net/npm/sharer.js@latest/sharer.min.js'");
 
     let mut script = html.script();
     write!(script, "\

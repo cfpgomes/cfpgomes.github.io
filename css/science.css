@@ -10,26 +10,25 @@ h5,
 h6,
 .card-title,
 .card-subtitle {
+    color: #102070;
     font-family: 'Kdam Thmor Pro', sans-serif;
 }
 
 .text-gray {
-    color: #314070 !important;
+    color: #282842 !important;
 }
 
 .column {
-    padding: 2rem;
+    padding: 32px;
 }
 
 .card {
-    color:#112050;
+    color: #000000;
     font-size: large;
-    border-style: solid;
-    border-width: 0px;
+    border-style: none;
     border-radius: 8px;
-    border-color: gray;
     backdrop-filter: blur(12px);
-    background-color: rgba(208, 232, 255, 0.58);
+    background-color: rgba(228, 232, 255, 0.78);
     box-shadow: 0 15px 25px rgba(129, 124, 124, 0.2);
 }
 
@@ -43,7 +42,7 @@ img {
 }
 
 .gallery-background {
-    background-image: url("../img/carousel2.jpg");
+    background-image: url("../img/carousel1.jpg");
     background-position: center;
     background-attachment: fixed;
     background-size: cover;
@@ -53,13 +52,35 @@ img {
 }
 
 a {
-    color: #ff3366
+    border-radius: 8px;
+    padding: 8px;
+    background-color: #eaeaf0;
+    color: #900050
 }
 
 a:hover {
-    color: #ffaaee
+    background-color: #ffffff;
+    color: #b01041
 }
 
 a:visited {
-    color: #ff6666
+    color: #900050
+}
+
+button {
+    color: #282842 !important;
+    border-style: none !important;
+    border-radius: 8px !important;
+    backdrop-filter: blur(12px) !important;
+    background-color: rgba(228, 232, 255, 0.78) !important;
+    box-shadow: 0 15px 25px rgba(129, 124, 124, 0.2) !important;
+}
+
+button:hover {
+    color: #102070 !important;
+    background-color: rgba(228, 232, 255, 0.88) !important;
+}
+
+i {
+    margin: 0 auto;
 }
