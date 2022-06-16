@@ -101,8 +101,10 @@ impl Page {
         let mut rng = thread_rng();
         let mut container = root.div().attr("class='container grid-lg'");
         for publication in &self.publications {
-            let mut column = container.div().attr("class='columns'");
-            let mut card_col = column.div().attr("class='column col-11'");
+            let mut column = container.div().attr("class='columns col-gapless'");
+            let mut card_col = column
+                .div()
+                .attr("class='column col-xl-12 col-10' style='padding: 32px 0 0 0'");
             let mut card = card_col.div().attr(
                 format!(
                     "class='card s-rounded' id='{}'",
@@ -126,15 +128,29 @@ impl Page {
                 "{}",
                 publication.to_html()
             );
-            let mut share_col = column.div().attr("class='column col-1'");
-            
-            let mut share_button = share_col.button().attr(format!("class='btn btn-action' data-sharer='twitter' data-title='I read \"{}\" and you should too!' data-hashtags='{}' data-url='https://cfpgomes.github.io/'",publication.title, publication.tags.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(",")).as_str());
+            column.div().attr("class='column hide-xl col-1'");
 
-            share_button.i().attr("class='gg-twitter'");
+            let mut share_col = column
+                .div()
+                .attr("class='column col-xl-12 col-1' style='padding: 16px 0 16px 0'");
+            let mut share_cols = share_col.div().attr("class='columns col-gapless'");
 
-            let mut share_button = share_col.button().attr(format!("class='btn btn-action' data-sharer='reddit' data-title='I read \"{}\" and you should too!' data-url='https://cfpgomes.github.io/'",publication.title).as_str());
+            let mut twitter_col = share_cols
+                .div()
+                .attr("class='column col-xl-2 col-12' style='padding: 16px 0'");
+            let mut twitter_button = twitter_col.button().attr(format!("class='btn btn-action' data-sharer='twitter' data-title='I read \"{}\" and you should too!' data-hashtags='{}' data-url='https://cfpgomes.github.io/'",publication.title, publication.tags.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(",")).as_str());
 
-            share_button.i().attr("class='gg-reddit'");
+            twitter_button
+                .i()
+                .attr("class='fa-brands fa-twitter'");
+
+            let mut reddit_col = share_cols
+                .div()
+                .attr("class='column col-xl-2 col-12' style='padding: 16px 0'");
+
+            let mut reddit_button = reddit_col.button().attr(format!("class='btn btn-action' data-sharer='reddit' data-title='I read \"{}\" and you should too!' data-url='https://cfpgomes.github.io/'",publication.title).as_str());
+
+            reddit_button.i().attr("class='fa-brands fa-reddit-alien'");
         }
     }
 }
@@ -318,7 +334,7 @@ fn build() -> Result<(), Box<dyn Error>> {
 
     // For site responsiveness
     head.meta()
-        .attr("name='utf-8' content='width=device-width,initial-scale=1.0'");
+        .attr("name='viewport' content='width=device-width,initial-scale=1.0'");
 
     // Just like Buffer, nodes are also writable.  Set their contents by
     // writing into them.
@@ -358,8 +374,6 @@ fn build() -> Result<(), Box<dyn Error>> {
         .attr("rel='preconnect' href='https://fonts.gstatic.com' crossorigin");
     head.link()
         .attr("rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&family=Fredericka+the+Great&family=Kdam+Thmor+Pro&family=Klee+One&display=swap'");
-    head.link()
-        .attr("rel='stylesheet' href='https://css.gg/css?=twitter|reddit'");
 
     head.link().attr(match page.css {
         CSS::Homemade => "rel='stylesheet' href='css\\homemade.css'",
@@ -368,6 +382,9 @@ fn build() -> Result<(), Box<dyn Error>> {
 
     html.script()
         .attr("src='https://cdn.jsdelivr.net/npm/sharer.js@latest/sharer.min.js'");
+
+    html.script()
+        .attr("src='https://kit.fontawesome.com/6a394e2d40.js' crossorigin='anonymous'");
 
     let mut script = html.script();
     write!(script, "\
