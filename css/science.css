@@ -42,7 +42,7 @@ img {
 }
 
 .gallery-background {
-    background-image: url("../img/carousel1.jpg");
+    background-image: url("../compressed-img/carousel1.jpg");
     background-position: center;
     background-attachment: fixed;
     background-size: cover;
@@ -83,4 +83,14 @@ button:hover {
 
 i {
     margin: 0 auto;
+}
+
+.chip {
+    background-color: #eaeaf0 !important;
+    border-radius: 8px !important;
+}
+
+.tooltip::after {
+    border-radius: 8px !important;
+    background-color: #282842 !important;
 }

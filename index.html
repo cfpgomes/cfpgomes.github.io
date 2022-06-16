@@ -27,7 +27,7 @@ var imagesArray = ['carousel1.jpg', 'carousel2.jpg', 'carousel3.jpg', 'carousel4
 
     function changeBackground()
     {
-    document.getElementById('background-image-id').style.backgroundImage = 'url("./img/' + imagesArray[Math.floor(Math.random() * 8)] + '")';
+    document.getElementById('background-image-id').style.backgroundImage = 'url("./compressed-img/' + imagesArray[Math.floor(Math.random() * 8)] + '")';
     }
      </script>
  <body class='gallery-background' id='background-image-id'>
@@ -51,7 +51,7 @@ Contact
    <div class='container grid-lg'>
     <div class='columns col-gapless'>
      <div class='column col-xl-12 col-10' style='padding: 32px 0 0 0'>
-      <div class='card s-rounded' id='two'>
+      <div class='card s-rounded' id='one'>
        <div class='card-header'>
         <div class='card-title h2 strong'>
 Off-the-shelf Components for Quantum Programming and Testing
@@ -65,6 +65,20 @@ Off-the-shelf Components for Quantum Programming and Testing
 <p><a href="http://ceur-ws.org/Vol-2705/short2.pdf">PDF</a></p>
 
        </div>
+       <div class='card-footer'>
+        <span class='chip'>
+#paper
+        </span>
+        <span class='chip'>
+#QC
+        </span>
+        <span class='chip'>
+#SoftwareEngineering
+        </span>
+        <span class='chip'>
+#ReusableComponents
+        </span>
+       </div>
       </div>
      </div>
      <div class='column hide-xl col-1'>
@@ -72,13 +86,13 @@ Off-the-shelf Components for Quantum Programming and Testing
      <div class='column col-xl-12 col-1' style='padding: 16px 0 16px 0'>
       <div class='columns col-gapless'>
        <div class='column col-xl-2 col-12' style='padding: 16px 0'>
-        <button class='btn btn-action' data-sharer='twitter' data-title='I read "Off-the-shelf Components for Quantum Programming and Testing" and you should too!' data-hashtags='paper,quantum' data-url='https://cfpgomes.github.io/'>
+        <button class='btn btn-action tooltip tooltip-right' data-tooltip='Share on Twitter!' data-sharer='twitter' data-title='I read "Off-the-shelf Components for Quantum Programming and Testing" and you should too!' data-hashtags='paper,QC,SoftwareEngineering,ReusableComponents' data-url='https://cfpgomes.github.io/'>
          <i class='fa-brands fa-twitter'>
          </i>
         </button>
        </div>
        <div class='column col-xl-2 col-12' style='padding: 16px 0'>
-        <button class='btn btn-action' data-sharer='reddit' data-title='I read "Off-the-shelf Components for Quantum Programming and Testing" and you should too!' data-url='https://cfpgomes.github.io/'>
+        <button class='btn btn-action tooltip tooltip-right' data-tooltip='Share on Reddit!'  data-sharer='reddit' data-title='I read "Off-the-shelf Components for Quantum Programming and Testing" and you should too!' data-url='https://cfpgomes.github.io/'>
          <i class='fa-brands fa-reddit-alien'>
          </i>
         </button>
@@ -88,7 +102,7 @@ Off-the-shelf Components for Quantum Programming and Testing
     </div>
     <div class='columns col-gapless'>
      <div class='column col-xl-12 col-10' style='padding: 32px 0 0 0'>
-      <div class='card s-rounded' id='two'>
+      <div class='card s-rounded' id='one'>
        <div class='card-header'>
         <div class='card-title h2 strong'>
 Portfolio Optimization in Financial Markets using Quantum Computing: An Experimental Study
@@ -105,6 +119,23 @@ Portfolio Optimization in Financial Markets using Quantum Computing: An Experime
 <p><a href="http://hdl.handle.net/10316/96124">URI</a></p>
 
        </div>
+       <div class='card-footer'>
+        <span class='chip'>
+#thesis
+        </span>
+        <span class='chip'>
+#QC
+        </span>
+        <span class='chip'>
+#POP
+        </span>
+        <span class='chip'>
+#QUBO
+        </span>
+        <span class='chip'>
+#paper
+        </span>
+       </div>
       </div>
      </div>
      <div class='column hide-xl col-1'>
@@ -112,13 +143,13 @@ Portfolio Optimization in Financial Markets using Quantum Computing: An Experime
      <div class='column col-xl-12 col-1' style='padding: 16px 0 16px 0'>
       <div class='columns col-gapless'>
        <div class='column col-xl-2 col-12' style='padding: 16px 0'>
-        <button class='btn btn-action' data-sharer='twitter' data-title='I read "Portfolio Optimization in Financial Markets using Quantum Computing: An Experimental Study" and you should too!' data-hashtags='paper,quantum' data-url='https://cfpgomes.github.io/'>
+        <button class='btn btn-action tooltip tooltip-right' data-tooltip='Share on Twitter!' data-sharer='twitter' data-title='I read "Portfolio Optimization in Financial Markets using Quantum Computing: An Experimental Study" and you should too!' data-hashtags='thesis,QC,POP,QUBO,paper' data-url='https://cfpgomes.github.io/'>
          <i class='fa-brands fa-twitter'>
          </i>
         </button>
        </div>
        <div class='column col-xl-2 col-12' style='padding: 16px 0'>
-        <button class='btn btn-action' data-sharer='reddit' data-title='I read "Portfolio Optimization in Financial Markets using Quantum Computing: An Experimental Study" and you should too!' data-url='https://cfpgomes.github.io/'>
+        <button class='btn btn-action tooltip tooltip-right' data-tooltip='Share on Reddit!'  data-sharer='reddit' data-title='I read "Portfolio Optimization in Financial Markets using Quantum Computing: An Experimental Study" and you should too!' data-url='https://cfpgomes.github.io/'>
          <i class='fa-brands fa-reddit-alien'>
          </i>
         </button>
@@ -142,6 +173,20 @@ An Empirical Study on the Use of Quantum Computing for Financial Portfolio Optim
 <p><a href="http://doi.org/10.1007/s42979-022-01215-9">DOI</a></p>
 
        </div>
+       <div class='card-footer'>
+        <span class='chip'>
+#paper
+        </span>
+        <span class='chip'>
+#QC
+        </span>
+        <span class='chip'>
+#POP
+        </span>
+        <span class='chip'>
+#QUBO
+        </span>
+       </div>
       </div>
      </div>
      <div class='column hide-xl col-1'>
@@ -149,13 +194,13 @@ An Empirical Study on the Use of Quantum Computing for Financial Portfolio Optim
      <div class='column col-xl-12 col-1' style='padding: 16px 0 16px 0'>
       <div class='columns col-gapless'>
        <div class='column col-xl-2 col-12' style='padding: 16px 0'>
-        <button class='btn btn-action' data-sharer='twitter' data-title='I read "An Empirical Study on the Use of Quantum Computing for Financial Portfolio Optimization" and you should too!' data-hashtags='paper,quantum' data-url='https://cfpgomes.github.io/'>
+        <button class='btn btn-action tooltip tooltip-right' data-tooltip='Share on Twitter!' data-sharer='twitter' data-title='I read "An Empirical Study on the Use of Quantum Computing for Financial Portfolio Optimization" and you should too!' data-hashtags='paper,QC,POP,QUBO' data-url='https://cfpgomes.github.io/'>
          <i class='fa-brands fa-twitter'>
          </i>
         </button>
        </div>
        <div class='column col-xl-2 col-12' style='padding: 16px 0'>
-        <button class='btn btn-action' data-sharer='reddit' data-title='I read "An Empirical Study on the Use of Quantum Computing for Financial Portfolio Optimization" and you should too!' data-url='https://cfpgomes.github.io/'>
+        <button class='btn btn-action tooltip tooltip-right' data-tooltip='Share on Reddit!'  data-sharer='reddit' data-title='I read "An Empirical Study on the Use of Quantum Computing for Financial Portfolio Optimization" and you should too!' data-url='https://cfpgomes.github.io/'>
          <i class='fa-brands fa-reddit-alien'>
          </i>
         </button>

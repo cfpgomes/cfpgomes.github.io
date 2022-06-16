@@ -1,8 +1,13 @@
 use std::error::Error;
 use std::fmt::Write;
-use std::fs::{File, ReadDir};
+use std::fs::File;
 use std::io::Read;
 use std::io::Write as OtherWrite;
+use std::path::PathBuf;
+use std::sync::mpsc;
+
+use image_compressor::Factor;
+use image_compressor::FolderCompressor;
 
 use chrono::NaiveDate;
 
@@ -118,16 +123,22 @@ impl Page {
                 "{}",
                 publication.title
             );
-            writeln!(
-                card_header.div().attr("class='card-subtitle h4 text-gray'"),
-                "{}",
-                publication.date
-            );
+
+            let mut sub_header = card_header.div().attr("class='card-subtitle h4 text-gray'");
+            writeln!(sub_header, "{}", publication.date);
+
             writeln!(
                 card.div().attr("class='card-body'"),
                 "{}",
                 publication.to_html()
             );
+
+            let mut card_footer = card.div().attr("class='card-footer'");
+
+            for tag in publication.tags.iter() {
+                writeln!(card_footer.span().attr("class='chip'"), "#{}", tag);
+            }
+
             column.div().attr("class='column hide-xl col-1'");
 
             let mut share_col = column
@@ -138,17 +149,15 @@ impl Page {
             let mut twitter_col = share_cols
                 .div()
                 .attr("class='column col-xl-2 col-12' style='padding: 16px 0'");
-            let mut twitter_button = twitter_col.button().attr(format!("class='btn btn-action' data-sharer='twitter' data-title='I read \"{}\" and you should too!' data-hashtags='{}' data-url='https://cfpgomes.github.io/'",publication.title, publication.tags.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(",")).as_str());
+            let mut twitter_button = twitter_col.button().attr(format!("class='btn btn-action tooltip tooltip-right' data-tooltip='Share on Twitter!' data-sharer='twitter' data-title='I read \"{}\" and you should too!' data-hashtags='{}' data-url='https://cfpgomes.github.io/'",publication.title, publication.tags.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(",")).as_str());
 
-            twitter_button
-                .i()
-                .attr("class='fa-brands fa-twitter'");
+            twitter_button.i().attr("class='fa-brands fa-twitter'");
 
             let mut reddit_col = share_cols
                 .div()
                 .attr("class='column col-xl-2 col-12' style='padding: 16px 0'");
 
-            let mut reddit_button = reddit_col.button().attr(format!("class='btn btn-action' data-sharer='reddit' data-title='I read \"{}\" and you should too!' data-url='https://cfpgomes.github.io/'",publication.title).as_str());
+            let mut reddit_button = reddit_col.button().attr(format!("class='btn btn-action tooltip tooltip-right' data-tooltip='Share on Reddit!'  data-sharer='reddit' data-title='I read \"{}\" and you should too!' data-url='https://cfpgomes.github.io/'",publication.title).as_str());
 
             reddit_button.i().attr("class='fa-brands fa-reddit-alien'");
         }
@@ -280,6 +289,22 @@ fn modify() -> Result<(), Box<dyn Error>> {
 }
 
 fn build() -> Result<(), Box<dyn Error>> {
+    // Compress images in `img` folder for web
+    let origin = PathBuf::from("img"); // original directory path
+    let dest = PathBuf::from("compressed-img"); // destination directory path
+    let thread_count = 4; // number of threads
+    let (tx, _tr) = mpsc::channel(); // Sender and Receiver. for more info, check mpsc and message passing.
+
+    let mut comp = FolderCompressor::new(origin, dest);
+    comp.set_cal_func(|_width, _height, _file_size| return Factor::new(69., 1.0));
+    comp.set_thread_count(thread_count);
+    comp.set_sender(tx);
+
+    match comp.compress() {
+        Ok(_) => {}
+        Err(e) => println!("Cannot compress the folder!: {}", e),
+    }
+
     // Get all publications
     let mut publications: Vec<Publication> = vec![];
 
@@ -394,7 +419,7 @@ fn build() -> Result<(), Box<dyn Error>> {
 
     function changeBackground()
     {{
-    document.getElementById('background-image-id').style.backgroundImage = 'url(\"./img/' + imagesArray[Math.floor(Math.random() * 8)] + '\")';
+    document.getElementById('background-image-id').style.backgroundImage = 'url(\"./compressed-img/' + imagesArray[Math.floor(Math.random() * 8)] + '\")';
     }}
     ").unwrap();
 
