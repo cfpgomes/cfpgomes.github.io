@@ -21,16 +21,28 @@ Cláudio Gomes | TODO
  <script src='https://kit.fontawesome.com/6a394e2d40.js' crossorigin='anonymous'>
  </script>
  <script>
-var imagesArray = ['carousel1.jpg', 'carousel2.jpg', 'carousel3.jpg', 'carousel4.jpg', 'carousel5.jpg', 'carousel6.jpg', 'carousel7.jpg', 'carousel8.jpg'];
-
-    setInterval(changeBackground, 10000);
-
-    function changeBackground()
+function onLoad()
     {
-    document.getElementById('background-image-id').style.backgroundImage = 'url("./compressed-img/' + imagesArray[Math.floor(Math.random() * 8)] + '")';
+        preload_image_object = new Image();
+        var imagesArray = ['carousel1.jpg', 'carousel2.jpg', 'carousel3.jpg', 'carousel4.jpg', 'carousel5.jpg', 'carousel6.jpg', 'carousel7.jpg', 'carousel8.jpg'];
+    
+        //Preload images for faster page response
+        for (var i=0; i < imagesArray.length; i++) {
+            preload_image_object.src = imagesArray[i];
+            preload_image_object.onload = console.log(i);
+        };
+
+        setInterval(changeBackground, 10000);
+
+        function changeBackground()
+        {
+            document.getElementById('background-image-id').style.backgroundImage = 'url("./compressed-img/' + imagesArray[Math.floor(Math.random() * 8)] + '")';
+        }
     }
      </script>
- <body class='gallery-background' id='background-image-id'>
+ <body class='gallery-background' id='background-image-id' onload='onLoad()'>
+  <div class='special-shadow-gradient'>
+  </div>
   <header class='navbar'>
    <div class='navbar-primary'>
     <a href='#' class='navbar-brand mr-10'>
@@ -51,7 +63,7 @@ Contact
    <div class='container grid-lg'>
     <div class='columns col-gapless'>
      <div class='column col-xl-12 col-10' style='padding: 32px 0 0 0'>
-      <div class='card s-rounded' id='one'>
+      <div class='card s-rounded' id='two'>
        <div class='card-header'>
         <div class='card-title h2 strong'>
 Off-the-shelf Components for Quantum Programming and Testing
@@ -102,7 +114,7 @@ Off-the-shelf Components for Quantum Programming and Testing
     </div>
     <div class='columns col-gapless'>
      <div class='column col-xl-12 col-10' style='padding: 32px 0 0 0'>
-      <div class='card s-rounded' id='one'>
+      <div class='card s-rounded' id='two'>
        <div class='card-header'>
         <div class='card-title h2 strong'>
 Portfolio Optimization in Financial Markets using Quantum Computing: An Experimental Study

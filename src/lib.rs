@@ -413,20 +413,33 @@ fn build() -> Result<(), Box<dyn Error>> {
 
     let mut script = html.script();
     write!(script, "\
-    var imagesArray = ['carousel1.jpg', 'carousel2.jpg', 'carousel3.jpg', 'carousel4.jpg', 'carousel5.jpg', 'carousel6.jpg', 'carousel7.jpg', 'carousel8.jpg'];
-
-    setInterval(changeBackground, 10000);
-
-    function changeBackground()
+    function onLoad()
     {{
-    document.getElementById('background-image-id').style.backgroundImage = 'url(\"./compressed-img/' + imagesArray[Math.floor(Math.random() * 8)] + '\")';
+        preload_image_object = new Image();
+        var imagesArray = ['carousel1.jpg', 'carousel2.jpg', 'carousel3.jpg', 'carousel4.jpg', 'carousel5.jpg', 'carousel6.jpg', 'carousel7.jpg', 'carousel8.jpg'];
+    
+        //Preload images for faster page response
+        for (var i=0; i < imagesArray.length; i++) {{
+            preload_image_object.src = imagesArray[i];
+            preload_image_object.onload = console.log(i);
+        }};
+
+        setInterval(changeBackground, 10000);
+
+        function changeBackground()
+        {{
+            document.getElementById('background-image-id').style.backgroundImage = 'url(\"./compressed-img/' + imagesArray[Math.floor(Math.random() * 8)] + '\")';
+        }}
     }}
     ").unwrap();
 
     // Body
     let mut body = html
         .body()
-        .attr("class='gallery-background' id='background-image-id'");
+        .attr("class='gallery-background' id='background-image-id' onload='onLoad()'");
+    
+    // Container to apply shadow
+    let shadow_gradient = body.div().attr("class='special-shadow-gradient'");
 
     // Navbar TODO: link between pages
     let mut header = body.header().attr("class='navbar'");
