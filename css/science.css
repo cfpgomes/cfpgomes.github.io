@@ -45,7 +45,7 @@ img {
     background-position: center;
     background-attachment: fixed;
     background-size: cover;
-    background-image: url("../compressed-img/carousel1.jpg");
+    background-image: url("../compressed-img/blank.jpg");
     background-color: #000000ff;
     -webkit-transition: background-image 0.8s ease-in-out;
     transition: background-image 0.8s ease-in-out;

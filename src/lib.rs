@@ -290,6 +290,7 @@ fn modify() -> Result<(), Box<dyn Error>> {
 
 fn build() -> Result<(), Box<dyn Error>> {
     // Compress images in `img` folder for web
+    println!("Compression of images started!");
     let origin = PathBuf::from("img"); // original directory path
     let dest = PathBuf::from("compressed-img"); // destination directory path
     let thread_count = 4; // number of threads
@@ -304,6 +305,8 @@ fn build() -> Result<(), Box<dyn Error>> {
         Ok(_) => {}
         Err(e) => println!("Cannot compress the folder!: {}", e),
     }
+
+    println!("Compression of images finished!");
 
     // Get all publications
     let mut publications: Vec<Publication> = vec![];
@@ -416,20 +419,15 @@ fn build() -> Result<(), Box<dyn Error>> {
     function onLoad()
     {{
         preload_image_object = new Image();
-        var imagesArray = ['carousel1.jpg', 'carousel2.jpg', 'carousel3.jpg', 'carousel4.jpg', 'carousel5.jpg', 'carousel6.jpg', 'carousel7.jpg', 'carousel8.jpg'];
+        var imagesArray = ['carousel1.jpg', 'carousel2.jpg', 'carousel3.jpg', 'carousel4.jpg', 'carousel5.jpg', 'carousel6.jpg', 'carousel7.jpg', 'carousel8.jpg', 'carousel9.jpg', 'carousel10.jpg'];
     
         //Preload images for faster page response
         for (var i=0; i < imagesArray.length; i++) {{
             preload_image_object.src = imagesArray[i];
             preload_image_object.onload = console.log(i);
         }};
-
-        setInterval(changeBackground, 10000);
-
-        function changeBackground()
-        {{
-            document.getElementById('background-image-id').style.backgroundImage = 'url(\"./compressed-img/' + imagesArray[Math.floor(Math.random() * 8)] + '\")';
-        }}
+        
+        document.getElementById('background-image-id').style.backgroundImage = 'url(\"./compressed-img/' + imagesArray[Math.floor(Math.random() * 10)] + '\")';
     }}
     ").unwrap();
 
@@ -437,7 +435,6 @@ fn build() -> Result<(), Box<dyn Error>> {
     let mut body = html
         .body()
         .attr("class='gallery-background' id='background-image-id' onload='onLoad()'");
-    
     // Container to apply shadow
     let shadow_gradient = body.div().attr("class='special-shadow-gradient'");
 
@@ -456,7 +453,7 @@ fn build() -> Result<(), Box<dyn Error>> {
         "Home"
     )
     .unwrap();
-    writeln!(div.a().attr("href='#' class='btn btn-link'"), "About").unwrap();
+    writeln!(div.a().attr("href='#' class='btn btn-link'"), "Research").unwrap();
     writeln!(div.a().attr("href='#' class='btn btn-link'"), "Contact").unwrap();
 
     let div = body.div().attr("class='container'");
