@@ -1,5 +1,6 @@
 use std::error::Error;
 use std::fmt::Write;
+use std::fs;
 use std::fs::File;
 use std::io::Read;
 use std::io::Write as OtherWrite;
@@ -8,6 +9,10 @@ use std::sync::mpsc;
 
 use image_compressor::Factor;
 use image_compressor::FolderCompressor;
+
+use image::io::Reader as ImageReader;
+use image::{GenericImage, GenericImageView, Pixel, Rgba, RgbaImage};
+use std::io::Cursor;
 
 use chrono::NaiveDate;
 
@@ -43,28 +48,65 @@ const NUMBERS: [&str; 2] = [
     // "nineteen",
 ];
 
-enum Condition {
-    In,
-    NotIn,
-}
+fn apply_white_overlay_to_images(from_dest_dir: &str, to_dest_dir: &str) {
+    let dir_entries = fs::read_dir(from_dest_dir).unwrap();
+    fs::create_dir_all(to_dest_dir).unwrap();
 
-struct Rule {
-    condition: Condition,
-    tag: String,
-}
+    for dir_entry in dir_entries {
+        let mut img = ImageReader::open(dir_entry.as_ref().unwrap().path())
+            .unwrap()
+            .decode()
+            .unwrap()
+            .to_rgba8();
 
-impl Rule {
-    fn new(condition: Condition, tag: String) -> Self {
-        Self { condition, tag }
-    }
-
-    fn check(&self, publication: &Publication) -> bool {
-        println!("{:?}", publication.tags);
-        match self.condition {
-            Condition::In => publication.tags.iter().any(|t| t == &self.tag),
-            Condition::NotIn => publication.tags.iter().all(|t| t != &self.tag),
+        for px in img.pixels_mut() {
+            px.blend(Rgba::from_slice(&[255, 255, 255, 229]));
         }
+
+        println!(
+            "{}/{}",
+            to_dest_dir,
+            dir_entry
+                .as_ref()
+                .unwrap()
+                .file_name()
+                .into_string()
+                .unwrap(),
+        );
+
+        img.save(format!(
+            "{}/{}",
+            to_dest_dir,
+            dir_entry
+                .as_ref()
+                .unwrap()
+                .file_name()
+                .into_string()
+                .unwrap(),
+        ))
+        .unwrap();
     }
+}
+
+fn compress_images(from_dest_dir: &str, to_dest_dir: &str) {
+    // Compress images in `img` folder for web
+    println!("Compression of images started!");
+    let origin = PathBuf::from(from_dest_dir); // original directory path
+    let dest = PathBuf::from(to_dest_dir); // destination directory path
+    let thread_count = 4; // number of threads
+    let (tx, _tr) = mpsc::channel(); // Sender and Receiver. for more info, check mpsc and message passing.
+
+    let mut comp = FolderCompressor::new(origin, dest);
+    comp.set_cal_func(|_width, _height, _file_size| return Factor::new(69., 1.0));
+    comp.set_thread_count(thread_count);
+    comp.set_sender(tx);
+
+    match comp.compress() {
+        Ok(_) => {}
+        Err(e) => println!("Cannot compress the folder!: {}", e),
+    }
+
+    println!("Compression of images finished!");
 }
 
 enum CSS {
@@ -74,93 +116,149 @@ enum CSS {
 
 struct Page {
     title: String,
-    rules: Vec<Rule>,
-    publications: Vec<Publication>,
     css: CSS,
+    buf: Buffer,
 }
 
 impl Page {
-    fn new(title: String, css: CSS) -> Self {
-        Self {
-            title: title,
-            rules: vec![],
-            publications: vec![],
+    fn new(title: &str, css: CSS) -> Self {
+        let mut page = Self {
+            title: title.to_string(),
             css: css,
-        }
-    }
-
-    fn add_rule(&mut self, rule: Rule) {
-        self.rules.push(rule);
-    }
-
-    fn add_publication(&mut self, publication: Publication) -> bool {
-        match self.rules.iter().all(|r| r.check(&publication)) {
-            true => self.publications.push(publication),
-            false => return false,
+            buf: Buffer::new(),
         };
 
-        true
+        // Header content
+        writeln!(page.buf, "<!-- My website -->").unwrap();
+
+        // The Html5 trait provides various helper methods.  For instance, doctype()
+        // simply writes the <!DOCTYPE> header
+        page.buf.doctype();
+
+        // Most helper methods create child nodes.  You can set a node's attributes
+        // like so
+        let mut html = page.buf.html().attr("lang='en'");
+
+        let mut head = html.head();
+
+        // Meta is a "void element", meaning it doesn't need a closing tag.  This is
+        // handled correctly.
+        head.meta().attr("charset='utf-8'");
+
+        // For site responsiveness
+        head.meta()
+            .attr("name='viewport' content='width=device-width,initial-scale=1.0'");
+
+        // Just like Buffer, nodes are also writable.  Set their contents by
+        // writing into them.
+        // Title
+        writeln!(head.title(), "Cláudio Gomes | {}", title).unwrap();
+
+        // Description is the same as title.
+        head.meta()
+            .attr(format!("name='description' content='{}'", title).as_str());
+
+        // Necessary stylesheets.
+        head.link()
+            .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'");
+        head.link()
+            .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'");
+        head.link()
+            .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'");
+        head.link()
+            .attr("rel='preconnect' href='https://fonts.googleapis.com'");
+        head.link()
+            .attr("rel='preconnect' href='https://fonts.gstatic.com' crossorigin");
+        head.link()
+        .attr("rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&family=Fredericka+the+Great&family=Kdam+Thmor+Pro&family=Klee+One&display=swap'");
+
+        head.link().attr(match page.css {
+            CSS::Homemade => "rel='stylesheet' href='css\\homemade.css'",
+            CSS::Science => "rel='stylesheet' href='css\\science.css'",
+        });
+
+        html.script()
+            .attr("src='https://cdn.jsdelivr.net/npm/sharer.js@latest/sharer.min.js'");
+
+        html.script()
+            .attr("src='https://kit.fontawesome.com/6a394e2d40.js' crossorigin='anonymous'");
+
+        let mut script = html.script();
+        write!(script, "\
+        function onLoad()
+        {{
+            preload_image_object = new Image();
+            var imagesArray = ['carousel1.jpg', 'carousel2.jpg', 'carousel3.jpg', 'carousel4.jpg', 'carousel5.jpg', 'carousel6.jpg', 'carousel7.jpg', 'carousel8.jpg', 'carousel9.jpg', 'carousel10.jpg'];
+        
+            //Preload images for faster page response
+            for (var i=0; i < imagesArray.length; i++) {{
+                preload_image_object.src = imagesArray[i];
+                preload_image_object.onload = console.log(i);
+            }};
+            
+            document.getElementById('background-image-id').style.backgroundImage = 'url(\"./compressed-img/' + imagesArray[Math.floor(Math.random() * 10)] + '\")';
+        }}
+        ").unwrap();
+
+        // Body
+        let mut body = html
+            .body()
+            .attr("class='gallery-background' id='background-image-id' onload='onLoad()'");
+        // Container to apply shadow
+        let shadow_gradient = body.div().attr("class='special-shadow-gradient'");
+
+        page
     }
 
-    fn add_to_node(&self, mut root: html_builder::Node) {
-        let mut rng = thread_rng();
-        let mut container = root.div().attr("class='container grid-lg'");
-        for publication in &self.publications {
-            let mut column = container.div().attr("class='columns col-gapless'");
-            let mut card_col = column
-                .div()
-                .attr("class='column col-xl-12 col-10' style='padding: 32px 0 0 0'");
-            let mut card = card_col.div().attr(
-                format!(
-                    "class='card s-rounded' id='{}'",
-                    NUMBERS.choose(&mut rng).unwrap()
-                )
-                .as_str(),
-            );
-            let mut card_header = card.div().attr("class='card-header'");
-            writeln!(
-                card_header.div().attr("class='card-title h2 strong'"),
-                "{}",
-                publication.title
-            );
+    fn add_top_bar(
+        &mut self,
+        path_img: &str,
+        page_a: &str,
+        page_b: &str,
+        page_c: &str,
+        page_d: &str,
+        active_page: Option<&str>,
+    ) {
+        let mut header = self.buf.header().attr("class='navbar'");
+        let mut left_half = header.section().attr("class='navbar-section'");
 
-            let mut sub_header = card_header.div().attr("class='card-subtitle h4 text-gray'");
-            writeln!(sub_header, "{}", publication.date);
+        write!(
+            left_half
+                .a()
+                .attr(format!("href='{}' class='btn btn-link'", "TODO").as_ref()),
+            "{}",
+            page_a
+        );
+        write!(
+            left_half
+                .a()
+                .attr(format!("href='{}' class='btn btn-link'", "TODO").as_ref()),
+            "{}",
+            page_b
+        );
+        let mut center_image = header.section().attr("class='navbar-center'");
+        center_image.img().attr(format!("src='{}' width='100'", path_img).as_ref());
 
-            writeln!(
-                card.div().attr("class='card-body'"),
-                "{}",
-                publication.to_html()
-            );
+        let mut right_half = header.section().attr("class='navbar-section'");
+        write!(
+            right_half
+                .a()
+                .attr(format!("href='{}' class='btn btn-link'", "TODO").as_ref()),
+            "{}",
+            page_c
+        );
+        write!(
+            right_half
+                .a()
+                .attr(format!("href='{}' class='btn btn-link'", "TODO").as_ref()),
+            "{}",
+            page_d
+        );
+    }
 
-            let mut card_footer = card.div().attr("class='card-footer'");
-
-            for tag in publication.tags.iter() {
-                writeln!(card_footer.span().attr("class='chip'"), "#{}", tag);
-            }
-
-            column.div().attr("class='column hide-xl col-1'");
-
-            let mut share_col = column
-                .div()
-                .attr("class='column col-xl-12 col-1' style='padding: 16px 0 16px 0'");
-            let mut share_cols = share_col.div().attr("class='columns col-gapless'");
-
-            let mut twitter_col = share_cols
-                .div()
-                .attr("class='column col-xl-2 col-12' style='padding: 16px 0'");
-            let mut twitter_button = twitter_col.button().attr(format!("class='btn btn-action tooltip tooltip-right' data-tooltip='Share on Twitter!' data-sharer='twitter' data-title='I read \"{}\" and you should too!' data-hashtags='{}' data-url='https://cfpgomes.github.io/'",publication.title, publication.tags.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(",")).as_str());
-
-            twitter_button.i().attr("class='fa-brands fa-twitter'");
-
-            let mut reddit_col = share_cols
-                .div()
-                .attr("class='column col-xl-2 col-12' style='padding: 16px 0'");
-
-            let mut reddit_button = reddit_col.button().attr(format!("class='btn btn-action tooltip tooltip-right' data-tooltip='Share on Reddit!'  data-sharer='reddit' data-title='I read \"{}\" and you should too!' data-url='https://cfpgomes.github.io/'",publication.title).as_str());
-
-            reddit_button.i().attr("class='fa-brands fa-reddit-alien'");
-        }
+    fn publish(self, path: &str) {
+        let mut index_file = File::create(path).unwrap();
+        write!(index_file, "{}", self.buf.finish());
     }
 }
 
@@ -175,12 +273,12 @@ struct Publication {
 }
 
 impl Publication {
-    fn new(title: String, date: NaiveDate, markdown: String, tags: Vec<String>) -> Self {
+    fn new(title: &str, date: NaiveDate, markdown: &str, tags: Vec<String>) -> Self {
         Self {
-            title,
-            date,
-            markdown,
-            tags,
+            title: title.to_string(),
+            date: date,
+            markdown: markdown.to_string(),
+            tags: tags,
         }
     }
 
@@ -289,24 +387,109 @@ fn modify() -> Result<(), Box<dyn Error>> {
 }
 
 fn build() -> Result<(), Box<dyn Error>> {
-    // Compress images in `img` folder for web
-    println!("Compression of images started!");
-    let origin = PathBuf::from("img"); // original directory path
-    let dest = PathBuf::from("compressed-img"); // destination directory path
-    let thread_count = 4; // number of threads
-    let (tx, _tr) = mpsc::channel(); // Sender and Receiver. for more info, check mpsc and message passing.
+    // Apply white color with opacity of 0.9 to background images
+    // apply_white_overlay_to_images("img", "white-img");
+    compress_images("white-img", "compressed-img");
 
-    let mut comp = FolderCompressor::new(origin, dest);
-    comp.set_cal_func(|_width, _height, _file_size| return Factor::new(69., 1.0));
-    comp.set_thread_count(thread_count);
-    comp.set_sender(tx);
+    // Create "Homepage" Page
+    let mut page_homepage = Page::new("Homepage", CSS::Science);
 
-    match comp.compress() {
-        Ok(_) => {}
-        Err(e) => println!("Cannot compress the folder!: {}", e),
-    }
+    // Create "Who am I?" Page
+    let mut page_who_am_i = Page::new("Who am I?", CSS::Science);
 
-    println!("Compression of images finished!");
+    // Create "Publications" Page
+    let mut page_publications = Page::new("Publications", CSS::Science);
+
+    // Create "Miscellaneous" Page
+    let mut page_miscellaneous = Page::new("Miscellaneous", CSS::Science);
+
+    // Create "CV" Page
+    let mut page_cv = Page::new("CV", CSS::Science);
+
+    // Add top bar to every page
+    page_homepage.add_top_bar(
+        "profile_pic.png",
+        "Who am I?",
+        "Publications",
+        "Miscellaneous",
+        "CV",
+        None,
+    );
+    /*
+    page_who_am_i.add_top_bar(
+        "profile_pic.jpg",
+        "Who am I?",
+        "Publications",
+        "Miscellaneous",
+        "CV",
+        "Who am I?",
+    );
+    page_publications.add_top_bar(
+        "profile_pic.jpg",
+        "Who am I?",
+        "Publications",
+        "Miscellaneous",
+        "CV",
+        "Publications",
+    );
+    page_miscellaneous.add_top_bar(
+        "profile_pic.jpg",
+        "Who am I?",
+        "Publications",
+        "Miscellaneous",
+        "CV",
+        "Miscellaneous",
+    );
+    page_cv.add_top_bar(
+        "profile_pic.jpg",
+        "Who am I?",
+        "Publications",
+        "Miscellaneous",
+        "CV",
+        "CV",
+    );
+
+    // Add social media buttons
+    let social_media = vec![
+        (SocialMedia::Twitter, "cfpgomes"),
+        (SocialMedia::GoogleScholar, "cfpgomes"),
+        (SocialMedia::GitHub, "cfpgomes"),
+        (SocialMedia::LinkedIn, "cfpgomes"),
+        (SocialMedia::ORCID, "cfpgomes"),
+    ];
+
+    page_homepage.add_social_media_buttons(social_media);
+    page_who_am_i.add_social_media_buttons(social_media);
+    page_publications.add_social_media_buttons(social_media);
+    page_miscellaneous.add_social_media_buttons(social_media);
+    page_cv.add_social_media_buttons(social_media);
+
+    */
+    //// "Homepage" Page Building process
+
+    // Add "Who am I?" section to "Homepage" page
+    // Add "Publications" and "Miscellaneous" section to "Homepage" page.
+    // (publications and miscellaneous, once clicked, should open dedicated
+    // page to that publication or miscellaneous)
+    // Add "CV" section to "Homepage" page
+    // Save page as index.html
+
+    page_homepage.publish("index.html");
+
+    //// "Who am I?" Page Building process
+    // TODO: Descobrir depois o que meter, contar narrativa gira
+
+    //// "Publications" Page Building process
+    // Add every publication to this page, in the same way as in the homepage.
+    // Every publication should expand to read in its entirety.
+
+    //// "Miscellaneous" Page Building process
+    // Add every miscellaneous to this page, in the same way as in the homepage.
+    // Every miscellaneous should have a thumbnail as header.
+    // Every miscellaneous should expand to read in its entirety.
+
+    //// "CV" Page Building process
+    // TODO: Descobrir depois o que meter, estrutura gira de CV, printable to pdf idealmente
 
     // Get all publications
     let mut publications: Vec<Publication> = vec![];
@@ -324,143 +507,6 @@ fn build() -> Result<(), Box<dyn Error>> {
             .unwrap(),
         )
     }
-
-    let mut page = Page::new("Página de Teste".to_string(), CSS::Science);
-
-    page.add_rule(Rule {
-        condition: Condition::In,
-        tag: "paper".to_string(),
-    });
-
-    publications.sort_by_key(|p| p.date);
-
-    for publication in publications {
-        let title = publication.title.clone();
-        if page.add_publication(publication) {
-            println!("Publication {} added to Page {}.", title, page.title);
-        }
-    }
-
-    let mut index_file = File::create("index.html")?;
-
-    let mut buf = Buffer::new();
-    writeln!(buf, "<!-- My website -->").unwrap();
-
-    // The Html5 trait provides various helper methods.  For instance, doctype()
-    // simply writes the <!DOCTYPE> header
-    buf.doctype();
-
-    // Most helper methods create child nodes.  You can set a node's attributes
-    // like so
-    let mut html = buf.html().attr("lang='en'");
-
-    let mut head = html.head();
-
-    // Meta is a "void element", meaning it doesn't need a closing tag.  This is
-    // handled correctly.
-    head.meta().attr("charset='utf-8'");
-
-    // For site responsiveness
-    head.meta()
-        .attr("name='viewport' content='width=device-width,initial-scale=1.0'");
-
-    // Just like Buffer, nodes are also writable.  Set their contents by
-    // writing into them.
-    // Title
-    writeln!(head.title(), "Cláudio Gomes | {}", "TODO").unwrap();
-
-    // Description is the same as title.
-    head.meta()
-        .attr(format!("name='description' content='{}'", "TODO").as_str());
-    // Keywords are tags used in rules.
-    // TODO
-    // head.meta().attr(
-    //     format!(
-    //         "name='keywords', content='{}'",
-    //         self.rules
-    //             .iter()
-    //             .map(|r| match r.condition {
-    //                 Condition::In => "".to_string() + &r.tag + ",",
-    //                 Condition::NotIn => "not ".to_string() + &r.tag + ",",
-    //             })
-    //             .collect::<String>()
-    //             .trim_end_matches(",")
-    //     )
-    //     .as_str(),
-    // );
-
-    // Necessary stylesheets.
-    head.link()
-        .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'");
-    head.link()
-        .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'");
-    head.link()
-        .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'");
-    head.link()
-        .attr("rel='preconnect' href='https://fonts.googleapis.com'");
-    head.link()
-        .attr("rel='preconnect' href='https://fonts.gstatic.com' crossorigin");
-    head.link()
-        .attr("rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&family=Fredericka+the+Great&family=Kdam+Thmor+Pro&family=Klee+One&display=swap'");
-
-    head.link().attr(match page.css {
-        CSS::Homemade => "rel='stylesheet' href='css\\homemade.css'",
-        CSS::Science => "rel='stylesheet' href='css\\science.css'",
-    });
-
-    html.script()
-        .attr("src='https://cdn.jsdelivr.net/npm/sharer.js@latest/sharer.min.js'");
-
-    html.script()
-        .attr("src='https://kit.fontawesome.com/6a394e2d40.js' crossorigin='anonymous'");
-
-    let mut script = html.script();
-    write!(script, "\
-    function onLoad()
-    {{
-        preload_image_object = new Image();
-        var imagesArray = ['carousel1.jpg', 'carousel2.jpg', 'carousel3.jpg', 'carousel4.jpg', 'carousel5.jpg', 'carousel6.jpg', 'carousel7.jpg', 'carousel8.jpg', 'carousel9.jpg', 'carousel10.jpg'];
-    
-        //Preload images for faster page response
-        for (var i=0; i < imagesArray.length; i++) {{
-            preload_image_object.src = imagesArray[i];
-            preload_image_object.onload = console.log(i);
-        }};
-        
-        document.getElementById('background-image-id').style.backgroundImage = 'url(\"./compressed-img/' + imagesArray[Math.floor(Math.random() * 10)] + '\")';
-    }}
-    ").unwrap();
-
-    // Body
-    let mut body = html
-        .body()
-        .attr("class='gallery-background' id='background-image-id' onload='onLoad()'");
-    // Container to apply shadow
-    let shadow_gradient = body.div().attr("class='special-shadow-gradient'");
-
-    // Navbar TODO: link between pages
-    let mut header = body.header().attr("class='navbar'");
-
-    let mut div = header.div().attr("class='navbar-primary'");
-    writeln!(
-        div.a().attr("href='#' class='navbar-brand mr-10'"),
-        "Cláudio Gomes | {}",
-        "TODO"
-    )
-    .unwrap();
-    writeln!(
-        div.a().attr("href='#' class='btn btn-link selected'"),
-        "Home"
-    )
-    .unwrap();
-    writeln!(div.a().attr("href='#' class='btn btn-link'"), "Research").unwrap();
-    writeln!(div.a().attr("href='#' class='btn btn-link'"), "Contact").unwrap();
-
-    let div = body.div().attr("class='container'");
-
-    page.add_to_node(div);
-
-    write!(index_file, "{}", buf.finish())?;
 
     Ok(())
 }

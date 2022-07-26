@@ -2,36 +2,6 @@
     font-family: 'Atkinson Hyperlegible', sans-serif;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.card-title,
-.card-subtitle {
-    color: #102070;
-    font-family: 'Kdam Thmor Pro', sans-serif;
-}
-
-.text-gray {
-    color: #282842 !important;
-}
-
-.column {
-    padding: 32px;
-}
-
-.card {
-    color: #000000;
-    font-size: large;
-    border-style: none;
-    border-radius: 8px;
-    backdrop-filter: blur(12px);
-    background-color: rgba(228, 232, 255, 0.78);
-    box-shadow: 0 15px 25px rgba(129, 124, 124, 0.2);
-}
-
 img {
     border-style: solid;
     border-width: 0px;
@@ -46,46 +16,28 @@ img {
     background-attachment: fixed;
     background-size: cover;
     background-image: url("../compressed-img/blank.jpg");
-    background-color: #000000ff;
+    background-color: #ffffffff;
     -webkit-transition: background-image 0.8s ease-in-out;
     transition: background-image 0.8s ease-in-out;
+    z-index: -10;
 }
 
 .special-shadow-gradient {
-    background-image: linear-gradient(180deg, #ffffff00, #ffffff00, #ffffff00, #ffffff00, #000000ff);
+    background-image: linear-gradient(180deg, #ffffff00, #ffffff00, #ffffff00, #ffffff00, #ffffffff);
     position: fixed;
     width: 100%;
     height: 100vh;
+    z-index: -10;
 }
 
-a {
-    border-radius: 8px;
-    padding: 8px;
-    background-color: #eaeaf0;
-    color: #900050
+.navbar {
+    background-color: #92D4AB;
+    color: #EBE9E4;
 }
 
-a:hover {
-    background-color: #ffffff;
-    color: #b01041
-}
-
-a:visited {
-    color: #900050
-}
-
-button {
-    color: #282842 !important;
-    border-style: none !important;
-    border-radius: 8px !important;
-    backdrop-filter: blur(12px) !important;
-    background-color: rgba(228, 232, 255, 0.78) !important;
-    box-shadow: 0 15px 25px rgba(129, 124, 124, 0.2) !important;
-}
-
-button:hover {
-    color: #102070 !important;
-    background-color: rgba(228, 232, 255, 0.88) !important;
+.btn {
+    background-color: #46AC69;
+    color: #EBE9E4;
 }
 
 i {

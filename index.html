@@ -5,9 +5,9 @@
   <meta charset='utf-8'>
   <meta name='viewport' content='width=device-width,initial-scale=1.0'>
   <title>
-Cláudio Gomes | TODO
+Cláudio Gomes | Homepage
   </title>
-  <meta name='description' content='TODO'>
+  <meta name='description' content='Homepage'>
   <link rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'>
   <link rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'>
   <link rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'>
@@ -22,200 +22,38 @@ Cláudio Gomes | TODO
  </script>
  <script>
 function onLoad()
-    {
-        preload_image_object = new Image();
-        var imagesArray = ['carousel1.jpg', 'carousel2.jpg', 'carousel3.jpg', 'carousel4.jpg', 'carousel5.jpg', 'carousel6.jpg', 'carousel7.jpg', 'carousel8.jpg', 'carousel9.jpg', 'carousel10.jpg'];
-    
-        //Preload images for faster page response
-        for (var i=0; i < imagesArray.length; i++) {
-            preload_image_object.src = imagesArray[i];
-            preload_image_object.onload = console.log(i);
-        };
+        {
+            preload_image_object = new Image();
+            var imagesArray = ['carousel1.jpg', 'carousel2.jpg', 'carousel3.jpg', 'carousel4.jpg', 'carousel5.jpg', 'carousel6.jpg', 'carousel7.jpg', 'carousel8.jpg', 'carousel9.jpg', 'carousel10.jpg'];
         
-        document.getElementById('background-image-id').style.backgroundImage = 'url("./compressed-img/' + imagesArray[Math.floor(Math.random() * 10)] + '")';
-    }
-     </script>
+            //Preload images for faster page response
+            for (var i=0; i < imagesArray.length; i++) {
+                preload_image_object.src = imagesArray[i];
+                preload_image_object.onload = console.log(i);
+            };
+            
+            document.getElementById('background-image-id').style.backgroundImage = 'url("./compressed-img/' + imagesArray[Math.floor(Math.random() * 10)] + '")';
+        }
+         </script>
  <body class='gallery-background' id='background-image-id' onload='onLoad()'>
   <div class='special-shadow-gradient'>
   </div>
-  <header class='navbar'>
-   <div class='navbar-primary'>
-    <a href='#' class='navbar-brand mr-10'>
-Cláudio Gomes | TODO
-    </a>
-    <a href='#' class='btn btn-link selected'>
-Home
-    </a>
-    <a href='#' class='btn btn-link'>
-Research
-    </a>
-    <a href='#' class='btn btn-link'>
-Contact
-    </a>
-   </div>
-  </header>
-  <div class='container'>
-   <div class='container grid-lg'>
-    <div class='columns col-gapless'>
-     <div class='column col-xl-12 col-10' style='padding: 32px 0 0 0'>
-      <div class='card s-rounded' id='one'>
-       <div class='card-header'>
-        <div class='card-title h2 strong'>
-Off-the-shelf Components for Quantum Programming and Testing
-        </div>
-        <div class='card-subtitle h4 text-gray'>
-2020-10-13
-        </div>
-       </div>
-       <div class='card-body'>
-<p>In this position paper, we argue that readily available components are much needed as central contributions towards not only enlarging the community of quantum computer programmers, but also in order to increase their efficiency and effectiveness. We describe the work we intend to do towards providing such components, namely by developing and making available libraries of quantum algorithms and data structures, and libraries for testing quantum programs. We finally argue that Quantum Computer Programming is such an effervescent area that synchronization efforts and combined strategies within the community are demanded to shorten the time frame until quantum advantage is observed and can be explored in practice.</p>
-<p><a href="http://ceur-ws.org/Vol-2705/short2.pdf">PDF</a></p>
-
-       </div>
-       <div class='card-footer'>
-        <span class='chip'>
-#paper
-        </span>
-        <span class='chip'>
-#QC
-        </span>
-        <span class='chip'>
-#SoftwareEngineering
-        </span>
-        <span class='chip'>
-#ReusableComponents
-        </span>
-       </div>
-      </div>
-     </div>
-     <div class='column hide-xl col-1'>
-     </div>
-     <div class='column col-xl-12 col-1' style='padding: 16px 0 16px 0'>
-      <div class='columns col-gapless'>
-       <div class='column col-xl-2 col-12' style='padding: 16px 0'>
-        <button class='btn btn-action tooltip tooltip-right' data-tooltip='Share on Twitter!' data-sharer='twitter' data-title='I read "Off-the-shelf Components for Quantum Programming and Testing" and you should too!' data-hashtags='paper,QC,SoftwareEngineering,ReusableComponents' data-url='https://cfpgomes.github.io/'>
-         <i class='fa-brands fa-twitter'>
-         </i>
-        </button>
-       </div>
-       <div class='column col-xl-2 col-12' style='padding: 16px 0'>
-        <button class='btn btn-action tooltip tooltip-right' data-tooltip='Share on Reddit!'  data-sharer='reddit' data-title='I read "Off-the-shelf Components for Quantum Programming and Testing" and you should too!' data-url='https://cfpgomes.github.io/'>
-         <i class='fa-brands fa-reddit-alien'>
-         </i>
-        </button>
-       </div>
-      </div>
-     </div>
-    </div>
-    <div class='columns col-gapless'>
-     <div class='column col-xl-12 col-10' style='padding: 32px 0 0 0'>
-      <div class='card s-rounded' id='one'>
-       <div class='card-header'>
-        <div class='card-title h2 strong'>
-Portfolio Optimization in Financial Markets using Quantum Computing: An Experimental Study
-        </div>
-        <div class='card-subtitle h4 text-gray'>
-2021-07-15
-        </div>
-       </div>
-       <div class='card-body'>
-<p>Quantum computing is bound to change the world as we know it. By exploring the properties of quantum theory for computational purposes, it is expected to substantially reduce the amount of problems that are nowadays considered computationally intractable. This means that quantum computers have the power of providing solutions for some of the problems of practical interest for which a classical computer cannot, at least in a timely manner. This is even more revolutionary and remarkable given the fact these problems range from multidisciplinary domains such as Chemistry, Medicine, and, most relevant in the context of this dissertation, Finance.</p>
-<p>In this work, we will focus on leveraging quantum computing to addressing a relevant and timely problem within the financial domain. We will target a combinatorial optimization problem, the portfolio optimization problem, which consists of selecting the best portfolio (combination of assets) among all possible portfolios, according to some objective function, whether to maximize return or minimize risk. Due to the high number of parameters, such as the expected return per asset and market conditions, this problem attains an exponential complexity and is an NP-hard problem, intractable in the context of classical computing.</p>
-<p>We designed and conducted an empirical study on the effect of parameters on solutions to the portfolio optimization problem given by a quantum computer. In particular, we use a quantum computer from D-Wave Systems, Inc. and vary the parameters related to not only the quantum computer, but also to the portfolio optimization problem itself. We believe that our findings are useful not only for those using adiabatic quantum computers in the context of portfolio optimization problem, and also in other application domains.</p>
-<p>Our findings suggest that the parameters do have an effect on the results, whether they are related to the portfolio optimization problem or to the quantum computer. Moreover, we found that some of the parameters have a great impact, such as the chain strength, which defines the strength associated to the couplings between qubits that represent a variable, and that other parameters have no statistically significant effect, such as the anneal schedule or embedding used.</p>
-<p><a href="http://hdl.handle.net/10316/96124">URI</a></p>
-
-       </div>
-       <div class='card-footer'>
-        <span class='chip'>
-#thesis
-        </span>
-        <span class='chip'>
-#QC
-        </span>
-        <span class='chip'>
-#POP
-        </span>
-        <span class='chip'>
-#QUBO
-        </span>
-        <span class='chip'>
-#paper
-        </span>
-       </div>
-      </div>
-     </div>
-     <div class='column hide-xl col-1'>
-     </div>
-     <div class='column col-xl-12 col-1' style='padding: 16px 0 16px 0'>
-      <div class='columns col-gapless'>
-       <div class='column col-xl-2 col-12' style='padding: 16px 0'>
-        <button class='btn btn-action tooltip tooltip-right' data-tooltip='Share on Twitter!' data-sharer='twitter' data-title='I read "Portfolio Optimization in Financial Markets using Quantum Computing: An Experimental Study" and you should too!' data-hashtags='thesis,QC,POP,QUBO,paper' data-url='https://cfpgomes.github.io/'>
-         <i class='fa-brands fa-twitter'>
-         </i>
-        </button>
-       </div>
-       <div class='column col-xl-2 col-12' style='padding: 16px 0'>
-        <button class='btn btn-action tooltip tooltip-right' data-tooltip='Share on Reddit!'  data-sharer='reddit' data-title='I read "Portfolio Optimization in Financial Markets using Quantum Computing: An Experimental Study" and you should too!' data-url='https://cfpgomes.github.io/'>
-         <i class='fa-brands fa-reddit-alien'>
-         </i>
-        </button>
-       </div>
-      </div>
-     </div>
-    </div>
-    <div class='columns col-gapless'>
-     <div class='column col-xl-12 col-10' style='padding: 32px 0 0 0'>
-      <div class='card s-rounded' id='one'>
-       <div class='card-header'>
-        <div class='card-title h2 strong'>
-An Empirical Study on the Use of Quantum Computing for Financial Portfolio Optimization
-        </div>
-        <div class='card-subtitle h4 text-gray'>
-2022-06-14
-        </div>
-       </div>
-       <div class='card-body'>
-<p>Quantum Computing (QC) is regarded with a mix of amazement, excitement, and skepticism. While quantum computers have been shown to outperform classical ones in particular computational tasks, their effective applicability to general-purpose problems remains under-studied. We shed light on the practical use of QC to tackle a combinatorial optimization problem in Finance, the Portfolio Optimization Problem (POP). We present an in-depth empirical study on the influence that configurable parameters of both a state-of-the-art adiabatic quantum computer and POP itself can have on the overall quality of the solutions we obtain. Our results show that some of these parameters, such as chain strength and number of reads, have a significant statistical effect, while others, such as anneal schedule and embedding, do not. Our results also show that the quality of the solutions returned by a quantum computer, given a quadratic unconstrained binary optimization formulation of POP from the literature, is still far from the quality of the solutions produced by a classical computer using an exact algorithm. We believe the conclusions drawn from our study are valuable contributions to the utilization of adiabatic quantum computers in practice, not only in the context of POP but also for other application domains.</p>
-<p><a href="http://doi.org/10.1007/s42979-022-01215-9">DOI</a></p>
-
-       </div>
-       <div class='card-footer'>
-        <span class='chip'>
-#paper
-        </span>
-        <span class='chip'>
-#QC
-        </span>
-        <span class='chip'>
-#POP
-        </span>
-        <span class='chip'>
-#QUBO
-        </span>
-       </div>
-      </div>
-     </div>
-     <div class='column hide-xl col-1'>
-     </div>
-     <div class='column col-xl-12 col-1' style='padding: 16px 0 16px 0'>
-      <div class='columns col-gapless'>
-       <div class='column col-xl-2 col-12' style='padding: 16px 0'>
-        <button class='btn btn-action tooltip tooltip-right' data-tooltip='Share on Twitter!' data-sharer='twitter' data-title='I read "An Empirical Study on the Use of Quantum Computing for Financial Portfolio Optimization" and you should too!' data-hashtags='paper,QC,POP,QUBO' data-url='https://cfpgomes.github.io/'>
-         <i class='fa-brands fa-twitter'>
-         </i>
-        </button>
-       </div>
-       <div class='column col-xl-2 col-12' style='padding: 16px 0'>
-        <button class='btn btn-action tooltip tooltip-right' data-tooltip='Share on Reddit!'  data-sharer='reddit' data-title='I read "An Empirical Study on the Use of Quantum Computing for Financial Portfolio Optimization" and you should too!' data-url='https://cfpgomes.github.io/'>
-         <i class='fa-brands fa-reddit-alien'>
-         </i>
-        </button>
-       </div>
-      </div>
-     </div>
-    </div>
-   </div>
-  </div>
  </body>
 </html>
+<header class='navbar'>
+ <section class='navbar-section'>
+  <a href='TODO' class='btn btn-link'>
+Who am I?  </a>
+  <a href='TODO' class='btn btn-link'>
+Publications  </a>
+ </section>
+ <section class='navbar-center'>
+  <img src='profile_pic.png' width='100'>
+ </section>
+ <section class='navbar-section'>
+  <a href='TODO' class='btn btn-link'>
+Miscellaneous  </a>
+  <a href='TODO' class='btn btn-link'>
+CV  </a>
+ </section>
+</header>
