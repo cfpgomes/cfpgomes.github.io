@@ -219,41 +219,33 @@ impl Page {
         page_d: &str,
         active_page: Option<&str>,
     ) {
-        let mut header = self.buf.header().attr("class='navbar'");
-        let mut left_half = header.section().attr("class='navbar-section'");
+        let mut container = self.buf.div().attr("class='top-bar'");
+        let mut columns = container
+            .div()
+            .attr("class='columns col-gapless full-height'");
+        let mut column_a = columns.div().attr("class='column col-2-and-half'");
+        let mut button_a = column_a.button().attr("class='btn'");
+        write!(button_a, "{}", page_a);
+        let mut column_b = columns.div().attr("class='column col-2-and-half'");
+        let mut button_b = column_b.button().attr("class='btn'");
+        write!(button_b, "{}", page_b);
 
-        write!(
-            left_half
-                .a()
-                .attr(format!("href='{}' class='btn btn-link'", "TODO").as_ref()),
-            "{}",
-            page_a
+        let mut column_pic = columns.div().attr("class='column col-2'");
+        let button_pic = column_pic.button().attr(
+            format!(
+                "class='square-pic' style='background-image:url(\"{}\")'",
+                path_img
+            )
+            .as_ref(),
         );
-        write!(
-            left_half
-                .a()
-                .attr(format!("href='{}' class='btn btn-link'", "TODO").as_ref()),
-            "{}",
-            page_b
-        );
-        let mut center_image = header.section().attr("class='navbar-center'");
-        center_image.img().attr(format!("src='{}' width='100'", path_img).as_ref());
 
-        let mut right_half = header.section().attr("class='navbar-section'");
-        write!(
-            right_half
-                .a()
-                .attr(format!("href='{}' class='btn btn-link'", "TODO").as_ref()),
-            "{}",
-            page_c
-        );
-        write!(
-            right_half
-                .a()
-                .attr(format!("href='{}' class='btn btn-link'", "TODO").as_ref()),
-            "{}",
-            page_d
-        );
+        let mut column_c = columns.div().attr("class='column col-2-and-half'");
+        let mut button_c = column_c.button().attr("class='btn'");
+        write!(button_c, "{}", page_c);
+
+        let mut column_d = columns.div().attr("class='column col-2-and-half'");
+        let mut button_d = column_d.button().attr("class='btn'");
+        write!(button_d, "{}", page_d);
     }
 
     fn publish(self, path: &str) {
