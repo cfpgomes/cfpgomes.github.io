@@ -162,9 +162,9 @@ impl Page {
         head.link()
             .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'");
         head.link()
-            .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'");
+            .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre-exp.min.css'");
         head.link()
-            .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'");
+            .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre-icons.min.css'");
         head.link()
             .attr("rel='preconnect' href='https://fonts.googleapis.com'");
         head.link()
@@ -231,13 +231,17 @@ impl Page {
         write!(button_b, "{}", page_b);
 
         let mut column_pic = columns.div().attr("class='column col-2'");
-        let button_pic = column_pic.button().attr(
-            format!(
-                "class='square-pic' style='background-image:url(\"{}\")'",
-                path_img
-            )
-            .as_ref(),
-        );
+        let mut parallax_pic = column_pic.div().attr("class='parallax square-pic-parallax'");
+        let mut parallax_top_left = parallax_pic.div().attr("class='parallax-top-left' tabindex='1'");
+        let mut parallax_top_right = parallax_pic.div().attr("class='parallax-top-right' tabindex='2'");
+        let mut parallax_bottom_left = parallax_pic.div().attr("class='parallax-bottom-left' tabindex='3'");
+        let mut parallax_bottom_right = parallax_pic.div().attr("class='parallax-bottom-right' tabindex='4'");
+        let mut parallax_content = parallax_pic.div().attr("class='parallax-content'");
+        let mut parallax_front = parallax_content.div().attr("class='parallax-front'");
+        let mut parallax_back = parallax_content.div().attr("class='parallax-back'");
+        parallax_back
+            .div()
+            .attr(format!("style='background-image:url(\"{}\")' class='square-pic-img'", path_img).as_ref());
 
         let mut column_c = columns.div().attr("class='column col-2-and-half'");
         let mut button_c = column_c.button().attr("class='btn'");

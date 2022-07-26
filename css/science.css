@@ -2,15 +2,6 @@
     font-family: 'Atkinson Hyperlegible', sans-serif;
 }
 
-img {
-    border-style: solid;
-    border-width: 0px;
-    border-radius: 8px;
-    border-color: gray;
-    max-width: 100%;
-    max-height: 100%;
-}
-
 .gallery-background {
     background-position: center;
     background-attachment: fixed;
@@ -40,36 +31,6 @@ img {
     width: 20.83333333%
 }
 
-.btn {
-    padding: 0;
-    border: 0;
-    width: 20vh;
-    height: 64%;
-    left: 50%;
-    transform: translate(-50%, 0);
-    top: 18%;
-    font-size: 2.6vh;
-    font-weight: bold;
-    border-radius: 1vh;
-    margin: 0 auto;
-    position: relative;
-    background-color: #46AC69;
-    color: #EBE9E4;
-}
-
-.square-pic {
-    height: 14vh;
-    width: 14vh;
-    border-style: solid;
-    border-radius: 2vh;
-    border-color: #EBE9E4;
-    margin: 0;
-    position: absolute;
-    top: 18%;
-    left: 50%;
-    transform: translate(-50%, 0);
-    background-size: cover;
-}
 
 i {
     margin: 0 auto;
@@ -94,4 +55,60 @@ i {
     height: 12vh;
     background-color: #92D4AB;
     position: fixed;
+}
+
+.btn {
+    padding: 0;
+    border: 0;
+    width: 20vh;
+    height: 64%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    top: 18%;
+    font-size: 2.6vh;
+    font-weight: bold;
+    border-radius: 1vh;
+    margin: 0 auto;
+    position: relative;
+    background-color: #52bb79;
+    color: #EBE9E4;
+}
+
+.btn:hover {
+    background-color: #46AC69;
+}
+
+.square-pic-parallax {
+    padding: 0;
+    height: 16vh;
+    width: 16vh;
+    margin: 0;
+    position: absolute;
+    top: 18%;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.square-pic-img {
+    padding: 0;
+    height: 16vh;
+    width: 16vh;
+    border-style: solid !important;
+    border: 0.26vh;
+    border-radius: 2.6vh;
+    border-color: #EBE9E4;
+    background-size: cover;
+    background-color: #EBE9E4;
+}
+
+.parallax .parallax-top-left:focus~.parallax-content::before,
+.parallax .parallax-top-left:hover~.parallax-content::before,
+.parallax .parallax-top-right:focus~.parallax-content::before,
+.parallax .parallax-top-right:hover~.parallax-content::before,
+.parallax .parallax-bottom-left:focus~.parallax-content::before,
+.parallax .parallax-bottom-left:hover~.parallax-content::before,
+.parallax .parallax-bottom-right:focus~.parallax-content::before,
+.parallax .parallax-bottom-right:hover~.parallax-content::before,
+.parallax .parallax-content {
+    border-radius: 2.6vh;
 }
