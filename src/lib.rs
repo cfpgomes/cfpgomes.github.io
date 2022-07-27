@@ -188,7 +188,7 @@ impl Page {
         function onLoad()
         {{
             preload_image_object = new Image();
-            var imagesArray = ['carousel1.jpg', 'carousel2.jpg', 'carousel3.jpg', 'carousel4.jpg', 'carousel5.jpg', 'carousel6.jpg', 'carousel7.jpg', 'carousel8.jpg', 'carousel9.jpg', 'carousel10.jpg'];
+            var imagesArray = ['carousel1.jpg', 'carousel2.jpg', 'carousel3.jpg', 'carousel4.jpg', 'carousel5.jpg', 'carousel6.jpg', 'carousel7.jpg', 'carousel8.jpg', 'carousel9.jpg', 'carousel10.jpg', 'carousel11.jpg', 'carousel12.jpg', 'carousel13.jpg', 'carousel14.jpg', 'carousel15.jpg', 'carousel16.jpg'];
         
             //Preload images for faster page response
             for (var i=0; i < imagesArray.length; i++) {{
@@ -196,7 +196,7 @@ impl Page {
                 preload_image_object.onload = console.log(i);
             }};
             
-            document.getElementById('background-image-id').style.backgroundImage = 'url(\"./compressed-img/' + imagesArray[Math.floor(Math.random() * 10)] + '\")';
+            document.getElementById('background-image-id').style.backgroundImage = 'url(\"./compressed-img/' + imagesArray[Math.floor(Math.random() * 16)] + '\")';
         }}
         ").unwrap();
 
