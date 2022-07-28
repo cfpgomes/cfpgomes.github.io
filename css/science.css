@@ -88,8 +88,8 @@ i {
 .btn-top-bar-mobile {
     padding: 0;
     border: 0;
-    width: 64px;
-    height: 64%;
+    width: 50px;
+    height: 50%;
     left: 50%;
     transform: translate(-50%, 0);
     top: 18%;
