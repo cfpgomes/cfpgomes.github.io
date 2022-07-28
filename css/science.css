@@ -7,14 +7,14 @@
     background-attachment: fixed;
     background-size: cover;
     background-image: url("../compressed-img/blank.jpg");
-    background-color: #ffffffff;
+    background-color: #EBE9E4;
     -webkit-transition: background-image 0.8s ease-in-out;
     transition: background-image 0.8s ease-in-out;
     z-index: -10;
 }
 
 .special-shadow-gradient {
-    background-image: linear-gradient(180deg, #ffffff00, #ffffff00, #ffffff00, #ffffff00, #ffffffff);
+    background-image: linear-gradient(180deg, #EBE9E400, #EBE9E400, #EBE9E400, #EBE9E400, #EBE9E4FF);
     position: fixed;
     width: 100%;
     height: 100vh;
@@ -29,6 +29,10 @@
 
 .col-2-and-half {
     width: 20.83333333%
+}
+
+.col-2-and-4 {
+    width: 20%
 }
 
 
@@ -52,36 +56,110 @@ i {
 
 .top-bar {
     width: 100%;
-    height: 12vh;
+    height: 180px;
     background-color: #92D4AB;
     position: fixed;
 }
 
-.btn {
+.top-bar-mobile {
+    width: 100%;
+    height: 100px;
+    background-color: #92D4AB;
+    position: fixed;
+}
+
+.btn-top-bar {
     padding: 0;
     border: 0;
-    width: 20vh;
+    width: 280px;
     height: 64%;
     left: 50%;
     transform: translate(-50%, 0);
     top: 18%;
-    font-size: 2.6vh;
+    font-size: 40px;
     font-weight: bold;
-    border-radius: 1vh;
+    border-radius: 20px;
     margin: 0 auto;
     position: relative;
     background-color: #4FBA6D;
     color: #EBE9E4;
 }
 
+.btn-top-bar-mobile {
+    padding: 0;
+    border: 0;
+    width: 64px;
+    height: 64%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    top: 18%;
+    font-size: 40px;
+    font-weight: bold;
+    border-radius: 12px;
+    margin: 0 auto;
+    position: relative;
+    background-color: #92D4AB00;
+    color: #EBE9E4;
+}
+
+.btn-home-top-bar-mobile {
+    padding: 0;
+    border: 0;
+    width: 80px;
+    height: 80%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    top: 10%;
+    font-size: 40px;
+    font-weight: bold;
+    border-radius: 20px;
+    margin: 0 auto;
+    position: relative;
+    background-color: #4FBA6D;
+    background-size: cover;
+    color: #EBE9E4;
+    border-style: solid !important;
+    border: 2px;
+    border-color: #EBE9E4;
+    transition: width 0.8s ease-in-out;
+    transition: height 0.8s ease-in-out;
+    transition: background-image 0.8s ease-in-out;
+}
+
+.btn-home-top-bar-mobile:hover {
+    width: 84px;
+    height: 84%;
+    top: 8%;
+    border-radius: 20px;
+    background-size: cover;
+    border: 2px;
+    border-color: #EBE9E4;
+}
+
+.btn-home-top-bar-mobile:focus {
+    width: 84px;
+    height: 84%;
+    top: 8%;
+    border-radius: 20px;
+    background-size: cover;
+    border: 2px;
+    border-color: #EBE9E4;
+}
+
 .btn:hover {
     background-color: #46AC69;
 }
 
+.btn:focus {
+    color: #46AC69;
+    background-color: #EBE9E4;
+    border-color: #EBE9E4;
+}
+
 .square-pic-parallax {
     padding: 0;
-    height: 16vh;
-    width: 16vh;
+    height: 220px;
+    width: 220px;
     margin: 0;
     position: absolute;
     top: 18%;
@@ -91,11 +169,11 @@ i {
 
 .square-pic-img {
     padding: 0;
-    height: 16vh;
-    width: 16vh;
+    height: 220px;
+    width: 220px;
     border-style: solid !important;
-    border: 0.26vh;
-    border-radius: 2.6vh;
+    border: 4px;
+    border-radius: 40px;
     border-color: #EBE9E4;
     background-size: cover;
     background-color: #EBE9E4;
@@ -110,5 +188,5 @@ i {
 .parallax .parallax-bottom-right:focus~.parallax-content::before,
 .parallax .parallax-bottom-right:hover~.parallax-content::before,
 .parallax .parallax-content {
-    border-radius: 2.6vh;
+    border-radius: 40px;
 }
