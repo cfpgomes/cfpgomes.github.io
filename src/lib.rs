@@ -217,10 +217,10 @@ impl Page {
         page_b: &str,
         page_c: &str,
         page_d: &str,
-        emoji_a: &str,
-        emoji_b: &str,
-        emoji_c: &str,
-        emoji_d: &str,
+        icon_a: &str,
+        icon_b: &str,
+        icon_c: &str,
+        icon_d: &str,
         active_page: Option<&str>,
     ) {
         // Desktop top bar
@@ -262,22 +262,19 @@ impl Page {
             .div()
             .attr("class='columns col-gapless full-height'");
         let mut column_a = columns.div().attr("class='column col-2-and-quarter'");
-        let mut button_a = column_a.button().attr("class='btn btn-top-bar-mobile'");
-        write!(button_a, "{}", emoji_a);
+        let mut button_a = column_a.button().attr(format!("class='btn btn-top-bar-mobile fa-solid {}'", icon_a).as_ref());
+
         let mut column_b = columns.div().attr("class='column col-2-and-quarter'");
-        let mut button_b = column_b.button().attr("class='btn btn-top-bar-mobile'");
-        write!(button_b, "{}", emoji_b);
+        let mut button_b = column_b.button().attr(format!("class='btn btn-top-bar-mobile fa-solid {}'", icon_b).as_ref());
 
         let mut column_home = columns.div().attr("class='column col-3'");
         column_home.button().attr(format!("style='background-image:url(\"{}\")' class='btn btn-home-top-bar-mobile'", path_img).as_ref());
 
         let mut column_c = columns.div().attr("class='column col-2-and-quarter'");
-        let mut button_c = column_c.button().attr("class='btn btn-top-bar-mobile'");
-        write!(button_c, "{}", emoji_c);
+        let mut button_c = column_c.button().attr(format!("class='btn btn-top-bar-mobile fa-solid {}'", icon_c).as_ref());
 
         let mut column_d = columns.div().attr("class='column col-2-and-quarter'");
-        let mut button_d = column_d.button().attr("class='btn btn-top-bar-mobile'");
-        write!(button_d, "{}", emoji_d);
+        let mut button_d = column_d.button().attr(format!("class='btn btn-top-bar-mobile fa-solid {}'", icon_d).as_ref());
     }
 
     fn publish(self, path: &str) {
@@ -437,10 +434,10 @@ fn build() -> Result<(), Box<dyn Error>> {
         "Publications",
         "Miscellaneous",
         "CV",
-        "👤",
-        "⚛️",
-        "🎨",
-        "📃",
+        "fa-user",
+        "fa-atom",
+        "fa-cow",
+        "fa-envelope-open-text",
         None,
     );
     /*
