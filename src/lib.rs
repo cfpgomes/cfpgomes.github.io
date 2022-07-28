@@ -163,8 +163,9 @@ impl Page {
             .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'");
         head.link()
             .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre-exp.min.css'");
-        head.link()
-            .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre-icons.min.css'");
+        head.link().attr(
+            "rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre-icons.min.css'",
+        );
         head.link()
             .attr("rel='preconnect' href='https://fonts.googleapis.com'");
         head.link()
@@ -236,17 +237,31 @@ impl Page {
         write!(button_b, "{}", page_b);
 
         let mut column_pic = columns.div().attr("class='column col-2'");
-        let mut parallax_pic = column_pic.div().attr("class='parallax square-pic-parallax'");
-        let mut parallax_top_left = parallax_pic.div().attr("class='parallax-top-left' tabindex='1'");
-        let mut parallax_top_right = parallax_pic.div().attr("class='parallax-top-right' tabindex='2'");
-        let mut parallax_bottom_left = parallax_pic.div().attr("class='parallax-bottom-left' tabindex='3'");
-        let mut parallax_bottom_right = parallax_pic.div().attr("class='parallax-bottom-right' tabindex='4'");
+        let mut parallax_pic = column_pic
+            .div()
+            .attr("class='parallax square-pic-parallax'");
+        let mut parallax_top_left = parallax_pic
+            .div()
+            .attr("class='parallax-top-left' tabindex='1'");
+        let mut parallax_top_right = parallax_pic
+            .div()
+            .attr("class='parallax-top-right' tabindex='2'");
+        let mut parallax_bottom_left = parallax_pic
+            .div()
+            .attr("class='parallax-bottom-left' tabindex='3'");
+        let mut parallax_bottom_right = parallax_pic
+            .div()
+            .attr("class='parallax-bottom-right' tabindex='4'");
         let mut parallax_content = parallax_pic.div().attr("class='parallax-content'");
         let mut parallax_front = parallax_content.div().attr("class='parallax-front'");
         let mut parallax_back = parallax_content.div().attr("class='parallax-back'");
-        parallax_back
-            .div()
-            .attr(format!("style='background-image:url(\"{}\")' class='square-pic-img'", path_img).as_ref());
+        parallax_back.div().attr(
+            format!(
+                "style='background-image:url(\"{}\")' class='square-pic-img'",
+                path_img
+            )
+            .as_ref(),
+        );
 
         let mut column_c = columns.div().attr("class='column col-2-and-half'");
         let mut button_c = column_c.button().attr("class='btn btn-top-bar'");
@@ -262,25 +277,63 @@ impl Page {
             .div()
             .attr("class='columns col-gapless full-height'");
         let mut column_a = columns.div().attr("class='column col-2-and-quarter'");
-        let mut button_a = column_a.button().attr(format!("class='btn btn-top-bar-mobile fa-solid {}'", icon_a).as_ref());
+        let mut button_a = column_a
+            .button()
+            .attr(format!("class='btn btn-top-bar-mobile fa-solid {}'", icon_a).as_ref());
 
         let mut column_b = columns.div().attr("class='column col-2-and-quarter'");
-        let mut button_b = column_b.button().attr(format!("class='btn btn-top-bar-mobile fa-solid {}'", icon_b).as_ref());
+        let mut button_b = column_b
+            .button()
+            .attr(format!("class='btn btn-top-bar-mobile fa-solid {}'", icon_b).as_ref());
 
         let mut column_home = columns.div().attr("class='column col-3'");
-        column_home.button().attr(format!("style='background-image:url(\"{}\")' class='btn btn-home-top-bar-mobile'", path_img).as_ref());
+        column_home.button().attr(
+            format!(
+                "style='background-image:url(\"{}\")' class='btn btn-home-top-bar-mobile'",
+                path_img
+            )
+            .as_ref(),
+        );
 
         let mut column_c = columns.div().attr("class='column col-2-and-quarter'");
-        let mut button_c = column_c.button().attr(format!("class='btn btn-top-bar-mobile fa-solid {}'", icon_c).as_ref());
+        let mut button_c = column_c
+            .button()
+            .attr(format!("class='btn btn-top-bar-mobile fa-solid {}'", icon_c).as_ref());
 
         let mut column_d = columns.div().attr("class='column col-2-and-quarter'");
-        let mut button_d = column_d.button().attr(format!("class='btn btn-top-bar-mobile fa-solid {}'", icon_d).as_ref());
+        let mut button_d = column_d
+            .button()
+            .attr(format!("class='btn btn-top-bar-mobile fa-solid {}'", icon_d).as_ref());
+
+        self.buf.div().attr("class='top-bar-invisible hide-xl'");
+        self.buf
+            .div()
+            .attr("class='top-bar-mobile-invisible show-xl'");
+    }
+
+    fn add_columns(&mut self, classes: &str) -> Node {
+        let mut columns = self
+            .buf
+            .div()
+            .attr(format!("class='columns page-height {}'", classes).as_ref());
+        columns
+    }
+
+    fn add_footer(&mut self) {
+        self.buf.footer();
     }
 
     fn publish(self, path: &str) {
         let mut index_file = File::create(path).unwrap();
         write!(index_file, "{}", self.buf.finish());
     }
+}
+
+// Add responsive column to columns div
+fn add_column_to_dual_columns<'a>(columns: &'a mut Node) -> Node<'a> {
+    let mut col = columns.div().attr("class='column col-6 col-xl-12'");
+
+    col
 }
 
 /// Struct that represents a publication, which contains info such
@@ -434,10 +487,10 @@ fn build() -> Result<(), Box<dyn Error>> {
         "Publications",
         "Miscellaneous",
         "CV",
-        "fa-user",
+        "fa-person-rays",
         "fa-atom",
         "fa-cow",
-        "fa-envelope-open-text",
+        "fa-address-book",
         None,
     );
     /*
@@ -493,10 +546,39 @@ fn build() -> Result<(), Box<dyn Error>> {
     //// "Homepage" Page Building process
 
     // Add "Who am I?" section to "Homepage" page
+
+    let mut columns_who_am_i_section = page_homepage.add_columns("");
+    let mut col_intro = add_column_to_dual_columns(&mut columns_who_am_i_section);
+    write!(col_intro.h1(), "Hey! I'm Cláudio Gomes.");
+    write!(col_intro.h3(), "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Congue eu consequat ac felis. Quisque sagittis purus sit amet volutpat consequat. Suspendisse in est ante in nibh mauris. Enim blandit volutpat maecenas volutpat blandit aliquam etiam erat velit. Mattis vulputate enim nulla aliquet. Aliquam ultrices sagittis orci a scelerisque purus semper eget. Viverra mauris in aliquam sem fringilla ut morbi. Egestas fringilla phasellus faucibus scelerisque eleifend. Volutpat sed cras ornare arcu. Enim lobortis scelerisque fermentum dui. Magna etiam tempor orci eu lobortis elementum nibh. Quis blandit turpis cursus in hac habitasse platea dictumst. Sed blandit libero volutpat sed cras ornare arcu dui.");
+
+    let mut col_contacts = add_column_to_dual_columns(&mut columns_who_am_i_section);
+    write!(col_contacts.h1(), "Here are my contacts:");
+    write!(col_contacts.h3(), "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Congue eu consequat ac felis. Quisque sagittis purus sit amet volutpat consequat. Suspendisse in est ante in nibh mauris. Enim blandit volutpat maecenas volutpat blandit aliquam etiam erat velit. Mattis vulputate enim nulla aliquet. Aliquam ultrices sagittis orci a scelerisque purus semper eget. Viverra mauris in aliquam sem fringilla ut morbi. Egestas fringilla phasellus faucibus scelerisque eleifend. Volutpat sed cras ornare arcu. Enim lobortis scelerisque fermentum dui. Magna etiam tempor orci eu lobortis elementum nibh. Quis blandit turpis cursus in hac habitasse platea dictumst. Sed blandit libero volutpat sed cras ornare arcu dui.");
+
     // Add "Publications" and "Miscellaneous" section to "Homepage" page.
     // (publications and miscellaneous, once clicked, should open dedicated
     // page to that publication or miscellaneous)
+    let mut columns_pub_misc_section = page_homepage.add_columns("blank-background");
+
+    let mut col_pubs = add_column_to_dual_columns(&mut columns_pub_misc_section);
+    write!(col_pubs.h1(), "I do research in Quantum Computing!");
+    let mut col_pubs = add_column_to_dual_columns(&mut columns_pub_misc_section);
+    write!(col_pubs.h1(), "And also some random stuff...");
+
     // Add "CV" section to "Homepage" page
+    let mut columns_cv_section = page_homepage.add_columns("");
+    let mut col_cv_1 = add_column_to_dual_columns(&mut columns_cv_section);
+    write!(col_cv_1.h1(), "Hey! I'm Cláudio Gomes.");
+    write!(col_cv_1.h3(), "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Congue eu consequat ac felis. Quisque sagittis purus sit amet volutpat consequat. Suspendisse in est ante in nibh mauris. Enim blandit volutpat maecenas volutpat blandit aliquam etiam erat velit. Mattis vulputate enim nulla aliquet. Aliquam ultrices sagittis orci a scelerisque purus semper eget. Viverra mauris in aliquam sem fringilla ut morbi. Egestas fringilla phasellus faucibus scelerisque eleifend. Volutpat sed cras ornare arcu. Enim lobortis scelerisque fermentum dui. Magna etiam tempor orci eu lobortis elementum nibh. Quis blandit turpis cursus in hac habitasse platea dictumst. Sed blandit libero volutpat sed cras ornare arcu dui.");
+
+    let mut col_cv_2 = add_column_to_dual_columns(&mut columns_cv_section);
+    write!(col_cv_2.h1(), "Here are my contacts:");
+    write!(col_cv_2.h3(), "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Congue eu consequat ac felis. Quisque sagittis purus sit amet volutpat consequat. Suspendisse in est ante in nibh mauris. Enim blandit volutpat maecenas volutpat blandit aliquam etiam erat velit. Mattis vulputate enim nulla aliquet. Aliquam ultrices sagittis orci a scelerisque purus semper eget. Viverra mauris in aliquam sem fringilla ut morbi. Egestas fringilla phasellus faucibus scelerisque eleifend. Volutpat sed cras ornare arcu. Enim lobortis scelerisque fermentum dui. Magna etiam tempor orci eu lobortis elementum nibh. Quis blandit turpis cursus in hac habitasse platea dictumst. Sed blandit libero volutpat sed cras ornare arcu dui.");
+
+    // Add footer to "Homepage" page
+    page_homepage.add_footer();
+
     // Save page as index.html
 
     page_homepage.publish("index.html");

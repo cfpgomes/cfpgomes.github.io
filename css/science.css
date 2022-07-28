@@ -58,6 +58,10 @@ i {
     height: 100%;
 }
 
+.page-height {
+    height: 100vh;
+}
+
 .top-bar {
     width: 100%;
     height: 180px;
@@ -65,10 +69,22 @@ i {
     position: fixed;
 }
 
+.top-bar-invisible {
+    width: 100%;
+    height: 255px;
+    background-color: #EBE9E400;
+}
+
 .top-bar-mobile {
     width: 100%;
     height: 100px;
     background-color: #92D4AB;
+}
+
+.top-bar-mobile-invisible {
+    width: 100%;
+    height: 100px;
+    background-color: #EBE9E400;
     position: fixed;
 }
 
@@ -128,6 +144,10 @@ i {
     transition: width 0.8s ease-in-out;
     transition: height 0.8s ease-in-out;
     transition: background-image 0.8s ease-in-out;
+}
+
+.blank-background {
+    background-color: #EBE9E4;
 }
 
 .btn-home-top-bar-mobile:hover {
@@ -193,4 +213,9 @@ i {
 .parallax .parallax-bottom-right:hover~.parallax-content::before,
 .parallax .parallax-content {
     border-radius: 40px;
+}
+
+footer {
+    height: 220px;
+    background-color: #EBE9E4;
 }
