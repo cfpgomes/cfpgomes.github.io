@@ -88,12 +88,12 @@ i {
 .btn-top-bar-mobile {
     padding: 0;
     border: 0;
-    width: 50px;
-    height: 50%;
+    width: 64px;
+    height: 64%;
     left: 50%;
     transform: translate(-50%, 0);
-    top: 25%;
-    font-size: 40px;
+    top: 18%;
+    font-size: 30px;
     font-weight: bold;
     border-radius: 12px;
     margin: 0 auto;
