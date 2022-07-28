@@ -261,21 +261,21 @@ impl Page {
         let mut columns = container
             .div()
             .attr("class='columns col-gapless full-height'");
-        let mut column_a = columns.div().attr("class='column col-2-and-4'");
+        let mut column_a = columns.div().attr("class='column col-2-and-quarter'");
         let mut button_a = column_a.button().attr("class='btn btn-top-bar-mobile'");
         write!(button_a, "{}", emoji_a);
-        let mut column_b = columns.div().attr("class='column col-2-and-4'");
+        let mut column_b = columns.div().attr("class='column col-2-and-quarter'");
         let mut button_b = column_b.button().attr("class='btn btn-top-bar-mobile'");
         write!(button_b, "{}", emoji_b);
 
-        let mut column_home = columns.div().attr("class='column col-2-and-4'");
+        let mut column_home = columns.div().attr("class='column col-3'");
         column_home.button().attr(format!("style='background-image:url(\"{}\")' class='btn btn-home-top-bar-mobile'", path_img).as_ref());
 
-        let mut column_c = columns.div().attr("class='column col-2-and-4'");
+        let mut column_c = columns.div().attr("class='column col-2-and-quarter'");
         let mut button_c = column_c.button().attr("class='btn btn-top-bar-mobile'");
         write!(button_c, "{}", emoji_c);
 
-        let mut column_d = columns.div().attr("class='column col-2-and-4'");
+        let mut column_d = columns.div().attr("class='column col-2-and-quarter'");
         let mut button_d = column_d.button().attr("class='btn btn-top-bar-mobile'");
         write!(button_d, "{}", emoji_d);
     }
