@@ -228,7 +228,7 @@ impl Page {
         let mut container = self.buf.div().attr("class='top-bar hide-xl'");
         let mut columns = container
             .div()
-            .attr("class='columns col-gapless full-height'");
+            .attr("class='columns col-gapless full-height ultra-wide-treatment'");
         let mut column_a = columns.div().attr("class='column col-2-and-half'");
         let mut button_a = column_a.button().attr("class='btn btn-top-bar'");
         write!(button_a, "{}", page_a);
@@ -312,10 +312,13 @@ impl Page {
     }
 
     fn add_columns(&mut self, classes: &str) -> Node {
-        let mut columns = self
-            .buf
-            .div()
-            .attr(format!("class='columns page-height {}'", classes).as_ref());
+        let columns = self.buf.div().attr(
+            format!(
+                "class='columns page-height page-ultra-wide-treatment {}'",
+                classes
+            )
+            .as_ref(),
+        );
         columns
     }
 
@@ -549,12 +552,14 @@ fn build() -> Result<(), Box<dyn Error>> {
 
     let mut columns_who_am_i_section = page_homepage.add_columns("");
     let mut col_intro = add_column_to_dual_columns(&mut columns_who_am_i_section);
-    write!(col_intro.h1(), "Hey! I'm Cláudio Gomes.");
-    write!(col_intro.h3(), "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Congue eu consequat ac felis. Quisque sagittis purus sit amet volutpat consequat. Suspendisse in est ante in nibh mauris. Enim blandit volutpat maecenas volutpat blandit aliquam etiam erat velit. Mattis vulputate enim nulla aliquet. Aliquam ultrices sagittis orci a scelerisque purus semper eget. Viverra mauris in aliquam sem fringilla ut morbi. Egestas fringilla phasellus faucibus scelerisque eleifend. Volutpat sed cras ornare arcu. Enim lobortis scelerisque fermentum dui. Magna etiam tempor orci eu lobortis elementum nibh. Quis blandit turpis cursus in hac habitasse platea dictumst. Sed blandit libero volutpat sed cras ornare arcu dui.");
+    let mut container_intro = col_intro.div().attr("class='blank-container'");
+    write!(container_intro.h1(), "Hey! I'm Cláudio Gomes.");
+    write!(container_intro.h3(), "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Congue eu consequat ac felis. Quisque sagittis purus sit amet volutpat consequat. Suspendisse in est ante in nibh mauris. Enim blandit volutpat maecenas volutpat blandit aliquam etiam erat velit. Mattis vulputate enim nulla aliquet. Aliquam ultrices sagittis orci a scelerisque purus semper eget. Viverra mauris in aliquam sem fringilla ut morbi. Egestas fringilla phasellus faucibus scelerisque eleifend. Volutpat sed cras ornare arcu. Enim lobortis scelerisque fermentum dui. Magna etiam tempor orci eu lobortis elementum nibh. Quis blandit turpis cursus in hac habitasse platea dictumst. Sed blandit libero volutpat sed cras ornare arcu dui.");
 
     let mut col_contacts = add_column_to_dual_columns(&mut columns_who_am_i_section);
-    write!(col_contacts.h1(), "Here are my contacts:");
-    write!(col_contacts.h3(), "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Congue eu consequat ac felis. Quisque sagittis purus sit amet volutpat consequat. Suspendisse in est ante in nibh mauris. Enim blandit volutpat maecenas volutpat blandit aliquam etiam erat velit. Mattis vulputate enim nulla aliquet. Aliquam ultrices sagittis orci a scelerisque purus semper eget. Viverra mauris in aliquam sem fringilla ut morbi. Egestas fringilla phasellus faucibus scelerisque eleifend. Volutpat sed cras ornare arcu. Enim lobortis scelerisque fermentum dui. Magna etiam tempor orci eu lobortis elementum nibh. Quis blandit turpis cursus in hac habitasse platea dictumst. Sed blandit libero volutpat sed cras ornare arcu dui.");
+    let mut container_contacts = col_contacts.div().attr("class='blank-container'");
+    write!(container_contacts.h1(), "You can find me in those places!");
+    write!(container_contacts.h3(), "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Congue eu consequat ac felis. Quisque sagittis purus sit amet volutpat consequat. Suspendisse in est ante in nibh mauris. Enim blandit volutpat maecenas volutpat blandit aliquam etiam erat velit. Mattis vulputate enim nulla aliquet. Aliquam ultrices sagittis orci a scelerisque purus semper eget. Viverra mauris in aliquam sem fringilla ut morbi. Egestas fringilla phasellus faucibus scelerisque eleifend. Volutpat sed cras ornare arcu. Enim lobortis scelerisque fermentum dui. Magna etiam tempor orci eu lobortis elementum nibh. Quis blandit turpis cursus in hac habitasse platea dictumst. Sed blandit libero volutpat sed cras ornare arcu dui.");
 
     // Add "Publications" and "Miscellaneous" section to "Homepage" page.
     // (publications and miscellaneous, once clicked, should open dedicated
@@ -562,19 +567,24 @@ fn build() -> Result<(), Box<dyn Error>> {
     let mut columns_pub_misc_section = page_homepage.add_columns("blank-background");
 
     let mut col_pubs = add_column_to_dual_columns(&mut columns_pub_misc_section);
-    write!(col_pubs.h1(), "I do research in Quantum Computing!");
+    let mut container_pubs = col_pubs.div().attr("class='blank-container'");
+    write!(container_pubs.h1(), "I do research in Quantum Computing!");
+
     let mut col_pubs = add_column_to_dual_columns(&mut columns_pub_misc_section);
-    write!(col_pubs.h1(), "And also some random stuff...");
+    let mut container_pubs = col_pubs.div().attr("class='blank-container'");
+    write!(container_pubs.h1(), "And also some random stuff...");
 
     // Add "CV" section to "Homepage" page
     let mut columns_cv_section = page_homepage.add_columns("");
     let mut col_cv_1 = add_column_to_dual_columns(&mut columns_cv_section);
-    write!(col_cv_1.h1(), "Hey! I'm Cláudio Gomes.");
-    write!(col_cv_1.h3(), "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Congue eu consequat ac felis. Quisque sagittis purus sit amet volutpat consequat. Suspendisse in est ante in nibh mauris. Enim blandit volutpat maecenas volutpat blandit aliquam etiam erat velit. Mattis vulputate enim nulla aliquet. Aliquam ultrices sagittis orci a scelerisque purus semper eget. Viverra mauris in aliquam sem fringilla ut morbi. Egestas fringilla phasellus faucibus scelerisque eleifend. Volutpat sed cras ornare arcu. Enim lobortis scelerisque fermentum dui. Magna etiam tempor orci eu lobortis elementum nibh. Quis blandit turpis cursus in hac habitasse platea dictumst. Sed blandit libero volutpat sed cras ornare arcu dui.");
+    let mut container_cv_1 = col_cv_1.div().attr("class='blank-container'");
+    write!(container_cv_1.h1(), "Hey! I'm Cláudio Gomes.");
+    write!(container_cv_1.h3(), "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Congue eu consequat ac felis. Quisque sagittis purus sit amet volutpat consequat. Suspendisse in est ante in nibh mauris. Enim blandit volutpat maecenas volutpat blandit aliquam etiam erat velit. Mattis vulputate enim nulla aliquet. Aliquam ultrices sagittis orci a scelerisque purus semper eget. Viverra mauris in aliquam sem fringilla ut morbi. Egestas fringilla phasellus faucibus scelerisque eleifend. Volutpat sed cras ornare arcu. Enim lobortis scelerisque fermentum dui. Magna etiam tempor orci eu lobortis elementum nibh. Quis blandit turpis cursus in hac habitasse platea dictumst. Sed blandit libero volutpat sed cras ornare arcu dui.");
 
     let mut col_cv_2 = add_column_to_dual_columns(&mut columns_cv_section);
-    write!(col_cv_2.h1(), "Here are my contacts:");
-    write!(col_cv_2.h3(), "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Congue eu consequat ac felis. Quisque sagittis purus sit amet volutpat consequat. Suspendisse in est ante in nibh mauris. Enim blandit volutpat maecenas volutpat blandit aliquam etiam erat velit. Mattis vulputate enim nulla aliquet. Aliquam ultrices sagittis orci a scelerisque purus semper eget. Viverra mauris in aliquam sem fringilla ut morbi. Egestas fringilla phasellus faucibus scelerisque eleifend. Volutpat sed cras ornare arcu. Enim lobortis scelerisque fermentum dui. Magna etiam tempor orci eu lobortis elementum nibh. Quis blandit turpis cursus in hac habitasse platea dictumst. Sed blandit libero volutpat sed cras ornare arcu dui.");
+    let mut container_cv_2 = col_cv_2.div().attr("class='blank-container'");
+    write!(container_cv_2.h1(), "Here are my contacts:");
+    write!(container_cv_2.h3(), "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Congue eu consequat ac felis. Quisque sagittis purus sit amet volutpat consequat. Suspendisse in est ante in nibh mauris. Enim blandit volutpat maecenas volutpat blandit aliquam etiam erat velit. Mattis vulputate enim nulla aliquet. Aliquam ultrices sagittis orci a scelerisque purus semper eget. Viverra mauris in aliquam sem fringilla ut morbi. Egestas fringilla phasellus faucibus scelerisque eleifend. Volutpat sed cras ornare arcu. Enim lobortis scelerisque fermentum dui. Magna etiam tempor orci eu lobortis elementum nibh. Quis blandit turpis cursus in hac habitasse platea dictumst. Sed blandit libero volutpat sed cras ornare arcu dui.");
 
     // Add footer to "Homepage" page
     page_homepage.add_footer();
