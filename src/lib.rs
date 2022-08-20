@@ -553,12 +553,14 @@ fn build() -> Result<(), Box<dyn Error>> {
     let mut columns_who_am_i_section = page_homepage.add_columns("");
     let mut col_intro = add_column_to_dual_columns(&mut columns_who_am_i_section);
     let mut container_intro = col_intro.div().attr("class='blank-container'");
-    write!(container_intro.h1(), "Hey! I'm Cláudio Gomes.");
-    write!(container_intro.h3(), "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Congue eu consequat ac felis. Quisque sagittis purus sit amet volutpat consequat. Suspendisse in est ante in nibh mauris. Enim blandit volutpat maecenas volutpat blandit aliquam etiam erat velit. Mattis vulputate enim nulla aliquet. Aliquam ultrices sagittis orci a scelerisque purus semper eget. Viverra mauris in aliquam sem fringilla ut morbi. Egestas fringilla phasellus faucibus scelerisque eleifend. Volutpat sed cras ornare arcu. Enim lobortis scelerisque fermentum dui. Magna etiam tempor orci eu lobortis elementum nibh. Quis blandit turpis cursus in hac habitasse platea dictumst. Sed blandit libero volutpat sed cras ornare arcu dui.");
+    write!(container_intro.h1(), "<b>Hey there! 👋 Cláudio Gomes here.</b>");
+    write!(container_intro.h3(), "I'm a dual-degree PhD student with one foot at the Carnegie Mellon University and the other foot at the University of Porto. Pretty exciting, I know! 😄");
+    write!(container_intro.h3(), "My research focuses on sustainable forms of computing, such as <b>quantum computing</b>. Massive amounts of information are handled and processed by small, big and super computers all over the world. Any alternative form of computing that offers the same processing power for a lot less energy would have a tremendous benefit for society! <b>My goal is to augment classical computing with sustainable alternatives.</b> 🌳");
+    write!(container_intro.h3(), "Welcome to my webpage and feel free to contact me! 🤠");
 
     let mut col_contacts = add_column_to_dual_columns(&mut columns_who_am_i_section);
     let mut container_contacts = col_contacts.div().attr("class='blank-container'");
-    write!(container_contacts.h1(), "You can find me in those places!");
+    write!(container_contacts.h1(), "<b>Find me in those places! 👇</b>");
     write!(container_contacts.h3(), "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Congue eu consequat ac felis. Quisque sagittis purus sit amet volutpat consequat. Suspendisse in est ante in nibh mauris. Enim blandit volutpat maecenas volutpat blandit aliquam etiam erat velit. Mattis vulputate enim nulla aliquet. Aliquam ultrices sagittis orci a scelerisque purus semper eget. Viverra mauris in aliquam sem fringilla ut morbi. Egestas fringilla phasellus faucibus scelerisque eleifend. Volutpat sed cras ornare arcu. Enim lobortis scelerisque fermentum dui. Magna etiam tempor orci eu lobortis elementum nibh. Quis blandit turpis cursus in hac habitasse platea dictumst. Sed blandit libero volutpat sed cras ornare arcu dui.");
 
     // Add "Publications" and "Miscellaneous" section to "Homepage" page.
