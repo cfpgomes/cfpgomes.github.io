@@ -71,6 +71,9 @@ i {
     height: 180px;
     background-color: #92D4AB;
     position: fixed;
+    box-shadow: 0px 0px 20px 0px rgba(48, 55, 56, 0.3);
+    -webkit-box-shadow: 0px 0px 20px 0px rgba(48, 55, 56, 0.3);
+    -moz-box-shadow: 0px 0px 20px 0px rgba(48, 55, 56, 0.3);
 }
 
 .top-bar-invisible {
@@ -252,4 +255,30 @@ footer {
     max-width: 177vh;
     width: 100%;
     margin: auto;
+}
+
+.grid_button {
+    height: 0;
+    border-radius: 20px;
+    margin: 4%;
+    width: 92%;
+    padding-bottom: 92%;
+    background-color: #4FBA6D;
+    z-index: -10;
+}
+
+.grid_icon {
+    margin: 0;
+    margin-top: 50%;
+    width: 100%;
+    text-align: center;
+    font-size: 60px;
+    color:#EBE9E4;
+    transform: translateY(-50%);
+    z-index: -10;
+}
+
+.grid_button:hover {
+    background-color: #46AC69;
+    z-index: -10;
 }

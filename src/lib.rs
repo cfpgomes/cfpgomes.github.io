@@ -11,17 +11,13 @@ use image_compressor::Factor;
 use image_compressor::FolderCompressor;
 
 use image::io::Reader as ImageReader;
-use image::{GenericImage, GenericImageView, Pixel, Rgba, RgbaImage};
-use std::io::Cursor;
+use image::{Pixel, Rgba};
 
 use chrono::NaiveDate;
 
 use comrak::{markdown_to_html, ComrakOptions};
 
 use html_builder::*;
-
-use rand::seq::SliceRandom;
-use rand::thread_rng;
 
 const FOLDER_PUBLICATIONS: &str = "publications";
 
@@ -561,7 +557,41 @@ fn build() -> Result<(), Box<dyn Error>> {
     let mut col_contacts = add_column_to_dual_columns(&mut columns_who_am_i_section);
     let mut container_contacts = col_contacts.div().attr("class='blank-container'");
     write!(container_contacts.h1(), "<b>Find me in those places! 👇</b>");
-    write!(container_contacts.h3(), "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Congue eu consequat ac felis. Quisque sagittis purus sit amet volutpat consequat. Suspendisse in est ante in nibh mauris. Enim blandit volutpat maecenas volutpat blandit aliquam etiam erat velit. Mattis vulputate enim nulla aliquet. Aliquam ultrices sagittis orci a scelerisque purus semper eget. Viverra mauris in aliquam sem fringilla ut morbi. Egestas fringilla phasellus faucibus scelerisque eleifend. Volutpat sed cras ornare arcu. Enim lobortis scelerisque fermentum dui. Magna etiam tempor orci eu lobortis elementum nibh. Quis blandit turpis cursus in hac habitasse platea dictumst. Sed blandit libero volutpat sed cras ornare arcu dui.");
+    
+    let mut col_buttons = container_contacts.div().attr("class='columns'");
+    let mut button_email = col_buttons.a().attr("class='col-4 tooltip tooltip-left' data-tooltip='Send an email!'  href='mailto:claudiogomes@cmu.edu'");
+    let mut icon_email = button_email.div().attr("class='grid_button'");
+    icon_email.i().attr("class='grid_icon fa-solid fa-envelope'");
+    let mut button_github = col_buttons.a().attr("class='col-4 tooltip' data-tooltip='GitHub' href='https://github.com/cfpgomes'");
+    let mut icon_github = button_github.div().attr("class='grid_button'");
+    icon_github.i().attr("class='grid_icon fa-brands fa-github'");
+    let mut button_twitter = col_buttons.a().attr("class='col-4 tooltip tooltip-right' data-tooltip='Twitter' href='https://twitter.com/cfpgomes'");
+    let mut icon_twitter = button_twitter.div().attr("class='grid_button'");
+    icon_twitter.i().attr("class='grid_icon fa-brands fa-twitter'");
+    
+    
+    let mut button_scholar = col_buttons.a().attr("class='col-4 tooltip tooltip-left' data-tooltip='Google Scholar' href='https://scholar.google.com/citations?user=xlm7eBYAAAAJ'");
+    let mut icon_scholar = button_scholar.div().attr("class='grid_button'");
+    icon_scholar.i().attr("class='grid_icon'");
+    let mut button_research_gate = col_buttons.a().attr("class='col-4 tooltip' data-tooltip='ResearchGate' href='https://www.researchgate.net/profile/Claudio-Gomes-12'");
+    let mut icon_research_gate = button_research_gate.div().attr("class='grid_button'");
+    icon_research_gate.i().attr("class='grid_icon fa-brands fa-researchgate'");
+    let mut button_orcid = col_buttons.a().attr("class='col-4 tooltip tooltip-right' data-tooltip='ORCID' href='https://orcid.org/0000-0001-6292-0222'");
+    let mut icon_orcid = button_orcid.div().attr("class='grid_button'");
+    icon_orcid.i().attr("class='grid_icon fa-brands fa-orcid'");
+    
+    let mut button_linkedin = col_buttons.a().attr("class='col-4 tooltip tooltip-left' data-tooltip='LinkedIn' href='https://www.linkedin.com/in/cfpgomes'");
+    let mut icon_linkedin = button_linkedin.div().attr("class='grid_button'");
+    icon_linkedin.i().attr("class='grid_icon fa-brands fa-linkedin-in'");
+    let mut button_unsplash = col_buttons.a().attr("class='col-4 tooltip tooltip-bottom' data-tooltip='Unsplash' href='https://unsplash.com/@cfpgomes
+
+
+    '");
+    let mut icon_unsplash = button_unsplash.div().attr("class='grid_button'");
+    icon_unsplash.i().attr("class='grid_icon fa-brands fa-unsplash'");
+    let mut button_cmu_portugal = col_buttons.a().attr("class='col-4 tooltip tooltip-right' data-tooltip='CMU Portugal' href='https://www.cmuportugal.org/students/claudio-filipe-prata-gomes'");
+    write!(button_cmu_portugal.div().attr("class='grid_button'"), "<b>4</b>");
+
 
     // Add "Publications" and "Miscellaneous" section to "Homepage" page.
     // (publications and miscellaneous, once clicked, should open dedicated
