@@ -549,14 +549,14 @@ fn build() -> Result<(), Box<dyn Error>> {
     let mut columns_who_am_i_section = page_homepage.add_columns("");
     let mut col_intro = add_column_to_dual_columns(&mut columns_who_am_i_section);
     let mut container_intro = col_intro.div().attr("class='blank-container'");
-    write!(container_intro.h1(), "<b>Hey there! 👋 Cláudio Gomes here.</b>");
+    write!(container_intro.h1().b(), "Hey there! 👋<br>Cláudio Gomes here.");
     write!(container_intro.h3(), "I'm a dual-degree PhD student with one foot at the Carnegie Mellon University and the other foot at the University of Porto. Pretty exciting, I know! 😄");
     write!(container_intro.h3(), "My research focuses on sustainable forms of computing, such as <b>quantum computing</b>. Massive amounts of information are handled and processed by small, big and super computers all over the world. Any alternative form of computing that offers the same processing power for a lot less energy would have a tremendous benefit for society! <b>My goal is to augment classical computing with sustainable alternatives.</b> 🌳");
     write!(container_intro.h3(), "Welcome to my webpage and feel free to contact me! 🤠");
 
     let mut col_contacts = add_column_to_dual_columns(&mut columns_who_am_i_section);
     let mut container_contacts = col_contacts.div().attr("class='blank-container'");
-    write!(container_contacts.h1(), "<b>Find me in those places! 👇</b>");
+    write!(container_contacts.h1().b(), "Find me in those places! 👇");
     
     let mut col_buttons = container_contacts.div().attr("class='columns'");
     let mut button_email = col_buttons.a().attr("class='col-4 tooltip tooltip-left' data-tooltip='Send an email!'  href='mailto:claudiogomes@cmu.edu'");
@@ -572,7 +572,7 @@ fn build() -> Result<(), Box<dyn Error>> {
     
     let mut button_scholar = col_buttons.a().attr("class='col-4 tooltip tooltip-left' data-tooltip='Google Scholar' href='https://scholar.google.com/citations?user=xlm7eBYAAAAJ'");
     let mut icon_scholar = button_scholar.div().attr("class='grid_button'");
-    icon_scholar.i().attr("class='grid_icon'");
+    icon_scholar.img().attr("src='svg/Google_Scholar_logo.svg' class='svg_icon'");
     let mut button_research_gate = col_buttons.a().attr("class='col-4 tooltip' data-tooltip='ResearchGate' href='https://www.researchgate.net/profile/Claudio-Gomes-12'");
     let mut icon_research_gate = button_research_gate.div().attr("class='grid_button'");
     icon_research_gate.i().attr("class='grid_icon fa-brands fa-researchgate'");
@@ -583,14 +583,12 @@ fn build() -> Result<(), Box<dyn Error>> {
     let mut button_linkedin = col_buttons.a().attr("class='col-4 tooltip tooltip-left' data-tooltip='LinkedIn' href='https://www.linkedin.com/in/cfpgomes'");
     let mut icon_linkedin = button_linkedin.div().attr("class='grid_button'");
     icon_linkedin.i().attr("class='grid_icon fa-brands fa-linkedin-in'");
-    let mut button_unsplash = col_buttons.a().attr("class='col-4 tooltip tooltip-bottom' data-tooltip='Unsplash' href='https://unsplash.com/@cfpgomes
-
-
-    '");
+    let mut button_unsplash = col_buttons.a().attr("class='col-4 tooltip tooltip-bottom' data-tooltip='Unsplash' href='https://unsplash.com/@cfpgomes'");
     let mut icon_unsplash = button_unsplash.div().attr("class='grid_button'");
     icon_unsplash.i().attr("class='grid_icon fa-brands fa-unsplash'");
     let mut button_cmu_portugal = col_buttons.a().attr("class='col-4 tooltip tooltip-right' data-tooltip='CMU Portugal' href='https://www.cmuportugal.org/students/claudio-filipe-prata-gomes'");
-    write!(button_cmu_portugal.div().attr("class='grid_button'"), "<b>4</b>");
+    let mut icon_cmu_portugal = button_cmu_portugal.div().attr("class='grid_button'");
+    icon_cmu_portugal.img().attr("src='svg/cmu_portugal.svg' class='svg_icon'");
 
 
     // Add "Publications" and "Miscellaneous" section to "Homepage" page.
@@ -600,11 +598,16 @@ fn build() -> Result<(), Box<dyn Error>> {
 
     let mut col_pubs = add_column_to_dual_columns(&mut columns_pub_misc_section);
     let mut container_pubs = col_pubs.div().attr("class='blank-container'");
-    write!(container_pubs.h1(), "I do research in Quantum Computing!");
+    write!(container_pubs.h1().b(), "Check out my research! 💡");
+    let mut latest_post_container = container_pubs.div().attr("class='article_container'");
+    let mut second_latest_post_container = container_pubs.div().attr("class='article_container'");
+
+    // Get latest post
+    // latest_post = posts.get_last_post()
 
     let mut col_pubs = add_column_to_dual_columns(&mut columns_pub_misc_section);
     let mut container_pubs = col_pubs.div().attr("class='blank-container'");
-    write!(container_pubs.h1(), "And also some random stuff...");
+    write!(container_pubs.h1().b(), "And also some random stuff...");
 
     // Add "CV" section to "Homepage" page
     let mut columns_cv_section = page_homepage.add_columns("");
