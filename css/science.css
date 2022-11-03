@@ -301,5 +301,26 @@ footer {
     border-radius: 40px;
     margin-top: 20px;
     margin-bottom: 40px;
+    padding: 20px 20px 0px 20px;
     height: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.auto_crop {
+    flex-grow: 1;
+    overflow: hidden;
+    background: linear-gradient(to bottom,  #3b4351 70%, #92D4AB 100%);
+    background-clip: inherit;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    max-height: 220px;
+}
+
+.date_color {
+    color: #4FBA6D;
+}
+
+.no_margin {
+    margin: 0;
 }

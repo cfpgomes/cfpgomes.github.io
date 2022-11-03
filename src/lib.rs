@@ -355,6 +355,27 @@ impl Publication {
         }
     }
 
+    fn from_gobbets_in_folder(folder_path: &str) -> Result<Vec<Self>, &'static str> {
+        let paths = match fs::read_dir(folder_path) {
+            Ok(p) => p,
+            _ => return Err("Couldn't open folder."),
+        };
+
+        let mut posts = Vec::<Self>::new();
+
+        for path in paths {
+            let path_str = format!("{}", path.unwrap().path().display());
+            if path_str.ends_with(".gobbet") {
+                let post = Self::from_gobbet(&path_str).unwrap();
+                posts.push(post);
+            }
+        }
+
+        posts.sort_by(|a, b| b.date.cmp(&a.date));
+
+        Ok(posts)
+    }
+
     fn from_gobbet(gobbet_path: &str) -> Result<Self, &'static str> {
         println!("Reading gobbet file {:?}", gobbet_path);
         // Read contents of gobbet.
@@ -460,6 +481,8 @@ fn modify() -> Result<(), Box<dyn Error>> {
 }
 
 fn build() -> Result<(), Box<dyn Error>> {
+    let posts = Publication::from_gobbets_in_folder("publications").unwrap();
+
     // Apply white color with opacity of 0.9 to background images
     // apply_white_overlay_to_images("img", "white-img");
     compress_images("white-img", "compressed-img");
@@ -549,47 +572,69 @@ fn build() -> Result<(), Box<dyn Error>> {
     let mut columns_who_am_i_section = page_homepage.add_columns("");
     let mut col_intro = add_column_to_dual_columns(&mut columns_who_am_i_section);
     let mut container_intro = col_intro.div().attr("class='blank-container'");
-    write!(container_intro.h1().b(), "Hey there! 👋<br>Cláudio Gomes here.");
-    write!(container_intro.h3(), "I'm a dual-degree PhD student with one foot at the Carnegie Mellon University and the other foot at the University of Porto. Pretty exciting, I know! 😄");
-    write!(container_intro.h3(), "My research focuses on sustainable forms of computing, such as <b>quantum computing</b>. Massive amounts of information are handled and processed by small, big and super computers all over the world. Any alternative form of computing that offers the same processing power for a lot less energy would have a tremendous benefit for society! <b>My goal is to augment classical computing with sustainable alternatives.</b> 🌳");
-    write!(container_intro.h3(), "Welcome to my webpage and feel free to contact me! 🤠");
+    write!(
+        container_intro.h1().b(),
+        "Hey there! 👋<br>Cláudio Gomes here."
+    )?;
+    write!(container_intro.h3(), "I'm a dual-degree PhD student with one foot at the Carnegie Mellon University and the other foot at the University of Porto. Pretty exciting, I know! 😄")?;
+    write!(container_intro.h3(), "My research focuses on sustainable forms of computing, such as <b>quantum computing</b>. Massive amounts of information are handled and processed by small, big and super computers all over the world. Any alternative form of computing that offers the same processing power for a lot less energy would have a tremendous benefit for society! <b>My goal is to augment classical computing with sustainable alternatives.</b> 🌳")?;
+    write!(
+        container_intro.h3(),
+        "Welcome to my webpage and feel free to contact me! 🤠"
+    )?;
 
     let mut col_contacts = add_column_to_dual_columns(&mut columns_who_am_i_section);
     let mut container_contacts = col_contacts.div().attr("class='blank-container'");
-    write!(container_contacts.h1().b(), "Find me in those places! 👇");
-    
+    write!(container_contacts.h1().b(), "Find me in those places! 👇")?;
+
     let mut col_buttons = container_contacts.div().attr("class='columns'");
     let mut button_email = col_buttons.a().attr("class='col-4 tooltip tooltip-left' data-tooltip='Send an email!'  href='mailto:claudiogomes@cmu.edu'");
     let mut icon_email = button_email.div().attr("class='grid_button'");
-    icon_email.i().attr("class='grid_icon fa-solid fa-envelope'");
-    let mut button_github = col_buttons.a().attr("class='col-4 tooltip' data-tooltip='GitHub' href='https://github.com/cfpgomes'");
+    icon_email
+        .i()
+        .attr("class='grid_icon fa-solid fa-envelope'");
+    let mut button_github = col_buttons
+        .a()
+        .attr("class='col-4 tooltip' data-tooltip='GitHub' href='https://github.com/cfpgomes'");
     let mut icon_github = button_github.div().attr("class='grid_button'");
-    icon_github.i().attr("class='grid_icon fa-brands fa-github'");
+    icon_github
+        .i()
+        .attr("class='grid_icon fa-brands fa-github'");
     let mut button_twitter = col_buttons.a().attr("class='col-4 tooltip tooltip-right' data-tooltip='Twitter' href='https://twitter.com/cfpgomes'");
     let mut icon_twitter = button_twitter.div().attr("class='grid_button'");
-    icon_twitter.i().attr("class='grid_icon fa-brands fa-twitter'");
-    
-    
+    icon_twitter
+        .i()
+        .attr("class='grid_icon fa-brands fa-twitter'");
+
     let mut button_scholar = col_buttons.a().attr("class='col-4 tooltip tooltip-left' data-tooltip='Google Scholar' href='https://scholar.google.com/citations?user=xlm7eBYAAAAJ'");
     let mut icon_scholar = button_scholar.div().attr("class='grid_button'");
-    icon_scholar.img().attr("src='svg/Google_Scholar_logo.svg' class='svg_icon'");
+    icon_scholar
+        .img()
+        .attr("src='svg/Google_Scholar_logo.svg' class='svg_icon'");
     let mut button_research_gate = col_buttons.a().attr("class='col-4 tooltip' data-tooltip='ResearchGate' href='https://www.researchgate.net/profile/Claudio-Gomes-12'");
     let mut icon_research_gate = button_research_gate.div().attr("class='grid_button'");
-    icon_research_gate.i().attr("class='grid_icon fa-brands fa-researchgate'");
+    icon_research_gate
+        .i()
+        .attr("class='grid_icon fa-brands fa-researchgate'");
     let mut button_orcid = col_buttons.a().attr("class='col-4 tooltip tooltip-right' data-tooltip='ORCID' href='https://orcid.org/0000-0001-6292-0222'");
     let mut icon_orcid = button_orcid.div().attr("class='grid_button'");
     icon_orcid.i().attr("class='grid_icon fa-brands fa-orcid'");
-    
+
     let mut button_linkedin = col_buttons.a().attr("class='col-4 tooltip tooltip-left' data-tooltip='LinkedIn' href='https://www.linkedin.com/in/cfpgomes'");
     let mut icon_linkedin = button_linkedin.div().attr("class='grid_button'");
-    icon_linkedin.i().attr("class='grid_icon fa-brands fa-linkedin-in'");
+    icon_linkedin
+        .i()
+        .attr("class='grid_icon fa-brands fa-linkedin-in'");
     let mut button_unsplash = col_buttons.a().attr("class='col-4 tooltip tooltip-bottom' data-tooltip='Unsplash' href='https://unsplash.com/@cfpgomes'");
     let mut icon_unsplash = button_unsplash.div().attr("class='grid_button'");
-    icon_unsplash.i().attr("class='grid_icon fa-brands fa-unsplash'");
+    icon_unsplash
+        .i()
+        .attr("class='grid_icon fa-brands fa-unsplash'");
     let mut button_cmu_portugal = col_buttons.a().attr("class='col-4 tooltip tooltip-right' data-tooltip='CMU Portugal' href='https://www.cmuportugal.org/students/claudio-filipe-prata-gomes'");
     let mut icon_cmu_portugal = button_cmu_portugal.div().attr("class='grid_button'");
-    icon_cmu_portugal.img().attr("src='svg/cmu_portugal.svg' class='svg_icon'");
-
+    icon_cmu_portugal
+        .img()
+        .attr("src='svg/cmu_portugal.svg' class='svg_icon'");
 
     // Add "Publications" and "Miscellaneous" section to "Homepage" page.
     // (publications and miscellaneous, once clicked, should open dedicated
@@ -598,28 +643,37 @@ fn build() -> Result<(), Box<dyn Error>> {
 
     let mut col_pubs = add_column_to_dual_columns(&mut columns_pub_misc_section);
     let mut container_pubs = col_pubs.div().attr("class='blank-container'");
-    write!(container_pubs.h1().b(), "Check out my research! 💡");
-    let mut latest_post_container = container_pubs.div().attr("class='article_container'");
-    let mut second_latest_post_container = container_pubs.div().attr("class='article_container'");
+    write!(container_pubs.h1().b(), "Check out my research! 💡")?;
 
     // Get latest post
-    // latest_post = posts.get_last_post()
+    let latest_post = &posts[0];
+    let mut latest_post_container = container_pubs.div().attr("class='article_container'");
+    write!(latest_post_container.h4().attr("class='no_margin'").b(), "{}", latest_post.title)?;
+    write!(latest_post_container.h5().attr("class='date_color no_margin'"), "{}", latest_post.date)?;
+    write!(latest_post_container.p().attr("class='auto_crop no_margin'"), "{}", latest_post.markdown)?;
+    
+    // Get second latest post
+    let second_latest_post = &posts[1];
+    let mut second_latest_post_container = container_pubs.div().attr("class='article_container'");
+    write!(second_latest_post_container.h4().attr("class='no_margin'").b(), "{}", second_latest_post.title)?;
+    write!(second_latest_post_container.h5().attr("class='date_color no_margin'"), "{}", second_latest_post.date)?;
+    write!(second_latest_post_container.p().attr("class='auto_crop no_margin'"), "{}", second_latest_post.markdown)?;
 
     let mut col_pubs = add_column_to_dual_columns(&mut columns_pub_misc_section);
     let mut container_pubs = col_pubs.div().attr("class='blank-container'");
-    write!(container_pubs.h1().b(), "And also some random stuff...");
+    write!(container_pubs.h1().b(), "And also some random stuff...")?;
 
     // Add "CV" section to "Homepage" page
     let mut columns_cv_section = page_homepage.add_columns("");
     let mut col_cv_1 = add_column_to_dual_columns(&mut columns_cv_section);
     let mut container_cv_1 = col_cv_1.div().attr("class='blank-container'");
-    write!(container_cv_1.h1(), "Hey! I'm Cláudio Gomes.");
-    write!(container_cv_1.h3(), "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Congue eu consequat ac felis. Quisque sagittis purus sit amet volutpat consequat. Suspendisse in est ante in nibh mauris. Enim blandit volutpat maecenas volutpat blandit aliquam etiam erat velit. Mattis vulputate enim nulla aliquet. Aliquam ultrices sagittis orci a scelerisque purus semper eget. Viverra mauris in aliquam sem fringilla ut morbi. Egestas fringilla phasellus faucibus scelerisque eleifend. Volutpat sed cras ornare arcu. Enim lobortis scelerisque fermentum dui. Magna etiam tempor orci eu lobortis elementum nibh. Quis blandit turpis cursus in hac habitasse platea dictumst. Sed blandit libero volutpat sed cras ornare arcu dui.");
+    write!(container_cv_1.h1(), "Hey! I'm Cláudio Gomes.")?;
+    write!(container_cv_1.h3(), "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Congue eu consequat ac felis. Quisque sagittis purus sit amet volutpat consequat. Suspendisse in est ante in nibh mauris. Enim blandit volutpat maecenas volutpat blandit aliquam etiam erat velit. Mattis vulputate enim nulla aliquet. Aliquam ultrices sagittis orci a scelerisque purus semper eget. Viverra mauris in aliquam sem fringilla ut morbi. Egestas fringilla phasellus faucibus scelerisque eleifend. Volutpat sed cras ornare arcu. Enim lobortis scelerisque fermentum dui. Magna etiam tempor orci eu lobortis elementum nibh. Quis blandit turpis cursus in hac habitasse platea dictumst. Sed blandit libero volutpat sed cras ornare arcu dui.")?;
 
     let mut col_cv_2 = add_column_to_dual_columns(&mut columns_cv_section);
     let mut container_cv_2 = col_cv_2.div().attr("class='blank-container'");
-    write!(container_cv_2.h1(), "Here are my contacts:");
-    write!(container_cv_2.h3(), "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Congue eu consequat ac felis. Quisque sagittis purus sit amet volutpat consequat. Suspendisse in est ante in nibh mauris. Enim blandit volutpat maecenas volutpat blandit aliquam etiam erat velit. Mattis vulputate enim nulla aliquet. Aliquam ultrices sagittis orci a scelerisque purus semper eget. Viverra mauris in aliquam sem fringilla ut morbi. Egestas fringilla phasellus faucibus scelerisque eleifend. Volutpat sed cras ornare arcu. Enim lobortis scelerisque fermentum dui. Magna etiam tempor orci eu lobortis elementum nibh. Quis blandit turpis cursus in hac habitasse platea dictumst. Sed blandit libero volutpat sed cras ornare arcu dui.");
+    write!(container_cv_2.h1(), "Here are my contacts:")?;
+    write!(container_cv_2.h3(), "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Congue eu consequat ac felis. Quisque sagittis purus sit amet volutpat consequat. Suspendisse in est ante in nibh mauris. Enim blandit volutpat maecenas volutpat blandit aliquam etiam erat velit. Mattis vulputate enim nulla aliquet. Aliquam ultrices sagittis orci a scelerisque purus semper eget. Viverra mauris in aliquam sem fringilla ut morbi. Egestas fringilla phasellus faucibus scelerisque eleifend. Volutpat sed cras ornare arcu. Enim lobortis scelerisque fermentum dui. Magna etiam tempor orci eu lobortis elementum nibh. Quis blandit turpis cursus in hac habitasse platea dictumst. Sed blandit libero volutpat sed cras ornare arcu dui.")?;
 
     // Add footer to "Homepage" page
     page_homepage.add_footer();
