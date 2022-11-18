@@ -44,6 +44,14 @@ const NUMBERS: [&str; 2] = [
     // "nineteen",
 ];
 
+fn titlefy_to_page_title(title: &str) -> String {
+    return title
+        .to_lowercase()
+        .replace(|c: char| !c.is_ascii(), "")
+        .replace(|c: char| c.is_ascii_whitespace(), "-")
+        .replace(|c: char| !(c.is_alphanumeric() || c == '-'), "");
+}
+
 fn apply_white_overlay_to_images(from_dest_dir: &str, to_dest_dir: &str) {
     let dir_entries = fs::read_dir(from_dest_dir).unwrap();
     fs::create_dir_all(to_dest_dir).unwrap();
@@ -483,6 +491,39 @@ fn modify() -> Result<(), Box<dyn Error>> {
 fn build() -> Result<(), Box<dyn Error>> {
     let posts = Publication::from_gobbets_in_folder("publications").unwrap();
 
+    let papers = posts
+        .into_iter()
+        .filter(|p| p.tags.contains(&String::from("paper")))
+        .collect::<Vec<_>>();
+
+    for paper in &papers {
+        let mut page_paper = Page::new(&paper.title, CSS::Science);
+        page_paper.add_top_bar(
+            "profile_pic.png",
+            "Who am I?",
+            "Publications",
+            "Miscellaneous",
+            "CV",
+            "fa-person-rays",
+            "fa-atom",
+            "fa-cow",
+            "fa-address-book",
+            Some("Publications"),
+        );
+
+        let mut columns = page_paper.add_columns("");
+        let mut col = add_column_to_dual_columns(&mut columns);
+        let mut cont = col.div().attr("class='blank-container'");
+        write!(cont.h1(), "{}", paper.title)?;
+        write!(cont.h2(), "{}", paper.date)?;
+        write!(cont, "{}", paper.to_html())?;
+
+        page_paper.add_footer();
+
+        page_paper
+            .publish(format!("publications-{}.html", titlefy_to_page_title(&paper.title)).as_str());
+    }
+
     // Apply white color with opacity of 0.9 to background images
     // apply_white_overlay_to_images("img", "white-img");
     compress_images("white-img", "compressed-img");
@@ -646,18 +687,65 @@ fn build() -> Result<(), Box<dyn Error>> {
     write!(container_pubs.h1().b(), "Check out my research! 💡")?;
 
     // Get latest post
-    let latest_post = &posts[0];
-    let mut latest_post_container = container_pubs.div().attr("class='article_container'");
-    write!(latest_post_container.h4().attr("class='no_margin'").b(), "{}", latest_post.title)?;
-    write!(latest_post_container.h5().attr("class='date_color no_margin'"), "{}", latest_post.date)?;
-    write!(latest_post_container.p().attr("class='auto_crop no_margin'"), "{}", latest_post.markdown)?;
-    
+    let latest_post = &papers[0];
+    let mut latest_post_container = container_pubs.a().attr(
+        format!(
+            "class='article_container' href='publications-{}.html'",
+            titlefy_to_page_title(&latest_post.title)
+        )
+        .as_str(),
+    );
+    write!(
+        latest_post_container.h4().attr("class='no_margin'").b(),
+        "{}",
+        latest_post.title
+    )?;
+    write!(
+        latest_post_container
+            .h5()
+            .attr("class='date_color no_margin'"),
+        "{}",
+        latest_post.date
+    )?;
+    write!(
+        latest_post_container
+            .p()
+            .attr("class='auto_crop no_margin'"),
+        "{}",
+        latest_post.markdown
+    )?;
+
     // Get second latest post
-    let second_latest_post = &posts[1];
-    let mut second_latest_post_container = container_pubs.div().attr("class='article_container'");
-    write!(second_latest_post_container.h4().attr("class='no_margin'").b(), "{}", second_latest_post.title)?;
-    write!(second_latest_post_container.h5().attr("class='date_color no_margin'"), "{}", second_latest_post.date)?;
-    write!(second_latest_post_container.p().attr("class='auto_crop no_margin'"), "{}", second_latest_post.markdown)?;
+    let second_latest_post = &papers[1];
+    let mut second_latest_post_container = container_pubs.a().attr(
+        format!(
+            "class='article_container' href='publications-{}.html'",
+            titlefy_to_page_title(&second_latest_post.title)
+        )
+        .as_str(),
+    );
+    write!(
+        second_latest_post_container
+            .h4()
+            .attr("class='no_margin'")
+            .b(),
+        "{}",
+        second_latest_post.title
+    )?;
+    write!(
+        second_latest_post_container
+            .h5()
+            .attr("class='date_color no_margin'"),
+        "{}",
+        second_latest_post.date
+    )?;
+    write!(
+        second_latest_post_container
+            .p()
+            .attr("class='auto_crop no_margin'"),
+        "{}",
+        second_latest_post.markdown
+    )?;
 
     let mut col_pubs = add_column_to_dual_columns(&mut columns_pub_misc_section);
     let mut container_pubs = col_pubs.div().attr("class='blank-container'");
@@ -696,23 +784,6 @@ fn build() -> Result<(), Box<dyn Error>> {
 
     //// "CV" Page Building process
     // TODO: Descobrir depois o que meter, estrutura gira de CV, printable to pdf idealmente
-
-    // Get all publications
-    let mut publications: Vec<Publication> = vec![];
-
-    for entry in std::fs::read_dir(FOLDER_PUBLICATIONS)? {
-        publications.push(
-            Publication::from_gobbet(
-                format!("{:?}", entry.unwrap().path())
-                    .as_str()
-                    .strip_prefix("\"")
-                    .unwrap()
-                    .strip_suffix("\"")
-                    .unwrap(),
-            )
-            .unwrap(),
-        )
-    }
 
     Ok(())
 }

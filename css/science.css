@@ -271,6 +271,7 @@ footer {
     padding-bottom: 92%;
     background-color: #4FBA6D;
     z-index: -10;
+    transition: background-color 0.1s ease-in-out;
 }
 
 .grid_icon {
@@ -305,6 +306,14 @@ footer {
     height: 300px;
     display: flex;
     flex-direction: column;
+    transition: border 0.1s ease-in-out;
+}
+
+.article_container:hover {
+    border-style: solid;
+    border-width: 4px;
+    border-color: #46AC69;
+    text-decoration: none;
 }
 
 .auto_crop {

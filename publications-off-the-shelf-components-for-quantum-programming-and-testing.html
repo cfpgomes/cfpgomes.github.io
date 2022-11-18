@@ -1,0 +1,124 @@
+<!-- My website -->
+<!DOCTYPE>
+<html lang='en'>
+ <head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width,initial-scale=1.0'>
+  <title>
+Cláudio Gomes | Off-the-shelf Components for Quantum Programming and Testing
+  </title>
+  <meta name='description' content='Off-the-shelf Components for Quantum Programming and Testing'>
+  <link rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'>
+  <link rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre-exp.min.css'>
+  <link rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre-icons.min.css'>
+  <link rel='preconnect' href='https://fonts.googleapis.com'>
+  <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&family=Fredericka+the+Great&family=Kdam+Thmor+Pro&family=Klee+One&display=swap'>
+  <link rel='stylesheet' href='css\science.css'>
+ </head>
+ <script src='https://cdn.jsdelivr.net/npm/sharer.js@latest/sharer.min.js'>
+ </script>
+ <script src='https://kit.fontawesome.com/6a394e2d40.js' crossorigin='anonymous'>
+ </script>
+ <script>
+function onLoad()
+        {
+            preload_image_object = new Image();
+            var imagesArray = ['carousel1.jpg', 'carousel2.jpg', 'carousel3.jpg', 'carousel4.jpg', 'carousel5.jpg', 'carousel6.jpg', 'carousel7.jpg', 'carousel8.jpg', 'carousel9.jpg', 'carousel10.jpg', 'carousel11.jpg', 'carousel12.jpg', 'carousel13.jpg', 'carousel14.jpg', 'carousel15.jpg', 'carousel16.jpg'];
+        
+            //Preload images for faster page response
+            for (var i=0; i < imagesArray.length; i++) {
+                preload_image_object.src = imagesArray[i];
+                preload_image_object.onload = console.log(i);
+            };
+            
+            document.getElementById('background-image-id').style.backgroundImage = 'url("./compressed-img/' + imagesArray[Math.floor(Math.random() * 16)] + '")';
+        }
+         </script>
+ <body class='gallery-background' id='background-image-id' onload='onLoad()'>
+  <div class='special-shadow-gradient'>
+  </div>
+ </body>
+</html>
+<div class='top-bar hide-xl'>
+ <div class='columns col-gapless full-height ultra-wide-treatment'>
+  <div class='column col-2-and-half'>
+   <button class='btn btn-top-bar'>
+Who am I?   </button>
+  </div>
+  <div class='column col-2-and-half'>
+   <button class='btn btn-top-bar'>
+Publications   </button>
+  </div>
+  <div class='column col-2'>
+   <div class='parallax square-pic-parallax'>
+    <div class='parallax-top-left' tabindex='1'>
+    </div>
+    <div class='parallax-top-right' tabindex='2'>
+    </div>
+    <div class='parallax-bottom-left' tabindex='3'>
+    </div>
+    <div class='parallax-bottom-right' tabindex='4'>
+    </div>
+    <div class='parallax-content'>
+     <div class='parallax-front'>
+     </div>
+     <div class='parallax-back'>
+      <div style='background-image:url("profile_pic.png")' class='square-pic-img'>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <div class='column col-2-and-half'>
+   <button class='btn btn-top-bar'>
+Miscellaneous   </button>
+  </div>
+  <div class='column col-2-and-half'>
+   <button class='btn btn-top-bar'>
+CV   </button>
+  </div>
+ </div>
+</div>
+<div class='top-bar-mobile show-xl'>
+ <div class='columns col-gapless full-height'>
+  <div class='column col-2-and-quarter'>
+   <button class='btn btn-top-bar-mobile fa-solid fa-person-rays'>
+   </button>
+  </div>
+  <div class='column col-2-and-quarter'>
+   <button class='btn btn-top-bar-mobile fa-solid fa-atom'>
+   </button>
+  </div>
+  <div class='column col-3'>
+   <button style='background-image:url("profile_pic.png")' class='btn btn-home-top-bar-mobile'>
+   </button>
+  </div>
+  <div class='column col-2-and-quarter'>
+   <button class='btn btn-top-bar-mobile fa-solid fa-cow'>
+   </button>
+  </div>
+  <div class='column col-2-and-quarter'>
+   <button class='btn btn-top-bar-mobile fa-solid fa-address-book'>
+   </button>
+  </div>
+ </div>
+</div>
+<div class='top-bar-invisible hide-xl'>
+</div>
+<div class='top-bar-mobile-invisible show-xl'>
+</div>
+<div class='columns page-height page-ultra-wide-treatment '>
+ <div class='column col-6 col-xl-12'>
+  <div class='blank-container'>
+   <h1>
+Off-the-shelf Components for Quantum Programming and Testing   </h1>
+   <h2>
+2020-10-13   </h2>
+<p>In this position paper, we argue that readily available components are much needed as central contributions towards not only enlarging the community of quantum computer programmers, but also in order to increase their efficiency and effectiveness. We describe the work we intend to do towards providing such components, namely by developing and making available libraries of quantum algorithms and data structures, and libraries for testing quantum programs. We finally argue that Quantum Computer Programming is such an effervescent area that synchronization efforts and combined strategies within the community are demanded to shorten the time frame until quantum advantage is observed and can be explored in practice.</p>
+<p><a href="http://ceur-ws.org/Vol-2705/short2.pdf">PDF</a></p>
+  </div>
+ </div>
+</div>
+<footer>
+</footer>

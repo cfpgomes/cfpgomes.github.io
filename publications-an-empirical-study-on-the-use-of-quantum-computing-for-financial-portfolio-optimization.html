@@ -1,0 +1,124 @@
+<!-- My website -->
+<!DOCTYPE>
+<html lang='en'>
+ <head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width,initial-scale=1.0'>
+  <title>
+Cláudio Gomes | An Empirical Study on the Use of Quantum Computing for Financial Portfolio Optimization
+  </title>
+  <meta name='description' content='An Empirical Study on the Use of Quantum Computing for Financial Portfolio Optimization'>
+  <link rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'>
+  <link rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre-exp.min.css'>
+  <link rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre-icons.min.css'>
+  <link rel='preconnect' href='https://fonts.googleapis.com'>
+  <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&family=Fredericka+the+Great&family=Kdam+Thmor+Pro&family=Klee+One&display=swap'>
+  <link rel='stylesheet' href='css\science.css'>
+ </head>
+ <script src='https://cdn.jsdelivr.net/npm/sharer.js@latest/sharer.min.js'>
+ </script>
+ <script src='https://kit.fontawesome.com/6a394e2d40.js' crossorigin='anonymous'>
+ </script>
+ <script>
+function onLoad()
+        {
+            preload_image_object = new Image();
+            var imagesArray = ['carousel1.jpg', 'carousel2.jpg', 'carousel3.jpg', 'carousel4.jpg', 'carousel5.jpg', 'carousel6.jpg', 'carousel7.jpg', 'carousel8.jpg', 'carousel9.jpg', 'carousel10.jpg', 'carousel11.jpg', 'carousel12.jpg', 'carousel13.jpg', 'carousel14.jpg', 'carousel15.jpg', 'carousel16.jpg'];
+        
+            //Preload images for faster page response
+            for (var i=0; i < imagesArray.length; i++) {
+                preload_image_object.src = imagesArray[i];
+                preload_image_object.onload = console.log(i);
+            };
+            
+            document.getElementById('background-image-id').style.backgroundImage = 'url("./compressed-img/' + imagesArray[Math.floor(Math.random() * 16)] + '")';
+        }
+         </script>
+ <body class='gallery-background' id='background-image-id' onload='onLoad()'>
+  <div class='special-shadow-gradient'>
+  </div>
+ </body>
+</html>
+<div class='top-bar hide-xl'>
+ <div class='columns col-gapless full-height ultra-wide-treatment'>
+  <div class='column col-2-and-half'>
+   <button class='btn btn-top-bar'>
+Who am I?   </button>
+  </div>
+  <div class='column col-2-and-half'>
+   <button class='btn btn-top-bar'>
+Publications   </button>
+  </div>
+  <div class='column col-2'>
+   <div class='parallax square-pic-parallax'>
+    <div class='parallax-top-left' tabindex='1'>
+    </div>
+    <div class='parallax-top-right' tabindex='2'>
+    </div>
+    <div class='parallax-bottom-left' tabindex='3'>
+    </div>
+    <div class='parallax-bottom-right' tabindex='4'>
+    </div>
+    <div class='parallax-content'>
+     <div class='parallax-front'>
+     </div>
+     <div class='parallax-back'>
+      <div style='background-image:url("profile_pic.png")' class='square-pic-img'>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <div class='column col-2-and-half'>
+   <button class='btn btn-top-bar'>
+Miscellaneous   </button>
+  </div>
+  <div class='column col-2-and-half'>
+   <button class='btn btn-top-bar'>
+CV   </button>
+  </div>
+ </div>
+</div>
+<div class='top-bar-mobile show-xl'>
+ <div class='columns col-gapless full-height'>
+  <div class='column col-2-and-quarter'>
+   <button class='btn btn-top-bar-mobile fa-solid fa-person-rays'>
+   </button>
+  </div>
+  <div class='column col-2-and-quarter'>
+   <button class='btn btn-top-bar-mobile fa-solid fa-atom'>
+   </button>
+  </div>
+  <div class='column col-3'>
+   <button style='background-image:url("profile_pic.png")' class='btn btn-home-top-bar-mobile'>
+   </button>
+  </div>
+  <div class='column col-2-and-quarter'>
+   <button class='btn btn-top-bar-mobile fa-solid fa-cow'>
+   </button>
+  </div>
+  <div class='column col-2-and-quarter'>
+   <button class='btn btn-top-bar-mobile fa-solid fa-address-book'>
+   </button>
+  </div>
+ </div>
+</div>
+<div class='top-bar-invisible hide-xl'>
+</div>
+<div class='top-bar-mobile-invisible show-xl'>
+</div>
+<div class='columns page-height page-ultra-wide-treatment '>
+ <div class='column col-6 col-xl-12'>
+  <div class='blank-container'>
+   <h1>
+An Empirical Study on the Use of Quantum Computing for Financial Portfolio Optimization   </h1>
+   <h2>
+2022-06-14   </h2>
+<p>Quantum Computing (QC) is regarded with a mix of amazement, excitement, and skepticism. While quantum computers have been shown to outperform classical ones in particular computational tasks, their effective applicability to general-purpose problems remains under-studied. We shed light on the practical use of QC to tackle a combinatorial optimization problem in Finance, the Portfolio Optimization Problem (POP). We present an in-depth empirical study on the influence that configurable parameters of both a state-of-the-art adiabatic quantum computer and POP itself can have on the overall quality of the solutions we obtain. Our results show that some of these parameters, such as chain strength and number of reads, have a significant statistical effect, while others, such as anneal schedule and embedding, do not. Our results also show that the quality of the solutions returned by a quantum computer, given a quadratic unconstrained binary optimization formulation of POP from the literature, is still far from the quality of the solutions produced by a classical computer using an exact algorithm. We believe the conclusions drawn from our study are valuable contributions to the utilization of adiabatic quantum computers in practice, not only in the context of POP but also for other application domains.</p>
+<p><a href="http://doi.org/10.1007/s42979-022-01215-9">DOI</a></p>
+  </div>
+ </div>
+</div>
+<footer>
+</footer>
