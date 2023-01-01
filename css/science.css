@@ -256,6 +256,17 @@ footer {
     height: 80vh;
 }
 
+.blank-container-square-double-size {
+    margin: 100px;
+    padding-top: 4%;
+    padding-bottom: 10%;
+    padding-left: 10%;
+    padding-right: 10%;
+    border-radius: 0;
+    border-style: none;
+    height: 160vh;
+}
+
 .blank-container-square-title {
     margin: 100px;
     padding-top: 4%;

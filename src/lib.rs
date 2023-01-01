@@ -397,23 +397,41 @@ impl Page {
         icon_c: &str,
         icon_d: &str,
         active_page: Option<&str>,
+        link_a: Option<&str>,
+        link_b: Option<&str>,
+        link_c: Option<&str>,
+        link_d: Option<&str>,
     ) {
         // Desktop top bar
         let mut container = self.buf.div().attr("class='top-bar hide-xl'");
         let mut columns = container
             .div()
             .attr("class='columns col-gapless full-height ultra-wide-treatment'");
-        let mut column_a = columns.div().attr("class='column col-3'");
+        let mut column_a = columns.div().attr(format!("class='column col-3' onclick='window.location.href=\"{}\";'", match link_a {
+            Some(link) => link,
+            _ => ""
+        }).as_ref());
         let mut button_a = column_a.button().attr("class='btn btn-top-bar'");
         write!(button_a, "{}", page_a);
-        let mut column_b = columns.div().attr("class='column col-3'");
+        
+        let mut column_b = columns.div().attr(format!("class='column col-3' onclick='window.location.href=\"{}\";'", match link_b {
+            Some(link) => link,
+            _ => ""
+        }).as_ref());
         let mut button_b = column_b.button().attr("class='btn btn-top-bar'");
         write!(button_b, "{}", page_b);
-        let mut column_c = columns.div().attr("class='column col-3'");
+
+        let mut column_c = columns.div().attr(format!("class='column col-3' onclick='window.location.href=\"{}\";'", match link_c {
+            Some(link) => link,
+            _ => ""
+        }).as_ref());
         let mut button_c = column_c.button().attr("class='btn btn-top-bar'");
         write!(button_c, "{}", page_c);
 
-        let mut column_d = columns.div().attr("class='column col-3'");
+        let mut column_d = columns.div().attr(format!("class='column col-3' onclick='window.location.href=\"{}\";'", match link_d {
+            Some(link) => link,
+            _ => ""
+        }).as_ref());
         let mut button_d = column_d.button().attr("class='btn btn-top-bar'");
         write!(button_d, "{}", page_d);
 
@@ -422,22 +440,34 @@ impl Page {
         let mut columns = container
             .div()
             .attr("class='columns col-gapless full-height'");
-        let mut column_a = columns.div().attr("class='column col-3'");
+        let mut column_a = columns.div().attr(format!("class='column col-3' onclick='window.location.href=\"{}\";'", match link_a {
+            Some(link) => link,
+            _ => ""
+        }).as_ref());
         let mut button_a = column_a
             .button()
             .attr(format!("class='btn btn-top-bar-mobile fa-solid {}'", icon_a).as_ref());
 
-        let mut column_b = columns.div().attr("class='column col-3'");
+        let mut column_b = columns.div().attr(format!("class='column col-3' onclick='window.location.href=\"{}\";'", match link_b {
+            Some(link) => link,
+            _ => ""
+        }).as_ref());
         let mut button_b = column_b
             .button()
             .attr(format!("class='btn btn-top-bar-mobile fa-solid {}'", icon_b).as_ref());
 
-        let mut column_c = columns.div().attr("class='column col-3'");
+        let mut column_c = columns.div().attr(format!("class='column col-3' onclick='window.location.href=\"{}\";'", match link_c {
+            Some(link) => link,
+            _ => ""
+        }).as_ref());
         let mut button_c = column_c
             .button()
             .attr(format!("class='btn btn-top-bar-mobile fa-solid {}'", icon_c).as_ref());
 
-        let mut column_d = columns.div().attr("class='column col-3'");
+        let mut column_d = columns.div().attr(format!("class='column col-3' onclick='window.location.href=\"{}\";'", match link_d {
+            Some(link) => link,
+            _ => ""
+        }).as_ref());
         let mut button_d = column_d
             .button()
             .attr(format!("class='btn btn-top-bar-mobile fa-solid {}'", icon_d).as_ref());
@@ -720,7 +750,12 @@ fn build() -> Result<(), Box<dyn Error>> {
         "fa-folder-tree",
         "fa-address-book",
         Some("Quality<br><br>Assessment"),
+        Some("smsquality.html"),
+        Some("sms.html"),
+        Some("smspairwise.html"),
+        Some("https://scholar.google.com"),
     );
+
     page_sms_article_individual.add_simple_top_bar(
         "Quality<br><br>Assessment",
         "Individual<br><br>Analysis",
@@ -731,7 +766,12 @@ fn build() -> Result<(), Box<dyn Error>> {
         "fa-folder-tree",
         "fa-address-book",
         Some("Individual<br><br>Analysis"),
+        Some("smsquality.html"),
+        Some("sms.html"),
+        Some("smspairwise.html"),
+        Some("https://scholar.google.com"),
     );
+
     page_sms_article_pairwise.add_simple_top_bar(
         "Quality<br><br>Assessment",
         "Individual<br><br>Analysis",
@@ -742,6 +782,10 @@ fn build() -> Result<(), Box<dyn Error>> {
         "fa-folder-tree",
         "fa-address-book",
         Some("Pairwise<br><br>Analysis"),
+        Some("smsquality.html"),
+        Some("sms.html"),
+        Some("smspairwise.html"),
+        Some("https://scholar.google.com"),
     );
 
     /*
@@ -975,6 +1019,7 @@ fn build() -> Result<(), Box<dyn Error>> {
 
     
     //// "sms_article" Pages Building process
+    //// Quality Assessment Page
     
     let mut sms_quality_title = page_sms_article_quality.buf.div().attr("class='blank-container-square-title page-ultra-wide-treatment'");
     write!(
@@ -1031,6 +1076,292 @@ fn build() -> Result<(), Box<dyn Error>> {
     )?;
     add_figure_to_node(&mut sms_quality_srtotal_vs_core, "sms_figures/quality_srtotal_vs_core.html");
 
+    //// Individual Analysis Page
+    let mut sms_individual_title = page_sms_article_individual.buf.div().attr("class='blank-container-square-title page-ultra-wide-treatment'");
+    write!(
+        sms_individual_title.h1(),
+        "Analysis of Individual Features"
+    )?;
+
+    let mut sms_individual_ss00_sr00 = page_sms_article_individual.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");
+    write!(
+        sms_individual_ss00_sr00.h4(),
+        "Violin plots of the S<sub>S</sub> and S<sub>R</sub> values of the selected studies. Black dots represent the outliers. The black dashed line represents the median."
+    )?;
+    add_figure_to_node(&mut sms_individual_ss00_sr00, "sms_figures/individual_ss00_sr00.html");
+    
+    let mut sms_individual_ss_counts = page_sms_article_individual.buf.div().attr("class='blank-container-square blank-background page-ultra-wide-treatment'");
+    write!(
+        sms_individual_ss_counts.h4(),
+        "Stacked bar charts with the proportions of the different responses (SS01 to SS10) collected for the checklist to assess the quality of the study."
+    )?;
+    add_figure_to_node(&mut sms_individual_ss_counts, "sms_figures/individual_ss_counts.html");
+    
+    let mut sms_individual_sr_counts = page_sms_article_individual.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");
+    write!(
+        sms_individual_sr_counts.h4(),
+        "Stacked bar charts with the proportions of the different responses (SR01 to SR16) collected for the checklist to assess the quality of the reporting."
+    )?;
+    add_figure_to_node(&mut sms_individual_sr_counts, "sms_figures/individual_sr_counts.html");
+
+    let mut sms_individual_D010 = page_sms_article_individual.buf.div().attr("class='blank-container-square blank-background page-ultra-wide-treatment'");
+    write!(
+        sms_individual_D010.h4(),
+        "Stacked bar chart with the proportions of the different responses collected for feature D010."
+    )?;
+    add_figure_to_node(&mut sms_individual_D010, "sms_figures/individual_D010.html");
+    
+    let mut sms_individual_D030 = page_sms_article_individual.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");
+    write!(
+        sms_individual_D030.h4(),
+        "Stacked bar chart with the proportions of the different responses collected for feature D030."
+    )?;
+    add_figure_to_node(&mut sms_individual_D030, "sms_figures/individual_D030.html");
+    
+    let mut sms_individual_D040 = page_sms_article_individual.buf.div().attr("class='blank-container-square blank-background page-ultra-wide-treatment'");
+    write!(
+        sms_individual_D040.h4(),
+        "Stacked bar chart with the proportions of the different responses collected for feature D040."
+    )?;
+    add_figure_to_node(&mut sms_individual_D040, "sms_figures/individual_D040.html");
+
+    let mut sms_individual_D070 = page_sms_article_individual.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");
+    write!(
+        sms_individual_D070.h4(),
+        "Stacked bar chart with the proportions of the different responses collected for feature D070."
+    )?;
+    add_figure_to_node(&mut sms_individual_D070, "sms_figures/individual_D070.html");
+
+    let mut sms_individual_D020 = page_sms_article_individual.buf.div().attr("class='blank-container-square blank-background page-ultra-wide-treatment'");
+    write!(
+        sms_individual_D020.h4(),
+        "Bar chart with the distribution of the different responses collected for feature D020."
+    )?;
+    add_figure_to_node(&mut sms_individual_D020, "sms_figures/individual_D020.html");
+
+    let mut sms_individual_D060 = page_sms_article_individual.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");
+    write!(
+        sms_individual_D060.h4(),
+        "Bar chart with the distribution of the different responses collected for feature D060. <b>Note that the bar for year 2022 only contains publications made in the first four months.</b>"
+    )?;
+    add_figure_to_node(&mut sms_individual_D060, "sms_figures/individual_D060.html");
+
+    
+    let mut sms_individual_D050_to_D053_treemap = page_sms_article_individual.buf.div().attr("class='blank-container-square blank-background page-ultra-wide-treatment'");
+    write!(
+        sms_individual_D050_to_D053_treemap.h4(),
+        "Treemap chart of the selected studies according to their section, division, group, and class from the International Standard Industrial Classification of All Economic Activities (ISIC)."
+    )?;
+    add_figure_to_node(&mut sms_individual_D050_to_D053_treemap, "sms_figures/individual_D050_to_D053_treemap.html");
+    
+    let mut sms_individual_D050_to_D053_icicle = page_sms_article_individual.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");
+    write!(
+        sms_individual_D050_to_D053_icicle.h4(),
+        "Icicle chart of the selected studies according to their section, division, group, and class from the International Standard Industrial Classification of All Economic Activities (ISIC)."
+    )?;
+    add_figure_to_node(&mut sms_individual_D050_to_D053_icicle, "sms_figures/individual_D050_to_D053_icicle.html");
+    
+    //// Pairwise Analysis Page
+    let mut sms_pairwise_title = page_sms_article_pairwise.buf.div().attr("class='blank-container-square-title page-ultra-wide-treatment'");
+    write!(
+        sms_pairwise_title.h1(),
+        "Analysis of Relationships between Pairs Features"
+    )?;
+
+    let mut sms_pair_ss00_d010 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");
+    write!(
+        sms_pair_ss00_d010.h4(),
+        "<b>Pair 1:</b> Violin plots of the distributions of the quality of the study scores (S<sub>S</sub>) of the selected studies, grouped by their type of approach (D010)."
+    )?;
+    add_figure_to_node(&mut sms_pair_ss00_d010, "sms_figures/pair_ss00_d010.html");
+
+    let mut sms_pair_ss00_d020 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square blank-background page-ultra-wide-treatment'");
+    write!(
+        sms_pair_ss00_d020.h4(),
+        "<b>Pair 2:</b> Violin plots of the distributions of the quality of the study scores (S<sub>S</sub>) of the selected studies, grouped by the four most frequent algorithm names (D020)."
+    )?;
+    add_figure_to_node(&mut sms_pair_ss00_d020, "sms_figures/pair_ss00_d020.html");
+
+    let mut sms_pair_ss00_d030 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");
+    write!(
+        sms_pair_ss00_d030.h4(),
+        "<b>Pair 3:</b> Violin plots of the distributions of the quality of the study scores (S<sub>S</sub>) of the selected studies, grouped by whether they use a simulator or a real quantum computer (D030)."
+    )?;
+    add_figure_to_node(&mut sms_pair_ss00_d030, "sms_figures/pair_ss00_d030.html");
+
+    let mut sms_pair_ss00_d040 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square blank-background page-ultra-wide-treatment'");
+    write!(
+        sms_pair_ss00_d040.h4(),
+        "<b>Pair 4:</b> Violin plots of the distributions of the quality of the study scores (S<sub>S</sub>) of the selected studies, grouped by the type of quantum computer (D040)."
+    )?;
+    add_figure_to_node(&mut sms_pair_ss00_d040, "sms_figures/pair_ss00_d040.html");
+
+    let mut sms_pair_ss00_d050 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square-double-size page-ultra-wide-treatment'");
+    write!(
+        sms_pair_ss00_d050.h4(),
+        "<b>Pair 5:</b> Violin plots of the distributions of the quality of the study scores (S<sub>S</sub>) of the selected studies, grouped by the seven most frequent ISIC sections (D050)."
+    )?;
+    add_figure_to_node(&mut sms_pair_ss00_d050, "sms_figures/pair_ss00_d050.html");
+
+    let mut sms_pair_ss00_d060 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square-double-size blank-background page-ultra-wide-treatment'");
+    write!(
+        sms_pair_ss00_d060.h4(),
+        "<b>Pair 6:</b> Violin plots of the distributions of the quality of the study scores (S<sub>S</sub>) of the selected studies, grouped by the publication year (D060)."
+    )?;
+    add_figure_to_node(&mut sms_pair_ss00_d060, "sms_figures/pair_ss00_d060.html");
+
+    let mut sms_pair_ss00_d070 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");
+    write!(
+        sms_pair_ss00_d070.h4(),
+        "<b>Pair 7:</b> Violin plots of the distributions of the quality of the study scores (S<sub>S</sub>) of the selected studies, grouped by their publication source (D070)."
+    )?;
+    add_figure_to_node(&mut sms_pair_ss00_d070, "sms_figures/pair_ss00_d070.html");
+
+    let mut sms_pair_sr00_d010 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square blank-background page-ultra-wide-treatment'");
+    write!(
+        sms_pair_sr00_d010.h4(),
+        "<b>Pair 8:</b> Violin plots of the distributions of the quality of the reporting scores (S<sub>R</sub>) of the selected studies, grouped by their type of approach (D010)."
+    )?;
+    add_figure_to_node(&mut sms_pair_sr00_d010, "sms_figures/pair_sr00_d010.html");
+
+    let mut sms_pair_sr00_d020 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");
+    write!(
+        sms_pair_sr00_d020.h4(),
+        "<b>Pair 9:</b> Violin plots of the distributions of the quality of the reporting scores (S<sub>R</sub>) of the selected studies, grouped by the four most frequent algorithm names (D020)."
+    )?;
+    add_figure_to_node(&mut sms_pair_sr00_d020, "sms_figures/pair_sr00_d020.html");
+
+    let mut sms_pair_sr00_d030 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square blank-background page-ultra-wide-treatment'");
+    write!(
+        sms_pair_sr00_d030.h4(),
+        "<b>Pair 10:</b> Violin plots of the distributions of the quality of the reporting scores (S<sub>R</sub>) of the selected studies, grouped by whether they use a simulator or a real quantum computer (D030)."
+    )?;
+    add_figure_to_node(&mut sms_pair_sr00_d030, "sms_figures/pair_sr00_d030.html");
+
+    let mut sms_pair_sr00_d040 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");
+    write!(
+        sms_pair_sr00_d040.h4(),
+        "<b>Pair 11:</b> Violin plots of the distributions of the quality of the reporting scores (S<sub>R</sub>) of the selected studies, grouped by the type of quantum computer (D040)."
+    )?;
+    add_figure_to_node(&mut sms_pair_sr00_d040, "sms_figures/pair_sr00_d040.html");
+
+    let mut sms_pair_sr00_d050 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square-double-size blank-background page-ultra-wide-treatment'");
+    write!(
+        sms_pair_sr00_d050.h4(),
+        "<b>Pair 12:</b> Violin plots of the distributions of the quality of the reporting scores (S<sub>R</sub>) of the selected studies, grouped by the seven most frequent ISIC sections (D050)."
+    )?;
+    add_figure_to_node(&mut sms_pair_sr00_d050, "sms_figures/pair_sr00_d050.html");
+
+    let mut sms_pair_sr00_d060 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square-double-size page-ultra-wide-treatment'");
+    write!(
+        sms_pair_sr00_d060.h4(),
+        "<b>Pair 13:</b> Violin plots of the distributions of the quality of the reporting scores (S<sub>R</sub>) of the selected studies, grouped by the publication year (D060)."
+    )?;
+    add_figure_to_node(&mut sms_pair_sr00_d060, "sms_figures/pair_sr00_d060.html");
+
+    let mut sms_pair_sr00_d070 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square blank-background page-ultra-wide-treatment'");
+    write!(
+        sms_pair_sr00_d070.h4(),
+        "<b>Pair 14:</b> Violin plots of the distributions of the quality of the reporting scores (S<sub>R</sub>) of the selected studies, grouped by their publication source (D070)."
+    )?;
+    add_figure_to_node(&mut sms_pair_sr00_d070, "sms_figures/pair_sr00_d070.html");
+
+    
+    let mut sms_pair_d010_d050 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");
+    write!(
+        sms_pair_d010_d050.h4(),
+        "<b>Pair 15:</b> Bar plot of the proportions of the selected studies according to their type of approach (D010), grouped by their ISIC section (D050)."
+    )?;
+    add_figure_to_node(&mut sms_pair_d010_d050, "sms_figures/pair_d010_d050.html");
+    
+    let mut sms_pair_d010_d060 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square blank-background page-ultra-wide-treatment'");
+    write!(
+        sms_pair_d010_d060.h4(),
+        "<b>Pair 16:</b> Bar plot of the proportions of the selected studies according to their type of approach (D010), grouped by their publication year (D060)."
+    )?;
+    add_figure_to_node(&mut sms_pair_d010_d060, "sms_figures/pair_d010_d060.html");
+
+    let mut sms_pair_d010_d070 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");
+    write!(
+        sms_pair_d010_d070.h4(),
+        "<b>Pair 17:</b> Bar plot of the proportions of the selected studies according to their type of approach (D010), grouped by their publication source (D070)."
+    )?;
+    add_figure_to_node(&mut sms_pair_d010_d070, "sms_figures/pair_d010_d070.html");
+
+    let mut sms_pair_d020_d050 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square blank-background page-ultra-wide-treatment'");
+    write!(
+        sms_pair_d020_d050.h4(),
+        "<b>Pair 18:</b> Bar plot of the counts of the selected studies according to their algorithm name (D020), grouped by their ISIC section (D050). Only studies belonging to the four most frequent algorithm names and to the seven most frequent ISIC sections are considered."
+    )?;
+    add_figure_to_node(&mut sms_pair_d020_d050, "sms_figures/pair_d020_d050.html");
+    
+    let mut sms_pair_d020_d060 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");
+    write!(
+        sms_pair_d020_d060.h4(),
+        "<b>Pair 19:</b> Bar plot of the counts of the selected studies according to their algorithm name (D020), grouped by their publication year (D060). Only studies belonging to the four most frequent algorithm names are considered."
+    )?;
+    add_figure_to_node(&mut sms_pair_d020_d060, "sms_figures/pair_d020_d060.html");
+    
+    let mut sms_pair_d020_d070 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square blank-background page-ultra-wide-treatment'");
+    write!(
+        sms_pair_d020_d070.h4(),
+        "<b>Pair 20:</b> Bar plot of the counts of the selected studies according to their algorithm name (D020), grouped by their publication source (D070). Only studies belonging to the four most frequent algorithm names are considered."
+    )?;
+    add_figure_to_node(&mut sms_pair_d020_d070, "sms_figures/pair_d020_d070.html");
+    
+    let mut sms_pair_d050_d060 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");
+    write!(
+        sms_pair_d050_d060.h4(),
+        "<b>Pair 28:</b> Bar plot of the counts of the selected studies according to their ISIC section (D050), grouped by their publication year (D060). Only studies belonging to the seven most frequent ISIC sections are considered."
+    )?;
+    add_figure_to_node(&mut sms_pair_d050_d060, "sms_figures/pair_d050_d060.html");
+
+    let mut sms_pair_d050_d070 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square blank-background page-ultra-wide-treatment'");
+    write!(
+        sms_pair_d050_d070.h4(),
+        "<b>Pair 29:</b> Bar plot of the counts of the selected studies according to their ISIC section (D050), grouped by their publication source (D070). Only studies belonging to the seven most frequent ISIC sections are considered."
+    )?;
+    add_figure_to_node(&mut sms_pair_d050_d070, "sms_figures/pair_d050_d070.html");
+
+    let mut sms_pair_d060_d070 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");
+    write!(
+        sms_pair_d060_d070.h4(),
+        "<b>Pair 30:</b> Bar plot of the counts of the selected studies according to their publication source (D070), grouped by their publication year (D060)."
+    )?;
+    add_figure_to_node(&mut sms_pair_d060_d070, "sms_figures/pair_d070_d060.html");
+
+
+    let mut sms_pair_ss03_d040 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square blank-background page-ultra-wide-treatment'");
+    write!(
+        sms_pair_ss03_d040.h4(),
+        "<b>Pair 31:</b> Bar plot of the counts of the selected studies according to their response to SS03, grouped by their type of quantum computer (D040)."
+    )?;
+    add_figure_to_node(&mut sms_pair_ss03_d040, "sms_figures/pair_ss03_d040.html");
+
+
+    let mut sms_pair_ss03_d050 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");
+    write!(
+        sms_pair_ss03_d050.h4(),
+        "<b>Pair 32:</b> Bar plot of the counts of the selected studies according to their response to SS03, grouped by their ISIC section (D050)."
+    )?;
+    add_figure_to_node(&mut sms_pair_ss03_d050, "sms_figures/pair_ss03_d050.html");
+
+
+    let mut sms_pair_ss03_d060 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square blank-background page-ultra-wide-treatment'");
+    write!(
+        sms_pair_ss03_d060.h4(),
+        "<b>Pair 33:</b> Bar plot of the counts of the selected studies according to their response to SS03, grouped by their publication year (D060)."
+    )?;
+    add_figure_to_node(&mut sms_pair_ss03_d060, "sms_figures/pair_ss03_d060.html");
+
+    let mut sms_pair_ss03_d070 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");
+    write!(
+        sms_pair_ss03_d070.h4(),
+        "<b>Pair 34:</b> Bar plot of the counts of the selected studies according to their response to SS03, grouped by their publication source (D070)."
+    )?;
+    add_figure_to_node(&mut sms_pair_ss03_d070, "sms_figures/pair_ss03_d070.html");
+
+    //// Publish SMS pages
     page_sms_article_quality.publish("smsquality.html");
     page_sms_article_individual.publish("sms.html");
     page_sms_article_pairwise.publish("smspairwise.html");
