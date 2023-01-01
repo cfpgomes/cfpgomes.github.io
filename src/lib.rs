@@ -215,6 +215,77 @@ impl Page {
         page
     }
 
+    fn new_without_background(title: &str, css: CSS) -> Self {
+        let mut page = Self {
+            title: title.to_string(),
+            css: css,
+            buf: Buffer::new(),
+        };
+
+        // Header content
+        writeln!(page.buf, "<!-- My website -->").unwrap();
+
+        // The Html5 trait provides various helper methods.  For instance, doctype()
+        // simply writes the <!DOCTYPE> header
+        page.buf.doctype();
+
+        // Most helper methods create child nodes.  You can set a node's attributes
+        // like so
+        let mut html = page.buf.html().attr("lang='en'");
+
+        let mut head = html.head();
+
+        // Meta is a "void element", meaning it doesn't need a closing tag.  This is
+        // handled correctly.
+        head.meta().attr("charset='utf-8'");
+
+        // For site responsiveness
+        head.meta()
+            .attr("name='viewport' content='width=device-width,initial-scale=1.0'");
+
+        // Just like Buffer, nodes are also writable.  Set their contents by
+        // writing into them.
+        // Title
+        writeln!(head.title(), "Cláudio Gomes | {}", title).unwrap();
+
+        // Description is the same as title.
+        head.meta()
+            .attr(format!("name='description' content='{}'", title).as_str());
+
+        // Necessary stylesheets.
+        head.link()
+            .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre.min.css'");
+        head.link()
+            .attr("rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre-exp.min.css'");
+        head.link().attr(
+            "rel='stylesheet' href='https://unpkg.com/spectre.css/dist/spectre-icons.min.css'",
+        );
+        head.link()
+            .attr("rel='preconnect' href='https://fonts.googleapis.com'");
+        head.link()
+            .attr("rel='preconnect' href='https://fonts.gstatic.com' crossorigin");
+        head.link()
+        .attr("rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&family=Fredericka+the+Great&family=Kdam+Thmor+Pro&family=Klee+One&display=swap'");
+
+        head.link().attr(match page.css {
+            CSS::Homemade => "rel='stylesheet' href='css\\homemade.css'",
+            CSS::Science => "rel='stylesheet' href='css\\science.css'",
+        });
+
+        html.script()
+            .attr("src='https://cdn.jsdelivr.net/npm/sharer.js@latest/sharer.min.js'");
+
+        html.script()
+            .attr("src='https://kit.fontawesome.com/6a394e2d40.js' crossorigin='anonymous'");
+
+
+        // Body
+        let mut body = html
+            .body();
+        // Container to apply shadow
+        page
+    }
+
     fn add_top_bar(
         &mut self,
         path_img: &str,
@@ -314,6 +385,68 @@ impl Page {
             .div()
             .attr("class='top-bar-mobile-invisible show-xl'");
     }
+    
+    fn add_simple_top_bar(
+        &mut self,
+        page_a: &str,
+        page_b: &str,
+        page_c: &str,
+        page_d: &str,
+        icon_a: &str,
+        icon_b: &str,
+        icon_c: &str,
+        icon_d: &str,
+        active_page: Option<&str>,
+    ) {
+        // Desktop top bar
+        let mut container = self.buf.div().attr("class='top-bar hide-xl'");
+        let mut columns = container
+            .div()
+            .attr("class='columns col-gapless full-height ultra-wide-treatment'");
+        let mut column_a = columns.div().attr("class='column col-3'");
+        let mut button_a = column_a.button().attr("class='btn btn-top-bar'");
+        write!(button_a, "{}", page_a);
+        let mut column_b = columns.div().attr("class='column col-3'");
+        let mut button_b = column_b.button().attr("class='btn btn-top-bar'");
+        write!(button_b, "{}", page_b);
+        let mut column_c = columns.div().attr("class='column col-3'");
+        let mut button_c = column_c.button().attr("class='btn btn-top-bar'");
+        write!(button_c, "{}", page_c);
+
+        let mut column_d = columns.div().attr("class='column col-3'");
+        let mut button_d = column_d.button().attr("class='btn btn-top-bar'");
+        write!(button_d, "{}", page_d);
+
+        // Mobile top bar
+        let mut container = self.buf.div().attr("class='top-bar-mobile show-xl'");
+        let mut columns = container
+            .div()
+            .attr("class='columns col-gapless full-height'");
+        let mut column_a = columns.div().attr("class='column col-3'");
+        let mut button_a = column_a
+            .button()
+            .attr(format!("class='btn btn-top-bar-mobile fa-solid {}'", icon_a).as_ref());
+
+        let mut column_b = columns.div().attr("class='column col-3'");
+        let mut button_b = column_b
+            .button()
+            .attr(format!("class='btn btn-top-bar-mobile fa-solid {}'", icon_b).as_ref());
+
+        let mut column_c = columns.div().attr("class='column col-3'");
+        let mut button_c = column_c
+            .button()
+            .attr(format!("class='btn btn-top-bar-mobile fa-solid {}'", icon_c).as_ref());
+
+        let mut column_d = columns.div().attr("class='column col-3'");
+        let mut button_d = column_d
+            .button()
+            .attr(format!("class='btn btn-top-bar-mobile fa-solid {}'", icon_d).as_ref());
+
+        self.buf.div().attr("class='top-bar-invisible hide-xl'");
+        self.buf
+            .div()
+            .attr("class='top-bar-mobile-invisible show-xl'");
+    }
 
     fn add_columns(&mut self, classes: &str) -> Node {
         let columns = self.buf.div().attr(
@@ -326,13 +459,20 @@ impl Page {
         columns
     }
 
+    fn add_figure(&mut self, figure_path: &str) {
+        let mut figure_file = File::open(figure_path).unwrap();
+        let mut figure_str = String::new();
+        figure_file.read_to_string(&mut figure_str).unwrap();
+        write!(self.buf, "{}", figure_str).unwrap();
+    }
+
     fn add_footer(&mut self) {
         self.buf.footer();
     }
 
     fn publish(self, path: &str) {
         let mut index_file = File::create(path).unwrap();
-        write!(index_file, "{}", self.buf.finish());
+        write!(index_file, "{}", self.buf.finish()).unwrap();
     }
 }
 
@@ -341,6 +481,13 @@ fn add_column_to_dual_columns<'a>(columns: &'a mut Node) -> Node<'a> {
     let mut col = columns.div().attr("class='column col-6 col-xl-12'");
 
     col
+}
+
+fn add_figure_to_node(node: &mut Node, figure_path: &str){
+    let mut figure_file = File::open(figure_path).unwrap();
+    let mut figure_str = String::new();
+    figure_file.read_to_string(&mut figure_str).unwrap();
+    write!(node, "{}", figure_str).unwrap();
 }
 
 /// Struct that represents a publication, which contains info such
@@ -543,6 +690,11 @@ fn build() -> Result<(), Box<dyn Error>> {
     // Create "CV" Page
     let mut page_cv = Page::new("CV", CSS::Science);
 
+    // Create "SMS" Pages
+    let mut page_sms_article_quality = Page::new_without_background("Systematic Mapping Study", CSS::Science);
+    let mut page_sms_article_individual = Page::new_without_background("Systematic Mapping Study", CSS::Science);
+    let mut page_sms_article_pairwise = Page::new_without_background("Systematic Mapping Study", CSS::Science);
+
     // Add top bar to every page
     page_homepage.add_top_bar(
         "profile_pic.png",
@@ -556,6 +708,42 @@ fn build() -> Result<(), Box<dyn Error>> {
         "fa-address-book",
         None,
     );
+
+    
+    page_sms_article_quality.add_simple_top_bar(
+        "Quality<br><br>Assessment",
+        "Individual<br><br>Analysis",
+        "Pairwise<br><br>Analysis",
+        "Article<br><br>Page",
+        "fa-check",
+        "fa-folder",
+        "fa-folder-tree",
+        "fa-address-book",
+        Some("Quality<br><br>Assessment"),
+    );
+    page_sms_article_individual.add_simple_top_bar(
+        "Quality<br><br>Assessment",
+        "Individual<br><br>Analysis",
+        "Pairwise<br><br>Analysis",
+        "Article<br><br>Page",
+        "fa-check",
+        "fa-folder",
+        "fa-folder-tree",
+        "fa-address-book",
+        Some("Individual<br><br>Analysis"),
+    );
+    page_sms_article_pairwise.add_simple_top_bar(
+        "Quality<br><br>Assessment",
+        "Individual<br><br>Analysis",
+        "Pairwise<br><br>Analysis",
+        "Article<br><br>Page",
+        "fa-check",
+        "fa-folder",
+        "fa-folder-tree",
+        "fa-address-book",
+        Some("Pairwise<br><br>Analysis"),
+    );
+
     /*
     page_who_am_i.add_top_bar(
         "profile_pic.jpg",
@@ -784,6 +972,68 @@ fn build() -> Result<(), Box<dyn Error>> {
 
     //// "CV" Page Building process
     // TODO: Descobrir depois o que meter, estrutura gira de CV, printable to pdf idealmente
+
+    
+    //// "sms_article" Pages Building process
+    
+    let mut sms_quality_title = page_sms_article_quality.buf.div().attr("class='blank-container-square-title page-ultra-wide-treatment'");
+    write!(
+        sms_quality_title.h1(),
+        "Quality Assessment"
+    )?;
+
+    let mut sms_quality_sstotal_vs_srtotal = page_sms_article_quality.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");
+    write!(
+        sms_quality_sstotal_vs_srtotal.h4(),
+        "Scatter plot of the S<sub>S</sub> and S<sub>R</sub> values of each of the selected studies. Blue dots represent the selected studies, and the red line is a visual aid to mark the diagonal of the chart. All the dots in a perfect positive correlation between both scores would overlap the line."
+    )?;
+    add_figure_to_node(&mut sms_quality_sstotal_vs_srtotal, "sms_figures/quality_sstotal_vs_srtotal.html");
+
+    let mut sms_quality_sstotal_vs_sjr = page_sms_article_quality.buf.div().attr("class='blank-container-square blank-background page-ultra-wide-treatment'");
+    write!(
+        sms_quality_sstotal_vs_sjr.h4(),
+        "Scatter plot of the S<sub>S</sub> value and SJR Indicator of each of the selected studies. Blue dots represent the selected studies."
+    )?;
+    add_figure_to_node(&mut sms_quality_sstotal_vs_sjr, "sms_figures/quality_sstotal_vs_sjr.html");
+
+    let mut sms_quality_srtotal_vs_sjr = page_sms_article_quality.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");
+    write!(
+        sms_quality_srtotal_vs_sjr.h4(),
+        "Scatter plot of the S<sub>R</sub> value and SJR Indicator of each of the selected studies. Blue dots represent the selected studies."
+    )?;
+    add_figure_to_node(&mut sms_quality_srtotal_vs_sjr, "sms_figures/quality_srtotal_vs_sjr.html");
+
+    let mut sms_quality_sstotal_vs_sjrquartile = page_sms_article_quality.buf.div().attr("class='blank-container-square blank-background page-ultra-wide-treatment'");
+    write!(
+        sms_quality_sstotal_vs_sjrquartile.h4(),
+        "Box plots of the S<sub>S</sub> value of the selected studies, grouped by their SJR Best Quartile. Blue dots represent the selected studies."
+    )?;
+    add_figure_to_node(&mut sms_quality_sstotal_vs_sjrquartile, "sms_figures/quality_sstotal_vs_sjrquartile.html");
+
+    let mut sms_quality_srtotal_vs_sjrquartile = page_sms_article_quality.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");
+    write!(
+        sms_quality_srtotal_vs_sjrquartile.h4(),
+        "Box plots of the S<sub>R</sub> value of the selected studies, grouped by their SJR Best Quartile. Blue dots represent the selected studies."
+    )?;
+    add_figure_to_node(&mut sms_quality_srtotal_vs_sjrquartile, "sms_figures/quality_srtotal_vs_sjrquartile.html");
+
+    let mut sms_quality_sstotal_vs_core = page_sms_article_quality.buf.div().attr("class='blank-container-square blank-background page-ultra-wide-treatment'");
+    write!(
+        sms_quality_sstotal_vs_core.h4(),
+        "Box plots of the S<sub>S</sub> value of the selected studies, grouped by their CORE Ranking. Blue dots represent the selected studies."
+    )?;
+    add_figure_to_node(&mut sms_quality_sstotal_vs_core, "sms_figures/quality_sstotal_vs_core.html");
+
+    let mut sms_quality_srtotal_vs_core = page_sms_article_quality.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");
+    write!(
+        sms_quality_srtotal_vs_core.h4(),
+        "Box plots of the S<sub>R</sub> value of the selected studies, grouped by their CORE Ranking. Blue dots represent the selected studies."
+    )?;
+    add_figure_to_node(&mut sms_quality_srtotal_vs_core, "sms_figures/quality_srtotal_vs_core.html");
+
+    page_sms_article_quality.publish("smsquality.html");
+    page_sms_article_individual.publish("sms.html");
+    page_sms_article_pairwise.publish("smspairwise.html");
 
     Ok(())
 }

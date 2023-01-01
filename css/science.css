@@ -245,6 +245,26 @@ footer {
     border-style: none;
 }
 
+.blank-container-square {
+    margin: 100px;
+    padding-top: 4%;
+    padding-bottom: 10%;
+    padding-left: 10%;
+    padding-right: 10%;
+    border-radius: 0;
+    border-style: none;
+    height: 80vh;
+}
+
+.blank-container-square-title {
+    margin: 100px;
+    padding-top: 4%;
+    padding-left: 10%;
+    padding-right: 10%;
+    border-radius: 0;
+    border-style: none;
+}
+
 .blank-background {
     background-color: #EBE9E4;
 }
