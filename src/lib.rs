@@ -203,6 +203,18 @@ impl Page {
             
             document.getElementById('background-image-id').style.backgroundImage = 'url(\"./compressed-img/' + imagesArray[Math.floor(Math.random() * 16)] + '\")';
         }}
+
+        let lastScrollTop = 0;
+        
+        window.addEventListener('scroll', function() {{
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop) {{
+                document.querySelector('.top-bar').classList.add('hide');
+            }} else {{
+                document.querySelector('.top-bar').classList.remove('hide');
+            }}
+            lastScrollTop = scrollTop;
+        }});
         ").unwrap();
 
         // Body
@@ -1021,10 +1033,29 @@ fn build() -> Result<(), Box<dyn Error>> {
     //// "sms_article" Pages Building process
     //// Quality Assessment Page
     
+
+    let mut sms_quality_about = page_sms_article_quality.buf.div().attr("class='blank-container-square-half blank-background page-ultra-wide-treatment'");
+
+    write!(
+        sms_quality_about.h1(),
+        "Quality Assessment"
+    )?;
+
+    write!(
+        sms_quality_about.h4(),
+        "This page contains the quality assessment data in the paper \"A Systematic Mapping Study on Quantum and Quantum-inspired Algorithms in Operations Research\", submitted to ACM Computing Surveys. The results are presented in the following interactive charts. Each chart has controls that allow the user to inspect values by hovering the mouse over the data. The user can also zoom on the charts by selecting and dragging a region on the chart. The data used in this analysis is available in the repository in the following link:"
+    )?;
+    
+    write!(
+        sms_quality_about.a().attr("href='https://github.com/cfpgomes/sms-article-2'").h4(),
+        "https://github.com/cfpgomes/sms-article-2"
+    )?;
+
     let mut sms_quality_title = page_sms_article_quality.buf.div().attr("class='blank-container-square-title page-ultra-wide-treatment'");
+
     write!(
         sms_quality_title.h1(),
-        "Quality Assessment"
+        "Charts"
     )?;
 
     let mut sms_quality_sstotal_vs_srtotal = page_sms_article_quality.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");
@@ -1076,11 +1107,28 @@ fn build() -> Result<(), Box<dyn Error>> {
     )?;
     add_figure_to_node(&mut sms_quality_srtotal_vs_core, "sms_figures/quality_srtotal_vs_core.html");
 
+    let mut sms_individual_about = page_sms_article_individual.buf.div().attr("class='blank-container-square-half blank-background page-ultra-wide-treatment'");
+
+    write!(
+        sms_individual_about.h1(),
+        "Analysis of the Features"
+    )?;
+
+    write!(
+        sms_individual_about.h4(),
+        "This page contains the individual analysis of the features selected in the paper \"A Systematic Mapping Study on Quantum and Quantum-inspired Algorithms in Operations Research\", submitted to ACM Computing Surveys. Each feature is analyzed separately, and the results are presented in the following interactive charts. Each chart has controls that allow the user to inspect values by hovering the mouse over the data. The treemap and icicle charts also allow the user to filter the data by clicking on each block. The data used in this analysis is available in the repository in the following link:"
+    )?;
+    
+    write!(
+        sms_individual_about.a().attr("href='https://github.com/cfpgomes/sms-article-2'").h4(),
+        "https://github.com/cfpgomes/sms-article-2"
+    )?;
+
     //// Individual Analysis Page
     let mut sms_individual_title = page_sms_article_individual.buf.div().attr("class='blank-container-square-title page-ultra-wide-treatment'");
     write!(
         sms_individual_title.h1(),
-        "Analysis of Individual Features"
+        "Charts"
     )?;
 
     let mut sms_individual_ss00_sr00 = page_sms_article_individual.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");
@@ -1161,11 +1209,29 @@ fn build() -> Result<(), Box<dyn Error>> {
     )?;
     add_figure_to_node(&mut sms_individual_D050_to_D053_icicle, "sms_figures/individual_D050_to_D053_icicle.html");
     
+    
+    let mut sms_pairwise_about = page_sms_article_pairwise.buf.div().attr("class='blank-container-square-half blank-background page-ultra-wide-treatment'");
+
+    write!(
+        sms_pairwise_about.h1(),
+        "Analysis of Relationships between Pairs of Features"
+    )?;
+
+    write!(
+        sms_pairwise_about.h4(),
+        "This page contains the analysis of the relationships between pairs of features selected in the paper \"A Systematic Mapping Study on Quantum and Quantum-inspired Algorithms in Operations Research\", submitted to ACM Computing Surveys. The results are presented in the following interactive charts. Each chart has controls that allow the user to inspect values by hovering the mouse over the data. The user can also zoom on the charts by selecting and dragging a region on the chart. The data used in this analysis is available in the repository in the following link:"
+    )?;
+    
+    write!(
+        sms_pairwise_about.a().attr("href='https://github.com/cfpgomes/sms-article-2'").h4(),
+        "https://github.com/cfpgomes/sms-article-2"
+    )?;
+
     //// Pairwise Analysis Page
     let mut sms_pairwise_title = page_sms_article_pairwise.buf.div().attr("class='blank-container-square-title page-ultra-wide-treatment'");
     write!(
         sms_pairwise_title.h1(),
-        "Analysis of Relationships between Pairs Features"
+        "Charts"
     )?;
 
     let mut sms_pair_ss00_d010 = page_sms_article_pairwise.buf.div().attr("class='blank-container-square page-ultra-wide-treatment'");

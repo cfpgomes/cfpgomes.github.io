@@ -34,6 +34,18 @@ function onLoad()
             
             document.getElementById('background-image-id').style.backgroundImage = 'url("./compressed-img/' + imagesArray[Math.floor(Math.random() * 16)] + '")';
         }
+
+        let lastScrollTop = 0;
+        
+        window.addEventListener('scroll', function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop) {
+                document.querySelector('.top-bar').classList.add('hide');
+            } else {
+                document.querySelector('.top-bar').classList.remove('hide');
+            }
+            lastScrollTop = scrollTop;
+        });
          </script>
  <body class='gallery-background' id='background-image-id' onload='onLoad()'>
   <div class='special-shadow-gradient'>
